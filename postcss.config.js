@@ -1,9 +1,7 @@
-const files = require('./files')
-
-module.exports = {
+const config = {
   plugins: {
     '@fullhuman/postcss-purgecss': process.env.NODE_ENV === 'production' && {
-      content: [...files],
+      content: ['./src/components/**/*.{ts,tsx,md,mdx}', './src/pages/**/*.{ts,tsx,md,mdx}'],
       defaultExtractor: (content) => {
         const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]+/g) || []
         const innerMatches = content.match(/[^<>"'`\s.()]*[^<>"'`\s.():]+/g) || []
@@ -19,3 +17,5 @@ module.exports = {
     tailwindcss: {},
   },
 }
+
+export default config

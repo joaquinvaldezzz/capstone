@@ -1,9 +1,8 @@
 import type { Config } from 'tailwindcss'
-import files from './files'
 import { blurs, boxShadows, colors, fontSizes } from './untitled-ui'
 
 export default {
-  content: [...files],
+  content: ['./src/components/**/*.{ts,tsx,md,mdx}', './src/pages/**/*.{ts,tsx,md,mdx}'],
   theme: {
     container: {
       center: true,
