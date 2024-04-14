@@ -1,4 +1,4 @@
-const fontSizes = {
+module.exports = {
   xs: ['0.75rem', { lineHeight: '1.125rem' }],
   sm: ['0.875rem', { lineHeight: '1.25rem' }],
   md: ['1rem', { lineHeight: '1.5rem' }],
@@ -10,6 +10,4 @@ const fontSizes = {
   'display-lg': ['3rem', { lineHeight: '3.75rem' }],
   'display-xl': ['3.75rem', { lineHeight: '4.5rem' }],
   'display-2xl': ['4.5rem', { lineHeight: '5.625rem' }],
-} satisfies Record<string, [string, { lineHeight: string }]>
-
-export default fontSizes
+}
