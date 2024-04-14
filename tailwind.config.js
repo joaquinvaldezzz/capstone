@@ -22,8 +22,14 @@ module.exports = {
   content: ['./src/components/**/*.{ts,tsx}', './src/pages/**/*.{ts,tsx}'],
   theme: {
     container: {
+      screens: {
+        lg: '1024px',
+      },
       center: true,
-      padding: '1rem',
+      padding: {
+        DEFAULT: '1rem',
+        md: '2rem',
+      },
     },
     blur: { ...blurs },
     boxShadow: { ...boxShadows },
@@ -44,6 +50,9 @@ module.exports = {
         ...buttonPrimaryErrorVariables,
         ...buttonSecondaryErrorVariables,
         ...buttonTertiaryErrorVariables,
+      },
+      spacing: {
+        3.5: '0.875rem',
       },
     },
   },
