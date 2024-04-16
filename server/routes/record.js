@@ -4,26 +4,34 @@ const db = require('../database/connection')
 
 const router = express.Router()
 
-router.get('/', async (req, res) => {
+router.get('/', async (_request, response) => {
   const collection = await db.collection('records')
   const results = await collection.find({}).toArray()
-  res.send(results).status(200)
+  response.send(results).status(200)
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (request, response) => {
   const collection = await db.collection('records')
-  const query = { _id: new ObjectId(req.params.id) }
+  const query = { _id: new ObjectId(request.params.id) }
   const result = await collection.findOne(query)
 
-  if (!result) res.send('Not found').status(404)
-  else res.send(result).status(200)
+  if (!result) response.send('Not found').status(404)
+  else response.send(result).status(200)
 })
 
-router.post('/', async () => {
+router.post('/', async (request, response) => {
   try {
-    // rest of the code...
+    const person = {
+      name: request.body.name,
+      email: request.body.email,
+      password: request.body.password,
+    }
+    const collection = await db.collection('records')
+    const result = await collection.insertOne(person)
+    response.send(result).status(204)
   } catch (error) {
-    // handle error...
+    console.error(error)
+    response.status(500).send('Error adding record')
   }
 })
 
