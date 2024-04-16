@@ -5,13 +5,13 @@ const db = require('../database/connection')
 const router = express.Router()
 
 router.get('/', async (_request, response) => {
-  const collection = await db.collection('records')
+  const collection = db.collection('records')
   const results = await collection.find({}).toArray()
   response.send(results).status(200)
 })
 
 router.get('/:id', async (request, response) => {
-  const collection = await db.collection('records')
+  const collection = db.collection('records')
   const query = { _id: new ObjectId(request.params.id) }
   const result = await collection.findOne(query)
 
@@ -22,11 +22,10 @@ router.get('/:id', async (request, response) => {
 router.post('/', async (request, response) => {
   try {
     const person = {
-      name: request.body.name,
-      email: request.body.email,
+      username: request.body.username,
       password: request.body.password,
     }
-    const collection = await db.collection('records')
+    const collection = db.collection('records')
     const result = await collection.insertOne(person)
     response.send(result).status(204)
   } catch (error) {
