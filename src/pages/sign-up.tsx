@@ -45,7 +45,7 @@ export default function SignUp(): JSX.Element {
    * @returns A Promise that resolves when the submission is successful.
    */
   async function onSubmit(data: SubmitHandler<InputValues>): Promise<void> {
-    await fetch('http://localhost:5050/record', {
+    await fetch('https://capstone-server-api.vercel.app/record', {
       body: JSON.stringify(data),
       headers: {
         'Content-Type': 'application/json',
