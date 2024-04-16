@@ -61,8 +61,11 @@ export default function SignUp(): JSX.Element {
             </div>
           </div>
 
-          {/* eslint-disable-next-line @typescript-eslint/no-misused-promises */}
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+          <form
+            className="flex flex-col gap-6"
+            // eslint-disable-next-line @typescript-eslint/no-misused-promises
+            onSubmit={handleSubmit(onSubmit as unknown as SubmitHandler<InputValues>)}
+          >
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-secondary" htmlFor="name">
                 Name
