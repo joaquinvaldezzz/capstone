@@ -51,6 +51,9 @@ module.exports = {
         ...buttonSecondaryErrorVariables,
         ...buttonTertiaryErrorVariables,
       },
+      data: {
+        error: 'error="true"',
+      },
       spacing: {
         3.5: '0.875rem',
       },
