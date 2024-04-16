@@ -57,7 +57,11 @@ export default function SignUp(): JSX.Element {
           <div className="flex flex-col gap-6">
             <div className="flex flex-col gap-2">
               <h1 className="text-display-xs font-semibold text-primary">Sign up</h1>
-              <p className="text-tertiary">Start your 30-day free trial.</p>
+              <p className="text-tertiary">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero officiis quibusdam
+                earum. Quod ratione magnam rem tempore, iste optio expedita impedit, molestiae
+                itaque reprehenderit aut! Nobis doloremque sequi laborum? Quos.
+              </p>
             </div>
           </div>
 
