@@ -73,7 +73,7 @@ export default function SignUp(): JSX.Element {
             <div className="h-8"></div>
           </header>
 
-          <div className="mx-auto flex w-full max-w-96 flex-col gap-8 px-4 py-12">
+          <div className="flex w-full flex-col gap-8 px-4 py-12 md:mx-auto md:max-w-90 lg:p-0">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
                 <h1 className="text-display-xs font-semibold text-primary md:text-display-sm">
