@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
+import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import Title from '~/components/Title'
@@ -167,9 +168,9 @@ export default function SignUp(): JSX.Element {
 
             <p className="text-center text-sm text-tertiary">
               Already have an account?{' '}
-              <a className="font-semibold text-button-tertiary-color-fg" href="/log-in">
+              <Link className="font-semibold text-button-tertiary-color-fg" href="/log-in">
                 Log in
-              </a>
+              </Link>
             </p>
           </div>
 
