@@ -7,7 +7,7 @@ const app = express()
 
 app.use(
   cors({
-    origin: 'https://capstone-system-client.vercel.app/',
+    origin: 'https://capstone-system-client.vercel.app',
     methods: ['GET', 'POST'],
     credentials: true,
   }),
