@@ -54,6 +54,9 @@ module.exports = {
       data: {
         error: 'error="true"',
       },
+      maxWidth: {
+        90: '22.5rem',
+      },
       spacing: {
         3.5: '0.875rem',
       },
