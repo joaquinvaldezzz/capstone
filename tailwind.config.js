@@ -1,3 +1,4 @@
+const { fontFamily } = require('tailwindcss/defaultTheme')
 const {
   backgroundVariables,
   blurs,
@@ -53,6 +54,9 @@ module.exports = {
       },
       data: {
         error: 'error="true"',
+      },
+      fontFamily: {
+        sans: ['InterVariable', ...fontFamily.sans],
       },
       maxWidth: {
         90: '22.5rem',
