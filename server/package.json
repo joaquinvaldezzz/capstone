@@ -2,10 +2,9 @@
   "name": "server",
   "version": "1.0.0",
   "private": true,
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "build": "echo 'Hello World'",
-    "start": "node server"
+    "start": "node index"
   },
   "dependencies": {
     "cors": "^2.8.5",
