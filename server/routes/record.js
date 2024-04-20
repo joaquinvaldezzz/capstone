@@ -19,11 +19,12 @@ router.get('/:id', async (request, response) => {
   else response.send(result).status(200)
 })
 
-router.post('/', async (request, response) => {
+router.post('/sign-up', async (request, response) => {
   try {
     const person = {
       username: request.body.username,
       password: request.body.password,
+      date_created: new Date().toISOString(),
     }
     const collection = db.collection('records')
     const result = await collection.insertOne(person)
@@ -31,6 +32,16 @@ router.post('/', async (request, response) => {
   } catch (error) {
     console.error(error)
     response.status(500).send('Error adding record')
+  }
+})
+
+router.post('/clear', async (_request, response) => {
+  try {
+    db.collection('records').deleteMany({})
+    response.send('Records cleared').status(204)
+  } catch (error) {
+    console.error(error)
+    response.status(500).send('Error clearing records')
   }
 })
 
