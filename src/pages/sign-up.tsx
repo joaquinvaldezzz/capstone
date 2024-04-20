@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
 import { z } from 'zod'
 import Title from '~/components/Title'
 import type { SubmitHandler } from 'react-hook-form'
@@ -46,21 +47,16 @@ export default function SignUp(): JSX.Element {
    * @returns A Promise that resolves when the submission is successful.
    */
   async function onSubmit(data: SubmitHandler<InputValues>): Promise<void> {
-    await fetch('http://localhost:5050/record', {
-      body: JSON.stringify(data),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      method: 'POST',
-    })
+    axios.defaults.withCredentials = true
+    await axios
+      .post('https://capstone-mongodb-server.vercel.app/record/sign-up/', data)
       .then((response) => {
-        console.log(response)
+        if (response.status === 200) {
+          console.log('Signed up the user', response.status)
+        }
       })
       .catch((error) => {
-        console.error(error)
-      })
-      .finally(() => {
-        console.log('Done')
+        console.error('Failed to sign up the user', error)
       })
   }
 
