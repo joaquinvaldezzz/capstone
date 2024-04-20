@@ -12,6 +12,7 @@ app.use(
     origin: 'https://capstone-interface.vercel.app',
     methods: ['GET', 'POST'],
     credentials: true,
+    preflightContinue: true,
   }),
 )
 app.use(express.json())
