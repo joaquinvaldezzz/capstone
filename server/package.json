@@ -4,6 +4,7 @@
   "private": true,
   "main": "server.js",
   "scripts": {
+    "build": "echo 'Hello World'",
     "start": "node --env-file=config.env server"
   },
   "dependencies": {
