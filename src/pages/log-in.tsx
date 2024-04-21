@@ -101,9 +101,7 @@ export default function LogIn(): JSX.Element {
                     setForm({ ...form, username: event.target.value })
                   }}
                 />
-                {errors.username != null && (
-                  <p className="text-sm text-error-primary">{errors.username.message}</p>
-                )}
+                <p className="h-5 text-sm text-error-primary">{errors.username?.message}</p>
               </div>
 
               <div className="flex flex-col gap-1.5">
@@ -123,9 +121,7 @@ export default function LogIn(): JSX.Element {
                     setForm({ ...form, password: event.target.value })
                   }}
                 />
-                {errors.password != null && (
-                  <p className="text-sm text-error-primary">{errors.password.message}</p>
-                )}
+                <p className="h-5 text-sm text-error-primary">{errors.password?.message}</p>
               </div>
 
               <button
