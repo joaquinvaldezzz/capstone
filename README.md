@@ -35,13 +35,13 @@ Make sure you have the following software installed on your machine:
 1. Download or clone the repository to your local machine
 
    ```bash
-   git clone https://github.com/atweberlly/[repository-name].git
+   git clone https://github.com/joaquinvaldezzz/capstone.git
    ```
 
 2. Go to the project directory
 
    ```bash
-   cd [repository-name]
+   cd capstone
    ```
 
 3. Install dependencies using npm
