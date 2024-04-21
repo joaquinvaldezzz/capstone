@@ -1,7 +1,7 @@
 const config = {
   plugins: {
     '@fullhuman/postcss-purgecss': process.env.NODE_ENV === 'production' && {
-      content: ['./src/components/**/*.{ts,tsx,md,mdx}', './src/pages/**/*.{ts,tsx,md,mdx}'],
+      content: ['./src/components/**/*.{ts,tsx}', './src/pages/**/*.{ts,tsx}'],
       defaultExtractor: (content) => {
         const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]+/g) || []
         const innerMatches = content.match(/[^<>"'`\s.()]*[^<>"'`\s.():]+/g) || []
