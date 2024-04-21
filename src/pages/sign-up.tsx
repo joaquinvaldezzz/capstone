@@ -47,9 +47,8 @@ export default function SignUp(): JSX.Element {
    * @returns A Promise that resolves when the submission is successful.
    */
   async function onSubmit(data: SubmitHandler<InputValues>): Promise<void> {
-    axios.defaults.withCredentials = true
     await axios
-      .post('https://capstone-mongodb-server.vercel.app/record/sign-up/', data)
+      .post('http://localhost:5050/record/sign-up', data)
       .then((response) => {
         if (response.status === 200) {
           console.log('Signed up the user', response.status)

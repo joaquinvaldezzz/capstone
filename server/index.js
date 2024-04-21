@@ -4,17 +4,10 @@ const cors = require('cors')
 const express = require('express')
 const records = require('./routes/record')
 
-const PORT = process.env.PORT || 5050
+const PORT = process.env.PORT ?? 5050
 const app = express()
 
-app.use(
-  cors({
-    origin: 'https://capstone-interface.vercel.app',
-    methods: ['GET', 'POST'],
-    credentials: true,
-    preflightContinue: true,
-  }),
-)
+app.use(cors())
 app.use(express.json())
 app.use('/record', records)
 
