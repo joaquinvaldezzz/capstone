@@ -51,7 +51,13 @@ export default function SignUp(): JSX.Element {
       .post('http://localhost:5050/record/sign-up', data)
       .then((response) => {
         if (response.status === 200) {
-          console.log('Signed up the user', response.status)
+          console.log('Signed up the user')
+
+          setForm({
+            username: '',
+            password: '',
+            confirmPassword: '',
+          })
         }
       })
       .catch((error) => {
