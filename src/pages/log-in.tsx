@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import Image from 'next/image'
-import Link from 'next/link'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import Title from '~/components/Title'
-import type { SubmitHandler } from 'react-hook-form'
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import Image from "next/image"
+import Link from "next/link"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { z } from "zod"
+import Title from "~/components/Title"
+import type { SubmitHandler } from "react-hook-form"
 
 const schema = z.object({
-  username: z.string().min(4, 'Your username must be at least 4 characters.'),
-  password: z.string().min(8, 'Your password must be at least 8 characters.'),
+  username: z.string().min(4, "Your username must be at least 4 characters."),
+  password: z.string().min(8, "Your password must be at least 8 characters."),
 })
 
 type InputValues = z.infer<typeof schema>
@@ -28,8 +28,8 @@ export default function LogIn(): JSX.Element {
     resolver: zodResolver(schema),
   })
   const [form, setForm] = useState<InputValues>({
-    username: '',
-    password: '',
+    username: "",
+    password: "",
   })
 
   /**
@@ -39,12 +39,12 @@ export default function LogIn(): JSX.Element {
    * @returns A Promise that resolves when the submission is successful.
    */
   async function onSubmit(data: SubmitHandler<InputValues>): Promise<void> {
-    await fetch('http://localhost:5050/record/', {
+    await fetch("http://localhost:5050/record/", {
       body: JSON.stringify(data),
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
-      method: 'POST',
+      method: "POST",
     })
       .then((response) => {
         console.log(response)
@@ -53,7 +53,7 @@ export default function LogIn(): JSX.Element {
         console.error(error)
       })
       .finally(() => {
-        console.log('Done')
+        console.log("Done")
       })
   }
 
@@ -91,7 +91,7 @@ export default function LogIn(): JSX.Element {
                 <input
                   className="rounded-lg bg-primary-bg px-3.5 py-2.5 text-primary shadow-xs ring-1 ring-inset ring-primary-border transition placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-border data-error:ring-error-primary"
                   id="username"
-                  {...register('username')}
+                  {...register("username")}
                   data-error={errors.username != null}
                   type="text"
                   value={form.username}
@@ -111,7 +111,7 @@ export default function LogIn(): JSX.Element {
                 <input
                   className="rounded-lg bg-primary-bg px-3.5 py-2.5 text-primary shadow-xs ring-1 ring-inset ring-primary-border transition placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-border data-error:ring-error-primary"
                   id="password"
-                  {...register('password')}
+                  {...register("password")}
                   data-error={errors.password != null}
                   type="password"
                   value={form.password}
@@ -129,12 +129,12 @@ export default function LogIn(): JSX.Element {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? 'Signing in...' : 'Sign in'}
+                {isSubmitting ? "Signing in..." : "Sign in"}
               </button>
             </form>
 
             <p className="text-center text-sm text-tertiary">
-              Don&apos;t have an account?{' '}
+              Don&apos;t have an account?{" "}
               <Link className="font-semibold text-button-tertiary-color-fg" href="/sign-up">
                 Sign up
               </Link>

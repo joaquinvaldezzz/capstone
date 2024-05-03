@@ -1,7 +1,7 @@
-const colors = require('../../colors')
+const colors = require("../../colors")
 
 module.exports = {
-  'button-secondary-fg': {
+  "button-secondary-fg": {
     DEFAULT: colors.light[700],
     dark: colors.dark[300],
 
@@ -11,7 +11,7 @@ module.exports = {
     },
   },
 
-  'button-secondary-bg': {
+  "button-secondary-bg": {
     DEFAULT: colors.white,
     dark: colors.dark[900],
 
@@ -21,7 +21,7 @@ module.exports = {
     },
   },
 
-  'button-secondary-border': {
+  "button-secondary-border": {
     DEFAULT: colors.light[300],
     dark: colors.dark[700],
 

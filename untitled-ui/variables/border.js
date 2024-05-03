@@ -1,22 +1,22 @@
-const colors = require('../colors')
+const colors = require("../colors")
 
 module.exports = {
-  'primary-border': {
+  "primary-border": {
     DEFAULT: colors.light[300],
     dark: colors.dark[700],
   },
 
-  'secondary-border': {
+  "secondary-border": {
     DEFAULT: colors.light[200],
     dark: colors.dark[800],
   },
 
-  'tertiary-border': {
+  "tertiary-border": {
     DEFAULT: colors.light[100],
     dark: colors.dark[800],
   },
 
-  'disabled-border': {
+  "disabled-border": {
     DEFAULT: colors.light[300],
     dark: colors.dark[700],
 
@@ -26,12 +26,12 @@ module.exports = {
     },
   },
 
-  'brand-border': {
+  "brand-border": {
     DEFAULT: colors.brand[300],
     dark: colors.brand[400],
   },
 
-  'brand-border-solid': {
+  "brand-border-solid": {
     DEFAULT: colors.brand[600],
     dark: colors.brand[500],
 
@@ -41,7 +41,7 @@ module.exports = {
     },
   },
 
-  'error-border': {
+  "error-border": {
     DEFAULT: colors.error[300],
     dark: colors.error[400],
 

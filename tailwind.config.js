@@ -1,4 +1,4 @@
-const { fontFamily } = require('tailwindcss/defaultTheme')
+const { fontFamily } = require("tailwindcss/defaultTheme")
 const {
   backgroundVariables,
   blurs,
@@ -16,20 +16,20 @@ const {
   fontSizes,
   foregroundVariables,
   textVariables,
-} = require('./untitled-ui')
+} = require("./untitled-ui")
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: ['./src/components/**/*.{ts,tsx}', './src/pages/**/*.{ts,tsx}'],
+  content: ["./src/components/**/*.{ts,tsx}", "./src/pages/**/*.{ts,tsx}"],
   theme: {
     container: {
       screens: {
-        lg: '1024px',
+        lg: "1024px",
       },
       center: true,
       padding: {
-        DEFAULT: '1rem',
-        md: '2rem',
+        DEFAULT: "1rem",
+        md: "2rem",
       },
     },
     blur: { ...blurs },
@@ -56,15 +56,15 @@ module.exports = {
         error: 'error="true"',
       },
       fontFamily: {
-        sans: ['InterVariable', ...fontFamily.sans],
+        sans: ["InterVariable", ...fontFamily.sans],
       },
       maxWidth: {
-        90: '22.5rem',
+        90: "22.5rem",
       },
       spacing: {
-        header: '4.5rem',
-        'section-padding': 'calc(theme(spacing.header) + theme(spacing.16))',
-        3.5: '0.875rem',
+        header: "4.5rem",
+        "section-padding": "calc(theme(spacing.header) + theme(spacing.16))",
+        3.5: "0.875rem",
       },
     },
   },

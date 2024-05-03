@@ -1,12 +1,12 @@
-const colors = require('../colors')
+const colors = require("../colors")
 
 module.exports = {
-  'primary-fg': {
+  "primary-fg": {
     DEFAULT: colors.light[900],
     dark: colors.white,
   },
 
-  'secondary-fg': {
+  "secondary-fg": {
     DEFAULT: colors.light[700],
     dark: colors.dark[300],
 
@@ -16,7 +16,7 @@ module.exports = {
     },
   },
 
-  'tertiary-fg': {
+  "tertiary-fg": {
     DEFAULT: colors.light[600],
     dark: colors.dark[400],
 
@@ -26,7 +26,7 @@ module.exports = {
     },
   },
 
-  'quarterary-fg': {
+  "quarterary-fg": {
     DEFAULT: colors.light[500],
     dark: colors.dark[400],
 
@@ -36,7 +36,7 @@ module.exports = {
     },
   },
 
-  'quinary-fg': {
+  "quinary-fg": {
     DEFAULT: colors.light[400],
     dark: colors.dark[500],
 
@@ -46,17 +46,17 @@ module.exports = {
     },
   },
 
-  'senary-fg': {
+  "senary-fg": {
     DEFAULT: colors.light[300],
     dark: colors.dark[600],
   },
 
-  'white-fg': {
+  "white-fg": {
     DEFAULT: colors.white,
     dark: colors.white,
   },
 
-  'disabled-fg': {
+  "disabled-fg": {
     DEFAULT: colors.light[400],
     dark: colors.dark[500],
 
@@ -66,7 +66,7 @@ module.exports = {
     },
   },
 
-  'brand-primary-fg': {
+  "brand-primary-fg": {
     DEFAULT: colors.brand[600],
     dark: colors.brand[500],
 
@@ -76,37 +76,37 @@ module.exports = {
     },
   },
 
-  'brand-secondary-fg': {
+  "brand-secondary-fg": {
     DEFAULT: colors.brand[500],
     dark: colors.brand[500],
   },
 
-  'error-primary-fg': {
+  "error-primary-fg": {
     DEFAULT: colors.error[600],
     dark: colors.error[500],
   },
 
-  'error-secondary-fg': {
+  "error-secondary-fg": {
     DEFAULT: colors.error[500],
     dark: colors.error[400],
   },
 
-  'warning-primary-fg': {
+  "warning-primary-fg": {
     DEFAULT: colors.warning[600],
     dark: colors.warning[500],
   },
 
-  'warning-secondary-fg': {
+  "warning-secondary-fg": {
     DEFAULT: colors.warning[500],
     dark: colors.warning[400],
   },
 
-  'success-primary-fg': {
+  "success-primary-fg": {
     DEFAULT: colors.success[600],
     dark: colors.success[500],
   },
 
-  'success-secondary-fg': {
+  "success-secondary-fg": {
     DEFAULT: colors.success[500],
     dark: colors.success[400],
   },

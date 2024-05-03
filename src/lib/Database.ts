@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from "axios"
 
 export default class Database {
-  private readonly URL = 'http://localhost:5050/record'
+  private readonly URL = "http://localhost:5050/record"
 
   /**
    * Connects to the database.
@@ -13,12 +13,12 @@ export default class Database {
       .get(this.URL)
       .then((response) => {
         if (response.status === 200) {
-          console.log('Connected to the database')
+          console.log("Connected to the database")
           console.log(response.status)
         }
       })
       .catch((error) => {
-        console.error('Failed to connect to the database')
+        console.error("Failed to connect to the database")
         console.error(error)
       })
   }
@@ -36,11 +36,11 @@ export default class Database {
         password,
       })
       .then((response) => {
-        console.log('Signed up the user')
+        console.log("Signed up the user")
         console.log(response.status)
       })
       .catch((error) => {
-        console.error('Failed to sign up the user')
+        console.error("Failed to sign up the user")
         console.error(error)
       })
   }
@@ -60,11 +60,11 @@ export default class Database {
         },
       })
       .then((response) => {
-        console.log('Logged in the user')
+        console.log("Logged in the user")
         console.log(response.status)
       })
       .catch((error) => {
-        console.error('Failed to log in the user')
+        console.error("Failed to log in the user")
         console.error(error)
       })
   }
@@ -78,11 +78,11 @@ export default class Database {
     axios
       .post(`${this.URL}/clear`)
       .then((response) => {
-        console.log('Cleared the database')
+        console.log("Cleared the database")
         console.log(response.status)
       })
       .catch((error) => {
-        console.error('Failed to clear the database')
+        console.error("Failed to clear the database")
         console.error(error)
       })
   }

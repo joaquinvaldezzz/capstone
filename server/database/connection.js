@@ -1,8 +1,8 @@
-require('dotenv').config()
+require("dotenv").config()
 
-const { MongoClient, ServerApiVersion } = require('mongodb')
+const { MongoClient, ServerApiVersion } = require("mongodb")
 
-const URI = process.env.ATLAS_URI ?? ''
+const URI = process.env.ATLAS_URI ?? ""
 const client = new MongoClient(URI, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -13,10 +13,10 @@ const client = new MongoClient(URI, {
 
 client
   .connect()
-  .then(() => client.db('admin').command({ ping: 1 }))
-  .then(() => console.log('Pinged your deployment. You successfully connected to MongoDB!'))
+  .then(() => client.db("admin").command({ ping: 1 }))
+  .then(() => console.log("Pinged your deployment. You successfully connected to MongoDB!"))
   .catch((error) => console.error(error))
 
-const db = client.db('employees')
+const db = client.db("employees")
 
 module.exports = db

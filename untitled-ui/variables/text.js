@@ -1,11 +1,11 @@
-const colors = require('../colors')
+const colors = require("../colors")
 
 module.exports = {
   primary: {
     DEFAULT: colors.light[900],
     dark: colors.dark[50],
 
-    'on-brand': {
+    "on-brand": {
       DEFAULT: colors.white,
       dark: colors.dark[50],
     },
@@ -20,7 +20,7 @@ module.exports = {
       dark: colors.dark[200],
     },
 
-    'on-brand': {
+    "on-brand": {
       DEFAULT: colors.brand[200],
       dark: colors.dark[300],
     },
@@ -35,7 +35,7 @@ module.exports = {
       dark: colors.dark[300],
     },
 
-    'on-brand': {
+    "on-brand": {
       DEFAULT: colors.brand[200],
       dark: colors.dark[400],
     },
@@ -45,7 +45,7 @@ module.exports = {
     DEFAULT: colors.light[500],
     dark: colors.dark[400],
 
-    'on-brand': {
+    "on-brand": {
       DEFAULT: colors.brand[300],
       dark: colors.dark[400],
     },
@@ -66,17 +66,17 @@ module.exports = {
     },
   },
 
-  'brand-primary': {
+  "brand-primary": {
     DEFAULT: colors.brand[900],
     dark: colors.dark[50],
   },
 
-  'brand-secondary': {
+  "brand-secondary": {
     DEFAULT: colors.brand[700],
     dark: colors.dark[300],
   },
 
-  'brand-tertiary': {
+  "brand-tertiary": {
     DEFAULT: colors.brand[600],
     dark: colors.dark[400],
 
@@ -86,17 +86,17 @@ module.exports = {
     },
   },
 
-  'error-primary': {
+  "error-primary": {
     DEFAULT: colors.error[600],
     dark: colors.error[400],
   },
 
-  'warning-primary': {
+  "warning-primary": {
     DEFAULT: colors.warning[600],
     dark: colors.warning[400],
   },
 
-  'success-primary': {
+  "success-primary": {
     DEFAULT: colors.success[600],
     dark: colors.success[50],
   },

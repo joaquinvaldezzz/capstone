@@ -1,7 +1,7 @@
-const colors = require('../../colors')
+const colors = require("../../colors")
 
 module.exports = {
-  'button-tertiary-error-fg': {
+  "button-tertiary-error-fg": {
     DEFAULT: colors.error[700],
     dark: colors.error[300],
 
@@ -11,7 +11,7 @@ module.exports = {
     },
   },
 
-  'button-tertiary-error-bg': {
+  "button-tertiary-error-bg": {
     hover: {
       DEFAULT: colors.error[50],
       dark: colors.error[900],

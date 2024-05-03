@@ -1,7 +1,7 @@
-const colors = require('../colors')
+const colors = require("../colors")
 
 module.exports = {
-  'primary-bg': {
+  "primary-bg": {
     DEFAULT: colors.light[25],
     dark: colors.dark[950],
 
@@ -21,7 +21,7 @@ module.exports = {
     },
   },
 
-  'secondary-bg': {
+  "secondary-bg": {
     DEFAULT: colors.light[50],
     dark: colors.dark[900],
 
@@ -46,22 +46,22 @@ module.exports = {
     },
   },
 
-  'tertiary-bg': {
+  "tertiary-bg": {
     DEFAULT: colors.light[100],
     dark: colors.dark[800],
   },
 
-  'quatermary-bg': {
+  "quatermary-bg": {
     DEFAULT: colors.light[200],
     dark: colors.dark[700],
   },
 
-  'active-bg': {
+  "active-bg": {
     DEFAULT: colors.light[50],
     dark: colors.dark[800],
   },
 
-  'disabled-bg': {
+  "disabled-bg": {
     DEFAULT: colors.light[50],
     dark: colors.dark[900],
 
@@ -71,12 +71,12 @@ module.exports = {
     },
   },
 
-  'overlay-bg': {
+  "overlay-bg": {
     DEFAULT: colors.light[950],
     dark: colors.dark[800],
   },
 
-  'brand-primary-bg': {
+  "brand-primary-bg": {
     DEFAULT: colors.brand[50],
     dark: colors.brand[500],
 
@@ -86,12 +86,12 @@ module.exports = {
     },
   },
 
-  'brand-secondary-bg': {
+  "brand-secondary-bg": {
     DEFAULT: colors.brand[100],
     dark: colors.brand[600],
   },
 
-  'brand-solid-bg': {
+  "brand-solid-bg": {
     DEFAULT: colors.brand[600],
     dark: colors.brand[600],
 
@@ -101,7 +101,7 @@ module.exports = {
     },
   },
 
-  'brand-section-bg': {
+  "brand-section-bg": {
     DEFAULT: colors.brand[800],
     dark: colors.brand[900],
 
@@ -111,7 +111,7 @@ module.exports = {
     },
   },
 
-  'error-bg': {
+  "error-bg": {
     primary: {
       DEFAULT: colors.error[50],
       dark: colors.error[500],
@@ -128,7 +128,7 @@ module.exports = {
     },
   },
 
-  'warning-bg': {
+  "warning-bg": {
     primary: {
       DEFAULT: colors.warning[50],
       dark: colors.warning[500],
@@ -145,7 +145,7 @@ module.exports = {
     },
   },
 
-  'success-bg': {
+  "success-bg": {
     primary: {
       DEFAULT: colors.success[50],
       dark: colors.success[500],
