@@ -62,6 +62,8 @@ module.exports = {
         90: '22.5rem',
       },
       spacing: {
+        header: '4.5rem',
+        'section-padding': 'calc(theme(spacing.header) + theme(spacing.16))',
         3.5: '0.875rem',
       },
     },
