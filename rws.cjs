@@ -3,7 +3,7 @@ const path = require("path")
 
 const directoriesToIgnore = ["node_modules", ".git", ".next"]
 const acceptedFileExtensions = [".js", ".jsx", ".ts", ".tsx"]
-const defaultRootDirectory = "./"
+const defaultRootDirectory = "src"
 
 function removeWhiteSpaceFromJSX(jsxString) {
   const regex = /\s+/g
@@ -15,9 +15,9 @@ function shouldIgnoreDirectory(directoryName) {
 }
 
 function processDirectory(directoryPath) {
-  fs.readdir(directoryPath, (err, files) => {
-    if (err) {
-      console.error("Error reading directory:", err)
+  fs.readdir(directoryPath, (readdirError, files) => {
+    if (readdirError) {
+      console.error("Error reading directory:", readdirError)
       return
     }
 
