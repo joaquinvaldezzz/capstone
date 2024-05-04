@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import Image from "next/image"
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline"
 import { zodResolver } from "@hookform/resolvers/zod"
 import axios from "axios"
 import { z } from "zod"
@@ -20,6 +21,7 @@ export default function Home(): JSX.Element {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { isSubmitting, errors },
   } = useForm<InputValues>({
     resolver: zodResolver(schema),
@@ -28,6 +30,7 @@ export default function Home(): JSX.Element {
     username: "",
     password: "",
   })
+  const [isPasswordVisible, setisPasswordVisible] = useState<boolean>(false)
 
   /**
    * Handles the form submission.
@@ -36,19 +39,22 @@ export default function Home(): JSX.Element {
    * @returns A Promise that resolves when the submission is successful.
    */
   async function onSubmit(data: SubmitHandler<InputValues>): Promise<void> {
-    await axios
-      .post("http://localhost:5050/record/sign-up", data)
-      .then((response) => {
-        if (response.status === 200) {
-          setForm({
-            username: "",
-            password: "",
-          })
-        }
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+    try {
+      // Send the data to the server
+      const response = await axios.post("http://localhost:5050/record/log-in", data)
+
+      if (response.status === 200) {
+        setForm({
+          username: "",
+          password: "",
+        })
+        reset()
+
+        console.log("Logged in", response.status)
+      }
+    } catch (error) {
+      console.error("Invalid password")
+    }
   }
 
   return (
@@ -111,19 +117,37 @@ export default function Home(): JSX.Element {
                 <label className="text-sm font-medium text-secondary" htmlFor="password">
                   Password
                 </label>
-                <input
-                  className="rounded-lg bg-primary-bg px-3.5 py-2.5 text-primary shadow-xs ring-1 ring-inset ring-primary-border transition placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-border data-error:ring-error-primary"
-                  id="password"
-                  {...register("password")}
-                  data-error={errors.password != null}
-                  type="password"
-                  value={form.password}
-                  autoComplete="current-password"
-                  placeholder=""
-                  onChange={(event) => {
-                    setForm({ ...form, password: event.target.value })
-                  }}
-                />
+                <div className="relative flex flex-col">
+                  <input
+                    className="rounded-lg bg-primary-bg px-3.5 py-2.5 text-primary shadow-xs ring-1 ring-inset ring-primary-border transition placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-border data-error:ring-error-primary"
+                    id="password"
+                    {...register("password")}
+                    data-error={errors.password != null}
+                    type={isPasswordVisible ? "text" : "password"}
+                    value={form.password}
+                    autoComplete="current-password"
+                    placeholder=""
+                    onChange={(event) => {
+                      setForm({ ...form, password: event.target.value })
+                    }}
+                  />
+                  <button
+                    className="absolute right-0 top-1/2 z-10 size-11 -translate-y-1/2 p-3 text-primary"
+                    type="button"
+                    onClick={() => {
+                      setisPasswordVisible(!isPasswordVisible)
+                    }}
+                  >
+                    <span className="sr-only">
+                      {isPasswordVisible ? "Hide password" : "Show password"}
+                    </span>
+                    {isPasswordVisible ? (
+                      <EyeSlashIcon className="size-5" />
+                    ) : (
+                      <EyeIcon className="size-5" />
+                    )}
+                  </button>
+                </div>
                 {errors.password?.message != null && (
                   <p className="text-sm text-error-primary">{errors.password?.message}</p>
                 )}

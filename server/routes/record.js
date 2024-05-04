@@ -35,6 +35,23 @@ router.post("/sign-up", async (request, response) => {
   }
 })
 
+router.post("/log-in", async (request, response) => {
+  try {
+    const user = await db.collection("records").findOne({ username: request.body.username })
+
+    if (user && user.password === request.body.password) {
+      console.log("Logged in")
+      response.status(200).send("Logged in")
+    } else {
+      console.log("Invalid password")
+      response.status(401).send("Invalid password")
+    }
+  } catch (error) {
+    console.error(error)
+    response.status(500).send("Error adding record")
+  }
+})
+
 router.post("/clear", async (_request, response) => {
   try {
     db.collection("records").deleteMany({})
