@@ -2,10 +2,11 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
-import Title from "~/components/Title"
 import { useForm } from "react-hook-form"
 import type { SubmitHandler } from "react-hook-form"
 import { z } from "zod"
+
+import Title from "~/components/Title"
 
 const schema = z.object({
   username: z.string().min(4, "Your username must be at least 4 characters."),
