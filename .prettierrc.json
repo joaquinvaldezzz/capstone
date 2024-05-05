@@ -24,5 +24,6 @@
     "^~/app/(.*)$",
     "",
     "^[./]"
-  ]
+  ],
+  "tailwindFunctions": ["cva", "cn"]
 }
