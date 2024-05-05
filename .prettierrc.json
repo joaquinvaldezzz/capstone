@@ -8,12 +8,21 @@
   ],
   "importOrder": [
     "<BUILTIN_MODULES>",
-    "^react",
-    "^next(.*)$",
+    "^(react/(.*)$)|^(react$)",
+    "^(next/(.*)$)|^(next$)",
     "<THIRD_PARTY_MODULES>",
-    "^~(.*)$",
-    "<TYPES>",
-    "<TYPES>^[.]",
-    "^[.]"
+    "",
+    "^types$",
+    "^@/types/(.*)$",
+    "^@/config/(.*)$",
+    "^@/lib/(.*)$",
+    "^@/hooks/(.*)$",
+    "^@/components/ui/(.*)$",
+    "^@/components/(.*)$",
+    "^@/registry/(.*)$",
+    "^@/styles/(.*)$",
+    "^@/app/(.*)$",
+    "",
+    "^[./]"
   ]
 }

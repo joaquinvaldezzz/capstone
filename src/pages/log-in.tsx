@@ -1,11 +1,11 @@
 import { useState } from "react"
-import { useForm } from "react-hook-form"
 import Image from "next/image"
 import Link from "next/link"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { z } from "zod"
 import Title from "~/components/Title"
+import { useForm } from "react-hook-form"
 import type { SubmitHandler } from "react-hook-form"
+import { z } from "zod"
 
 const schema = z.object({
   username: z.string().min(4, "Your username must be at least 4 characters."),
@@ -67,10 +67,10 @@ export default function LogIn(): JSX.Element {
             <div className="h-8"></div>
           </header>
 
-          <div className="flex w-full flex-col gap-8 px-4 py-12 md:mx-auto md:max-w-90 lg:p-0">
+          <div className="md:max-w-90 flex w-full flex-col gap-8 px-4 py-12 md:mx-auto lg:p-0">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col gap-2">
-                <h1 className="text-display-xs font-semibold text-primary md:text-display-sm">
+                <h1 className="text-display-xs md:text-display-sm font-semibold text-primary">
                   Log in
                 </h1>
                 <p className="text-tertiary">
@@ -89,7 +89,7 @@ export default function LogIn(): JSX.Element {
                   Username
                 </label>
                 <input
-                  className="rounded-lg bg-primary-bg px-3.5 py-2.5 text-primary shadow-xs ring-1 ring-inset ring-primary-border transition placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-border data-error:ring-error-primary"
+                  className="bg-primary-bg shadow-xs ring-primary-border placeholder:text-placeholder focus:ring-brand-border data-error:ring-error-primary rounded-lg px-3.5 py-2.5 text-primary ring-1 ring-inset transition focus:outline-none focus:ring-2 focus:ring-inset"
                   id="username"
                   {...register("username")}
                   data-error={errors.username != null}
@@ -101,7 +101,7 @@ export default function LogIn(): JSX.Element {
                     setForm({ ...form, username: event.target.value })
                   }}
                 />
-                <p className="h-5 text-sm text-error-primary">{errors.username?.message}</p>
+                <p className="text-error-primary h-5 text-sm">{errors.username?.message}</p>
               </div>
 
               <div className="flex flex-col gap-1.5">
@@ -109,7 +109,7 @@ export default function LogIn(): JSX.Element {
                   Password
                 </label>
                 <input
-                  className="rounded-lg bg-primary-bg px-3.5 py-2.5 text-primary shadow-xs ring-1 ring-inset ring-primary-border transition placeholder:text-placeholder focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-border data-error:ring-error-primary"
+                  className="bg-primary-bg shadow-xs ring-primary-border placeholder:text-placeholder focus:ring-brand-border data-error:ring-error-primary rounded-lg px-3.5 py-2.5 text-primary ring-1 ring-inset transition focus:outline-none focus:ring-2 focus:ring-inset"
                   id="password"
                   {...register("password")}
                   data-error={errors.password != null}
@@ -121,11 +121,11 @@ export default function LogIn(): JSX.Element {
                     setForm({ ...form, password: event.target.value })
                   }}
                 />
-                <p className="h-5 text-sm text-error-primary">{errors.password?.message}</p>
+                <p className="text-error-primary h-5 text-sm">{errors.password?.message}</p>
               </div>
 
               <button
-                className="rounded-lg border border-button-primary-border bg-button-primary-bg px-4 py-2.5 font-semibold text-button-primary-fg shadow-xs transition focus:outline-none focus:ring-4 focus:ring-brand-500/25 focus:ring-offset-light-900"
+                className="border-button-primary-border bg-button-primary-bg text-button-primary-fg shadow-xs focus:ring-brand-500/25 focus:ring-offset-light-900 rounded-lg border px-4 py-2.5 font-semibold transition focus:outline-none focus:ring-4"
                 type="submit"
                 disabled={isSubmitting}
               >
@@ -133,16 +133,16 @@ export default function LogIn(): JSX.Element {
               </button>
             </form>
 
-            <p className="text-center text-sm text-tertiary">
+            <p className="text-tertiary text-center text-sm">
               Don&apos;t have an account?{" "}
-              <Link className="font-semibold text-button-tertiary-color-fg" href="/sign-up">
+              <Link className="text-button-tertiary-color-fg font-semibold" href="/sign-up">
                 Sign up
               </Link>
             </p>
           </div>
 
           <footer className="px-8 pb-8">
-            <p className="text-sm text-tertiary">
+            <p className="text-tertiary text-sm">
               &copy; Skyline Hospital and Medical Center {new Date().getFullYear()}
             </p>
           </footer>
