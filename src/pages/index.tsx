@@ -67,18 +67,18 @@ export default function Home(): JSX.Element {
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
       <Title>Sign in</Title>
       <div className="flex items-center justify-center py-12">
-        <div className="mx-auto grid w-[350px] gap-6">
-          <div className="grid gap-2 text-center">
+        <div className="mx-auto flex w-full max-w-96 flex-col gap-6">
+          <div className="flex flex-col gap-2">
             <h1 className="text-3xl font-bold">Welcome back!</h1>
             <p className="text-balance text-muted-foreground">Please enter your details.</p>
           </div>
 
           <form
-            className="grid gap-4"
+            className="flex flex-col gap-4"
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onSubmit={handleSubmit(onSubmit as unknown as SubmitHandler<InputValues>)}
           >
-            <div className="grid gap-2">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
@@ -94,10 +94,10 @@ export default function Home(): JSX.Element {
               <p className="min-h-5 text-sm text-destructive">{errors.username?.message}</p>
             </div>
 
-            <div className="relative grid gap-2">
-              <div className="flex items-center">
+            <div className="relative flex flex-col gap-2">
+              <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <Link className="ml-auto inline-block text-sm underline" href="/forgot-password">
+                <Link className="inline-block text-sm underline" href="/forgot-password">
                   Forgot your password?
                 </Link>
               </div>
@@ -128,7 +128,7 @@ export default function Home(): JSX.Element {
               <p className="min-h-5 text-sm text-destructive">{errors.password?.message}</p>
             </div>
 
-            <Button className="w-full" type="submit" disabled={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
               {isSubmitting ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
