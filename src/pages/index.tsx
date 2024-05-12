@@ -10,6 +10,7 @@ import { z } from 'zod'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
+import Title from '~/components/Title'
 
 const schema = z.object({
   username: z.string().min(4, 'Your username must be at least 4 characters.'),
@@ -58,6 +59,7 @@ export default function Home(): JSX.Element {
 
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
+      <Title>Sign in</Title>
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto grid w-[350px] gap-6">
           <div className="grid gap-2 text-center">
@@ -84,7 +86,7 @@ export default function Home(): JSX.Element {
                 }}
               />
               {errors.username?.message != null && (
-                <p className="text-error-primary text-sm">{errors.username?.message}</p>
+                <p className="text-sm text-destructive">{errors.username?.message}</p>
               )}
             </div>
 
@@ -106,6 +108,9 @@ export default function Home(): JSX.Element {
                   setForm({ ...form, password: event.target.value })
                 }}
               />
+              {errors.password?.message != null && (
+                <p className="text-sm text-destructive">{errors.password?.message}</p>
+              )}
             </div>
 
             <Button className="w-full" type="submit" disabled={isSubmitting}>
@@ -122,6 +127,7 @@ export default function Home(): JSX.Element {
           width="1920"
           height="1080"
           alt=""
+          sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1920px"
           priority
         />
       </div>
