@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
+import { Eye, EyeOff } from 'lucide-react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -19,6 +20,10 @@ const schema = z.object({
 
 type InputValues = z.infer<typeof schema>
 
+/**
+ * The Home component represents the main page of the application.
+ * It displays a sign-in form and handles form submission.
+ */
 export default function Home(): JSX.Element {
   const {
     register,
@@ -32,6 +37,7 @@ export default function Home(): JSX.Element {
     username: '',
     password: '',
   })
+  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   /**
    * Handles the form submission.
@@ -50,7 +56,7 @@ export default function Home(): JSX.Element {
         })
         reset()
 
-        console.log('Logged in', response.status)
+        console.log('Logged in')
       }
     } catch (error) {
       console.error('Invalid password')
@@ -85,12 +91,10 @@ export default function Home(): JSX.Element {
                   setForm({ ...form, username: event.target.value })
                 }}
               />
-              {errors.username?.message != null && (
-                <p className="text-sm text-destructive">{errors.username?.message}</p>
-              )}
+              <p className="min-h-5 text-sm text-destructive">{errors.username?.message}</p>
             </div>
 
-            <div className="grid gap-2">
+            <div className="relative grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
                 <Link className="ml-auto inline-block text-sm underline" href="/forgot-password">
@@ -98,19 +102,30 @@ export default function Home(): JSX.Element {
                 </Link>
               </div>
               <Input
+                className="pr-10"
                 id="password"
                 {...register('password')}
                 data-error={errors.password != null}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 value={form.password}
                 placeholder=""
                 onChange={(event) => {
                   setForm({ ...form, password: event.target.value })
                 }}
               />
-              {errors.password?.message != null && (
-                <p className="text-sm text-destructive">{errors.password?.message}</p>
-              )}
+              <Button
+                className="absolute right-0 top-1/2 -translate-y-1/2"
+                variant="ghost"
+                size="icon"
+                type="button"
+                onClick={() => {
+                  setShowPassword(!showPassword)
+                }}
+              >
+                <span className="sr-only">Show password</span>
+                {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+              </Button>
+              <p className="min-h-5 text-sm text-destructive">{errors.password?.message}</p>
             </div>
 
             <Button className="w-full" type="submit" disabled={isSubmitting}>
