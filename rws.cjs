@@ -1,13 +1,13 @@
-const fs = require("fs")
-const path = require("path")
+const fs = require('fs')
+const path = require('path')
 
-const directoriesToIgnore = ["node_modules", ".git", ".next"]
-const acceptedFileExtensions = [".js", ".jsx", ".ts", ".tsx"]
-const defaultRootDirectory = "src"
+const directoriesToIgnore = ['node_modules', '.git', '.next']
+const acceptedFileExtensions = ['.js', '.jsx', '.ts', '.tsx']
+const defaultRootDirectory = 'src'
 
 function removeWhiteSpaceFromJSX(jsxString) {
   const regex = /\s+/g
-  return jsxString.replace(regex, " ").trim()
+  return jsxString.replace(regex, ' ').trim()
 }
 
 function shouldIgnoreDirectory(directoryName) {
@@ -17,7 +17,7 @@ function shouldIgnoreDirectory(directoryName) {
 function processDirectory(directoryPath) {
   fs.readdir(directoryPath, (readdirError, files) => {
     if (readdirError) {
-      console.error("Error reading directory:", readdirError)
+      console.error('Error reading directory:', readdirError)
       return
     }
 
@@ -26,7 +26,7 @@ function processDirectory(directoryPath) {
 
       fs.stat(filePath, (statError, stats) => {
         if (statError) {
-          console.error("Error getting file stats:", statError)
+          console.error('Error getting file stats:', statError)
           return
         }
 
@@ -35,9 +35,9 @@ function processDirectory(directoryPath) {
             processDirectory(filePath)
           }
         } else if (acceptedFileExtensions.includes(path.extname(file))) {
-          fs.readFile(filePath, "utf8", (readFileError, data) => {
+          fs.readFile(filePath, 'utf8', (readFileError, data) => {
             if (readFileError) {
-              console.error("Error reading file:", readFileError)
+              console.error('Error reading file:', readFileError)
               return
             }
 
@@ -46,9 +46,9 @@ function processDirectory(directoryPath) {
               return `className="${compactedClassName}"`
             })
 
-            fs.writeFile(filePath, modifiedContent, "utf8", (writeFileError) => {
+            fs.writeFile(filePath, modifiedContent, 'utf8', (writeFileError) => {
               if (writeFileError) {
-                console.error("Error writing file:", writeFileError)
+                console.error('Error writing file:', writeFileError)
               } else {
                 console.log(`Modified and saved: ${file}`)
               }
