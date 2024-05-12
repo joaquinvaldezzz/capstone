@@ -12,8 +12,8 @@ const config = {
     //   safelist: ['html', 'body'],
     // },
     autoprefixer: {},
-    "postcss-import": {},
-    "postcss-sort-media-queries": {},
+    'postcss-import': {},
+    'postcss-sort-media-queries': {},
     tailwindcss: {},
   },
 }

@@ -1,19 +1,19 @@
-import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
-import type { SubmitHandler } from "react-hook-form"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import type { SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
-import { Button } from "~/components/ui/button"
-import { Input } from "~/components/ui/input"
-import { Label } from "~/components/ui/label"
+import { Button } from '~/components/ui/button'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
 
 const schema = z.object({
-  username: z.string().min(4, "Your username must be at least 4 characters."),
-  password: z.string().min(8, "Your password must be at least 8 characters."),
+  username: z.string().min(4, 'Your username must be at least 4 characters.'),
+  password: z.string().min(8, 'Your password must be at least 8 characters.'),
 })
 
 type InputValues = z.infer<typeof schema>
@@ -28,8 +28,8 @@ export default function Home(): JSX.Element {
     resolver: zodResolver(schema),
   })
   const [form, setForm] = useState<InputValues>({
-    username: "",
-    password: "",
+    username: '',
+    password: '',
   })
 
   /**
@@ -40,19 +40,19 @@ export default function Home(): JSX.Element {
    */
   async function onSubmit(data: SubmitHandler<InputValues>): Promise<void> {
     try {
-      const response = await axios.post("http://localhost:5050/record/log-in", data)
+      const response = await axios.post('http://localhost:5050/record/log-in', data)
 
       if (response.status === 200) {
         setForm({
-          username: "",
-          password: "",
+          username: '',
+          password: '',
         })
         reset()
 
-        console.log("Logged in", response.status)
+        console.log('Logged in', response.status)
       }
     } catch (error) {
-      console.error("Invalid password")
+      console.error('Invalid password')
     }
   }
 
@@ -74,7 +74,7 @@ export default function Home(): JSX.Element {
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
-                {...register("username")}
+                {...register('username')}
                 data-error={errors.username != null}
                 type="text"
                 value={form.username}
@@ -97,7 +97,7 @@ export default function Home(): JSX.Element {
               </div>
               <Input
                 id="password"
-                {...register("password")}
+                {...register('password')}
                 data-error={errors.password != null}
                 type="password"
                 value={form.password}
@@ -109,7 +109,7 @@ export default function Home(): JSX.Element {
             </div>
 
             <Button className="w-full" type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Signing in..." : "Sign in"}
+              {isSubmitting ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
         </div>

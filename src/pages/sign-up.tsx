@@ -1,23 +1,23 @@
-import { useState } from "react"
-import Image from "next/image"
-import Link from "next/link"
-import { zodResolver } from "@hookform/resolvers/zod"
-import axios from "axios"
-import { useForm } from "react-hook-form"
-import type { SubmitHandler } from "react-hook-form"
-import { z } from "zod"
+import { useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import { useForm } from 'react-hook-form'
+import type { SubmitHandler } from 'react-hook-form'
+import { z } from 'zod'
 
-import Title from "~/components/Title"
+import Title from '~/components/Title'
 
 const schema = z
   .object({
-    username: z.string().min(4, "Your username must be at least 4 characters."),
-    password: z.string().min(8, "Your password must be at least 8 characters."),
-    confirmPassword: z.string().min(8, "Your password must be at least 8 characters."),
+    username: z.string().min(4, 'Your username must be at least 4 characters.'),
+    password: z.string().min(8, 'Your password must be at least 8 characters.'),
+    confirmPassword: z.string().min(8, 'Your password must be at least 8 characters.'),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Your passwords do not match.",
-    path: ["confirmPassword"],
+    message: 'Your passwords do not match.',
+    path: ['confirmPassword'],
   })
 
 type InputValues = z.infer<typeof schema>
@@ -36,9 +36,9 @@ export default function SignUp(): JSX.Element {
     resolver: zodResolver(schema),
   })
   const [form, setForm] = useState<InputValues>({
-    username: "",
-    password: "",
-    confirmPassword: "",
+    username: '',
+    password: '',
+    confirmPassword: '',
   })
 
   /**
@@ -49,20 +49,20 @@ export default function SignUp(): JSX.Element {
    */
   async function onSubmit(data: SubmitHandler<InputValues>): Promise<void> {
     await axios
-      .post("http://localhost:5050/record/sign-up", data)
+      .post('http://localhost:5050/record/sign-up', data)
       .then((response) => {
         if (response.status === 200) {
-          console.log("Signed up the user")
+          console.log('Signed up the user')
 
           setForm({
-            username: "",
-            password: "",
-            confirmPassword: "",
+            username: '',
+            password: '',
+            confirmPassword: '',
           })
         }
       })
       .catch((error) => {
-        console.error("Failed to sign up the user", error)
+        console.error('Failed to sign up the user', error)
       })
   }
 
@@ -100,7 +100,7 @@ export default function SignUp(): JSX.Element {
                 <input
                   className="bg-primary-bg shadow-xs ring-primary-border placeholder:text-placeholder focus:ring-brand-border data-error:ring-error-primary rounded-lg px-3.5 py-2.5 text-primary ring-1 ring-inset transition focus:outline-none focus:ring-2 focus:ring-inset"
                   id="username"
-                  {...register("username")}
+                  {...register('username')}
                   data-error={errors.username != null}
                   type="text"
                   value={form.username}
@@ -120,7 +120,7 @@ export default function SignUp(): JSX.Element {
                 <input
                   className="bg-primary-bg shadow-xs ring-primary-border placeholder:text-placeholder focus:ring-brand-border data-error:ring-error-primary rounded-lg px-3.5 py-2.5 text-primary ring-1 ring-inset transition focus:outline-none focus:ring-2 focus:ring-inset"
                   id="password"
-                  {...register("password")}
+                  {...register('password')}
                   data-error={errors.password != null}
                   type="password"
                   value={form.password}
@@ -140,7 +140,7 @@ export default function SignUp(): JSX.Element {
                 <input
                   className="bg-primary-bg shadow-xs ring-primary-border placeholder:text-placeholder focus:ring-brand-border data-error:ring-error-primary rounded-lg px-3.5 py-2.5 text-primary ring-1 ring-inset transition focus:outline-none focus:ring-2 focus:ring-inset"
                   id="confirm-password"
-                  {...register("confirmPassword")}
+                  {...register('confirmPassword')}
                   data-error={errors.password != null}
                   type="password"
                   value={form.confirmPassword}
@@ -158,12 +158,12 @@ export default function SignUp(): JSX.Element {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Signing up..." : "Sign up"}
+                {isSubmitting ? 'Signing up...' : 'Sign up'}
               </button>
             </form>
 
             <p className="text-tertiary text-center text-sm">
-              Already have an account?{" "}
+              Already have an account?{' '}
               <Link className="text-button-tertiary-color-fg font-semibold" href="/log-in">
                 Log in
               </Link>
