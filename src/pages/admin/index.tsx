@@ -76,6 +76,11 @@ export default function Admin(): JSX.Element {
       }
     } catch (error) {
       console.error(error)
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        variant: 'destructive',
+      })
     }
   }
 
