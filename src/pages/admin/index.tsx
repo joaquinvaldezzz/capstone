@@ -1,15 +1,13 @@
 import type { JSX, SVGProps } from 'react'
 import Link from 'next/link'
+import { zodResolver } from '@hookform/resolvers/zod'
+import axios from 'axios'
+import type { SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 import { Button } from '~/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '~/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,8 +16,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -28,10 +33,56 @@ import {
   SelectValue,
 } from '~/components/ui/select'
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet'
+import { Toaster } from '~/components/ui/toaster'
+import { useToast } from '~/components/ui/use-toast'
+import Title from '~/components/Title'
+
+const FormSchema = z.object({
+  username: z
+    .string({
+      required_error: 'A username is required.',
+    })
+    .min(4, 'A username must be at least 4 characters.'),
+  password: z
+    .string({
+      required_error: 'A password is required.',
+    })
+    .min(8, 'A password must be at least 8 characters.'),
+  role: z.enum(['admin', 'doctor', 'patient'], {
+    required_error: 'A role is required.',
+  }),
+})
+
+type FormValues = z.infer<typeof FormSchema>
 
 export default function Admin(): JSX.Element {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
+  })
+  const { toast } = useToast()
+
+  async function onSubmit(data: SubmitHandler<FormValues>): Promise<void> {
+    try {
+      const response = await axios.post('http://localhost:5050/record/sign-up', data)
+
+      if (response.status === 200) {
+        console.log('Nice')
+        form.reset()
+
+        toast({
+          title: 'User created',
+          description: 'The user has been created successfully.',
+        })
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div className="flex min-h-screen w-full flex-col">
+      <Title>Admin</Title>
+
       <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
         <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
           <Link className="flex items-center gap-2 text-lg font-semibold md:text-base" href="#">
@@ -41,18 +92,12 @@ export default function Admin(): JSX.Element {
           <Link className="text-muted-foreground transition-colors hover:text-foreground" href="#">
             Dashboard
           </Link>
-          <Link className="text-muted-foreground transition-colors hover:text-foreground" href="#">
-            Orders
-          </Link>
-          <Link className="text-muted-foreground transition-colors hover:text-foreground" href="#">
-            Products
-          </Link>
-          <Link className="text-muted-foreground transition-colors hover:text-foreground" href="#">
-            Customers
-          </Link>
           <Link className="text-foreground transition-colors hover:text-foreground" href="#">
             Settings
           </Link>
+          {/* <Link className="text-muted-foreground transition-colors hover:text-foreground" href="#">
+            Orders
+          </Link> */}
         </nav>
 
         <Sheet>
@@ -62,6 +107,7 @@ export default function Admin(): JSX.Element {
               <MenuIcon className="size-5" />
             </Button>
           </SheetTrigger>
+
           <SheetContent side="left">
             <nav className="grid gap-6 text-lg font-medium">
               <Link className="flex items-center gap-2 text-lg font-semibold" href="#">
@@ -74,24 +120,16 @@ export default function Admin(): JSX.Element {
             </nav>
           </SheetContent>
         </Sheet>
-        <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <form className="ml-auto flex-1 sm:flex-initial">
-            <div className="relative">
-              <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-                placeholder="Search products..."
-                type="search"
-              />
-            </div>
-          </form>
+
+        <div className="ml-auto flex items-center gap-4 md:gap-2 lg:gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="rounded-full" size="icon" variant="secondary">
-                <CircleUserIcon className="h-5 w-5" />
                 <span className="sr-only">Toggle user menu</span>
+                <CircleUserIcon className="h-5 w-5" />
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
@@ -109,13 +147,8 @@ export default function Admin(): JSX.Element {
         <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
           <nav className="grid gap-4 text-sm text-muted-foreground">
             <Link className="font-semibold text-primary" href="#">
-              General
+              Create user
             </Link>
-            <Link href="#">Security</Link>
-            <Link href="#">Integrations</Link>
-            <Link href="#">Support</Link>
-            <Link href="#">Organizations</Link>
-            <Link href="#">Advanced</Link>
           </nav>
 
           <div className="grid gap-6">
@@ -124,43 +157,91 @@ export default function Admin(): JSX.Element {
                 <CardTitle>Create user</CardTitle>
                 <CardDescription>Add a new user to your organization.</CardDescription>
               </CardHeader>
+
               <CardContent>
-                <form className="grid gap-4">
-                  <div className="grid grid-cols-1 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="username">Username</Label>
-                      <Input id="username" placeholder="" />
+                <Form {...form}>
+                  <form
+                    className="grid gap-4"
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<FormValues>)}
+                  >
+                    <FormField
+                      control={form.control}
+                      name="username"
+                      render={() => (
+                        <FormItem>
+                          <FormLabel htmlFor="username">Username</FormLabel>
+                          <Input
+                            id="username"
+                            {...form.register('username')}
+                            type="text"
+                            placeholder=""
+                            data-error={form.formState.errors.username != null}
+                            maxLength={64}
+                          />
+                          <FormMessage className="min-h-5" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="password"
+                      render={() => (
+                        <FormItem>
+                          <FormLabel htmlFor="password">Password</FormLabel>
+                          <FormControl>
+                            <Input
+                              id="password"
+                              {...form.register('password')}
+                              type="password"
+                              placeholder=""
+                              data-error={form.formState.errors.password != null}
+                              maxLength={64}
+                            />
+                          </FormControl>
+                          <FormMessage className="min-h-5" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <FormField
+                      control={form.control}
+                      name="role"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel htmlFor="role">Role</FormLabel>
+                          <Select onValueChange={field.onChange}>
+                            <FormControl
+                              className="aria-invalid:border-destructive aria-invalid:text-destructive  aria-invalid:focus-visible:ring-destructive"
+                              id="role"
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select a role" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="admin">Admin</SelectItem>
+                              <SelectItem value="doctor">Doctor</SelectItem>
+                              <SelectItem value="patient">Patient</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage className="min-h-5" />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="-mx-6 -mb-6 border-t px-6 py-4">
+                      <Button type="submit">Create user</Button>
                     </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <Input id="password" type="password" placeholder="" />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="role">Role</Label>
-                    {/* @ts-expect-error Property 'id' does not exist on type 'IntrinsicAttributes & SelectProps' */}
-                    <Select id="role">
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="doctor">Doctor</SelectItem>
-                        <SelectItem value="patient">Patient</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </form>
+                  </form>
+                </Form>
               </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                <Button>Create user</Button>
-              </CardFooter>
             </Card>
           </div>
         </div>
       </main>
+      <Toaster />
     </div>
   )
 }
@@ -224,26 +305,6 @@ function Package2Icon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>):
       <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" />
       <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9" />
       <path d="M12 3v6" />
-    </svg>
-  )
-}
-
-function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>): JSX.Element {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
     </svg>
   )
 }

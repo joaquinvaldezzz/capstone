@@ -24,6 +24,7 @@ router.post('/sign-up', async (request, response) => {
     const person = {
       username: request.body.username,
       password: request.body.password,
+      role: request.body.role,
       date_created: new Date().toISOString(),
     }
     const collection = db.collection('records')
