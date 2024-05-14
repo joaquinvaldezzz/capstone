@@ -135,7 +135,8 @@ function dispatch(action: Action): void {
 
 type Toast = Omit<ToasterToast, 'id'>
 
-function toast({ ...props }: Toast): any {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function toast({ ...props }: Toast) {
   const id = genId()
 
   const update = (prop: ToasterToast): void => {
@@ -167,7 +168,8 @@ function toast({ ...props }: Toast): any {
   }
 }
 
-function useToast(): any {
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+function useToast() {
   const [state, setState] = React.useState<State>(memoryState)
 
   React.useEffect(() => {
