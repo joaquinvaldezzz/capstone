@@ -154,7 +154,7 @@ export default function Admin(): JSX.Element {
                           <FormLabel htmlFor="role">Role</FormLabel>
                           <Select onValueChange={field.onChange}>
                             <FormControl
-                              className="aria-invalid:border-destructive aria-invalid:text-destructive  aria-invalid:focus-visible:ring-destructive"
+                              className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive"
                               id="role"
                             >
                               <SelectTrigger>
