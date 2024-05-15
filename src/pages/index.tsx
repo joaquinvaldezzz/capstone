@@ -113,10 +113,8 @@ export default function Home(): JSX.Element {
                   setForm({ ...form, password: event.target.value })
                 }}
               />
-              <Button
-                className="absolute right-0 top-1/2 -translate-y-1/2"
-                variant="ghost"
-                size="icon"
+              <button
+                className="absolute right-0 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center"
                 type="button"
                 onClick={() => {
                   setShowPassword(!showPassword)
@@ -124,7 +122,7 @@ export default function Home(): JSX.Element {
               >
                 <span className="sr-only">Show password</span>
                 {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
-              </Button>
+              </button>
               <p className="min-h-5 text-sm text-destructive">{errors.password?.message}</p>
             </div>
 
