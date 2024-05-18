@@ -3,7 +3,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
-import { Eye, EyeOff } from 'lucide-react'
 import type { SubmitHandler } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -37,7 +36,6 @@ export default function Home(): JSX.Element {
     username: '',
     password: '',
   })
-  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   /**
    * Handles the form submission.
@@ -65,10 +63,23 @@ export default function Home(): JSX.Element {
 
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2">
-      <Title>Sign in</Title>
+      <Title>Log in</Title>
+
+      <div className="hidden lg:block lg:bg-muted">
+        <Image
+          className="size-full object-cover"
+          src="/images/sign-up/milad-fakurian-eRbgsJ0Ec0o-unsplash.jpg"
+          width="1920"
+          height="1080"
+          alt=""
+          sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1920px"
+          priority
+        />
+      </div>
+
       <div className="flex items-center justify-center py-12">
         <div className="mx-auto flex w-full max-w-96 flex-col gap-6">
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 text-center">
             <h1 className="text-3xl font-bold">Welcome back!</h1>
             <p className="text-balance text-muted-foreground">Please enter your details.</p>
           </div>
@@ -106,23 +117,13 @@ export default function Home(): JSX.Element {
                 id="password"
                 {...register('password')}
                 data-error={errors.password != null}
-                type={showPassword ? 'text' : 'password'}
+                type="password"
                 value={form.password}
                 placeholder=""
                 onChange={(event) => {
                   setForm({ ...form, password: event.target.value })
                 }}
               />
-              <button
-                className="absolute right-0 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center"
-                type="button"
-                onClick={() => {
-                  setShowPassword(!showPassword)
-                }}
-              >
-                <span className="sr-only">Show password</span>
-                {showPassword ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
-              </button>
               <p className="min-h-5 text-sm text-destructive">{errors.password?.message}</p>
             </div>
 
@@ -131,18 +132,6 @@ export default function Home(): JSX.Element {
             </Button>
           </form>
         </div>
-      </div>
-
-      <div className="hidden lg:block lg:bg-muted">
-        <Image
-          className="size-full object-cover"
-          src="/images/sign-up/milad-fakurian-eRbgsJ0Ec0o-unsplash.jpg"
-          width="1920"
-          height="1080"
-          alt=""
-          sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1920px"
-          priority
-        />
       </div>
     </div>
   )
