@@ -1,9 +1,31 @@
 import Link from 'next/link'
 import { Home, LogOut, Menu, Package2, Settings, Users } from 'lucide-react'
 
+import type { NavItem } from '~/types/nav'
 import { Button } from '~/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet'
 import Title from '~/components/Title'
+
+const links: NavItem[] = [
+  {
+    id: 1,
+    href: '',
+    icon: <Home className="size-5 md:size-4" />,
+    text: 'Dashboard',
+  },
+  {
+    id: 2,
+    href: '',
+    icon: <Users className="size-5 md:size-4" />,
+    text: 'Patients',
+  },
+  {
+    id: 3,
+    href: '',
+    icon: <Settings className="size-5 md:size-4" />,
+    text: 'Settings',
+  },
+]
 
 export default function Dashboard(): JSX.Element {
   return (
@@ -21,29 +43,17 @@ export default function Dashboard(): JSX.Element {
 
           <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-              <Link
-                className="flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary"
-                href=""
-              >
-                <Home className="size-4" />
-                Dashboard
-              </Link>
-
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                href=""
-              >
-                <Users className="size-4" />
-                Patients
-              </Link>
-
-              <Link
-                className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
-                href=""
-              >
-                <Settings className="size-4" />
-                Settings
-              </Link>
+              {/* active: flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary */}
+              {links.map((link) => (
+                <Link
+                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                  href={link.href}
+                  key={link.id}
+                >
+                  {link.icon}
+                  {link.text}
+                </Link>
+              ))}
             </nav>
           </div>
 
@@ -75,21 +85,29 @@ export default function Dashboard(): JSX.Element {
                   <span className="sr-only">Acme Inc</span>
                   <Package2 className="h-6 w-6" />
                 </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                >
-                  <Home className="size-5" />
-                  Dashboard
-                </Link>
-                <Link
-                  href="#"
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground"
-                >
-                  <Users className="size-5" />
-                  Patients
-                </Link>
+
+                {/* active: mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground */}
+                {links.map((link) => (
+                  <Link
+                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                    href={link.href}
+                    key={link.id}
+                  >
+                    {link.icon}
+                    {link.text}
+                  </Link>
+                ))}
               </nav>
+
+              <div className="mt-auto text-lg font-medium">
+                <Link
+                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  href=""
+                >
+                  <LogOut className="size-5 md:size-4" />
+                  Log out
+                </Link>
+              </div>
             </SheetContent>
           </Sheet>
         </header>
