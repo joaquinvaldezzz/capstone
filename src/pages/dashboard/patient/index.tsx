@@ -104,12 +104,12 @@ export default function PatientDashboard(): JSX.Element {
                 ))}
               </nav>
 
-              <div className="mt-auto">
+              <div className="mt-auto text-lg font-medium">
                 <Link
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
                   href=""
                 >
-                  <LogOut className="size-4" />
+                  <LogOut className="size-5 md:size-4" />
                   Log out
                 </Link>
               </div>
