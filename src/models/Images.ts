@@ -62,4 +62,4 @@ const ImageSchema = new mongoose.Schema<Image>({
 })
 
 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-export default mongoose.models.Images || mongoose.model<Image>('Image', ImageSchema)
+export default mongoose.models.Images || mongoose.model<Image>('Images', ImageSchema)

@@ -37,4 +37,4 @@ const MessageSchema = new mongoose.Schema<Message>({
 })
 
 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-export default mongoose.models.Messages || mongoose.model<Message>('Message', MessageSchema)
+export default mongoose.models.Messages || mongoose.model<Message>('Messages', MessageSchema)
