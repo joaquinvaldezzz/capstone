@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-export interface Images extends mongoose.Document {
+export interface Image {
   _id: string
   image: string
   result: 'healthy' | 'infected'
@@ -14,7 +14,7 @@ export interface Images extends mongoose.Document {
   date_completed: Date
 }
 
-const ImagesSchema = new mongoose.Schema<Images>({
+const ImageSchema = new mongoose.Schema<Image>({
   _id: {
     type: String,
     required: true,
@@ -61,4 +61,5 @@ const ImagesSchema = new mongoose.Schema<Images>({
   },
 })
 
-export default mongoose.model<Images>('Images', ImagesSchema)
+// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+export default mongoose.models.Images || mongoose.model<Image>('Image', ImageSchema)

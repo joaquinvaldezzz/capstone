@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-export interface Messages extends mongoose.Document {
+export interface Message {
   _id: string
   sender: string
   receiver: string
@@ -9,7 +9,7 @@ export interface Messages extends mongoose.Document {
   date_created: Date
 }
 
-const MessagesSchema = new mongoose.Schema<Messages>({
+const MessageSchema = new mongoose.Schema<Message>({
   _id: {
     type: String,
     required: true,
@@ -36,4 +36,5 @@ const MessagesSchema = new mongoose.Schema<Messages>({
   },
 })
 
-export default mongoose.model<Messages>('Messages', MessagesSchema)
+// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+export default mongoose.models.Messages || mongoose.model<Message>('Message', MessageSchema)
