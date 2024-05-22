@@ -22,14 +22,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <span className="sr-only">Name</span>
             <Package2Icon className="size-6" />
           </Link>
+          {/* active: text-foreground transition-colors hover:text-foreground */}
           <Link
-            className="text-muted-foreground transition-colors hover:text-foreground"
+            className="text-foreground transition-colors hover:text-foreground"
             href="/dashboard/admin/"
           >
             Dashboard
           </Link>
           <Link
-            className="text-foreground transition-colors hover:text-foreground"
+            className="text-muted-foreground transition-colors hover:text-foreground"
             href="/dashboard/admin/settings"
           >
             Settings
