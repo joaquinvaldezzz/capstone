@@ -55,10 +55,15 @@ export function DataTable({ columns, data }: Props): JSX.Element {
   return (
     <div className="w-full">
       <div className="flex items-center py-4">
+        <label className="sr-only" htmlFor="filter">
+          Filter
+        </label>
         <Input
           className="max-w-sm"
+          id="filter"
           value={(table.getColumn('username')?.getFilterValue() as string) ?? ''}
           placeholder="Filter usernames"
+          autoComplete="off"
           onChange={(event) => table.getColumn('username')?.setFilterValue(event.target.value)}
         />
       </div>
