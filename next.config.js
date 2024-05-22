@@ -2,6 +2,16 @@
 const nextConfig = {
   pageExtensions: ['ts', 'tsx'],
 
+  rewrites: async () => {
+    return [
+      {
+        source: '/flask-api/:path*',
+        destination:
+          process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000/api/:path*' : '/api/',
+      },
+    ]
+  },
+
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))
