@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import connectToDatabase from '~/lib/connectToDatabase'
-import Accounts from '~/models/Accounts'
+import Accounts from '~/models/Account'
 
 export default async function handler(
   request: NextApiRequest,

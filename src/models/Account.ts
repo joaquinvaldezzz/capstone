@@ -1,7 +1,9 @@
 import mongoose from 'mongoose'
 
-export interface AccountTypes {
+export interface Account {
   _id?: string
+  first_name: string
+  last_name: string
   username: string
   password: string
   role: 'admin' | 'doctor' | 'patient'
@@ -9,8 +11,16 @@ export interface AccountTypes {
   date_updated: Date
 }
 
-const AccountSchema = new mongoose.Schema<AccountTypes>({
+const AccountSchema = new mongoose.Schema<Account>({
   _id: {
+    type: String,
+    required: true,
+  },
+  first_name: {
+    type: String,
+    required: true,
+  },
+  last_name: {
     type: String,
     required: true,
   },
@@ -37,4 +47,4 @@ const AccountSchema = new mongoose.Schema<AccountTypes>({
 })
 
 // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-export default mongoose.models.Accounts || mongoose.model<AccountTypes>('Accounts', AccountSchema)
+export default mongoose.models.Accounts || mongoose.model<Account>('Accounts', AccountSchema)
