@@ -19,10 +19,6 @@ const schema = z.object({
 
 type InputValues = z.infer<typeof schema>
 
-/**
- * The Home component represents the main page of the application.
- * It displays a sign-in form and handles form submission.
- */
 export default function Home(): JSX.Element {
   const {
     register,
@@ -37,12 +33,6 @@ export default function Home(): JSX.Element {
     password: '',
   })
 
-  /**
-   * Handles the form submission.
-   *
-   * @param data - The form data to be submitted.
-   * @returns A Promise that resolves when the submission is successful.
-   */
   async function onSubmit(data: SubmitHandler<InputValues>): Promise<void> {
     try {
       const response = await axios.post('http://localhost:5050/record/log-in', data)
@@ -77,7 +67,7 @@ export default function Home(): JSX.Element {
         />
       </div>
 
-      <div className="flex items-center justify-center py-12">
+      <div className="flex items-center justify-center px-8 py-12 md:px-0">
         <div className="mx-auto flex w-full max-w-96 flex-col gap-6">
           <div className="flex flex-col gap-2 text-center">
             <h1 className="text-3xl font-bold">Welcome back!</h1>
