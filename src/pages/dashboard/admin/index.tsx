@@ -1,6 +1,10 @@
 import { type GetServerSidePropsResult } from 'next'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { type ColumnDef } from '@tanstack/react-table'
+import axios from 'axios'
 import { MoreHorizontal } from 'lucide-react'
+import { useForm, type SubmitHandler } from 'react-hook-form'
+import { z } from 'zod'
 
 import connectToDatabase from '~/lib/connectToDatabase'
 import Accounts, { type Account } from '~/models/Account'
@@ -9,7 +13,6 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,9 +25,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '~/components/ui/form'
 import { Input } from '~/components/ui/input'
-import { Label } from '~/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '~/components/ui/select'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs'
+import { Toaster } from '~/components/ui/toaster'
+import { useToast } from '~/components/ui/use-toast'
 import { DataTable } from '~/components/DataTable'
 import AdminLayout from '~/components/layout/admin'
 import Title from '~/components/Title'
@@ -77,7 +96,44 @@ const columns: Array<ColumnDef<Account>> = [
   },
 ]
 
+const FormSchema = z.object({
+  first_name: z.string().min(4).max(64),
+  last_name: z.string().min(4).max(64),
+  username: z.string().min(4).max(64),
+  default_password: z.string().min(8).max(64),
+  role: z.enum(['admin', 'doctor', 'patient']),
+})
+type FormValues = z.infer<typeof FormSchema>
+
 export default function Admin({ accounts, admins, doctors, patients }: AccountTypes): JSX.Element {
+  const form = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
+  })
+  const { toast } = useToast()
+
+  async function onSubmit(data: SubmitHandler<FormValues>): Promise<void> {
+    try {
+      const response = await axios.post('/api/accounts', data).then((res) => res.data)
+
+      console.log(response)
+
+      if (response.status === 200) {
+        form.reset()
+
+        toast({
+          title: 'User created',
+          description: 'The user has been created successfully.',
+        })
+      }
+    } catch (error) {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        variant: 'destructive',
+      })
+    }
+  }
+
   return (
     <Dialog>
       <AdminLayout>
@@ -127,26 +183,126 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
               </DialogDescription>
             </DialogHeader>
 
-            <form className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input id="name" defaultValue="Pedro Duarte" className="col-span-3" />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="username" className="text-right">
-                  Username
-                </Label>
-                <Input id="username" defaultValue="@peduarte" className="col-span-3" />
-              </div>
-            </form>
+            <Form {...form}>
+              <form
+                className="grid gap-4"
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<FormValues>)}
+              >
+                <FormField
+                  control={form.control}
+                  name="first_name"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel htmlFor="first-name">First name</FormLabel>
+                      <Input
+                        id="first-name"
+                        {...form.register('first_name')}
+                        type="text"
+                        placeholder=""
+                        data-error={form.formState.errors.first_name != null}
+                        maxLength={64}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            <DialogFooter>
-              <Button type="submit">Create</Button>
-            </DialogFooter>
+                <FormField
+                  control={form.control}
+                  name="last_name"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel htmlFor="last-name">Last name</FormLabel>
+                      <Input
+                        id="last-name"
+                        {...form.register('last_name')}
+                        type="text"
+                        placeholder=""
+                        data-error={form.formState.errors.last_name != null}
+                        maxLength={64}
+                      />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="username"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel htmlFor="username">Username</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="username"
+                          {...form.register('username')}
+                          type="text"
+                          placeholder=""
+                          data-error={form.formState.errors.username != null}
+                          maxLength={64}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="default_password"
+                  render={() => (
+                    <FormItem>
+                      <FormLabel htmlFor="default-password">Default password</FormLabel>
+                      <FormControl>
+                        <Input
+                          id="default-password"
+                          {...form.register('default_password')}
+                          type="password"
+                          placeholder=""
+                          data-error={form.formState.errors.default_password != null}
+                          maxLength={64}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="role"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel htmlFor="role">Role</FormLabel>
+                      <Select onValueChange={field.onChange}>
+                        <FormControl
+                          className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive"
+                          id="role"
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a role" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="admin">Admin</SelectItem>
+                          <SelectItem value="doctor">Doctor</SelectItem>
+                          <SelectItem value="patient">Patient</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div>
+                  <Button type="submit">Create user</Button>
+                </div>
+              </form>
+            </Form>
           </DialogContent>
         </main>
+        <Toaster />
       </AdminLayout>
     </Dialog>
   )
