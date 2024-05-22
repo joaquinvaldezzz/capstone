@@ -573,3 +573,6 @@ $RECYCLE.BIN/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# test images
+uploads/
