@@ -44,7 +44,10 @@ def upload():
         f.save(file_path)
         predictions = get_result(file_path)
         predicted_label = labels[np.argmax(predictions)]
-        return {'file_name': file_path, 'result': predicted_label}
+        confidence = np.max(predictions)
+        label = f'{confidence * 100:.2f}%'
+
+        return {'percentage': label, 'result': predicted_label}
 
     return None
 
