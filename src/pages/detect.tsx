@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import axios from 'axios'
 
 import { Button } from '~/components/ui/button'
@@ -5,19 +6,27 @@ import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import Title from '~/components/Title'
 
-async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
-  event.preventDefault()
-  const data = new FormData(event.currentTarget)
-
-  try {
-    const response = await axios.post('/flask-api/predict', data)
-    console.log(response.data)
-  } catch (error) {
-    console.error(error)
-  }
+interface Result {
+  percentage: string
+  result: string
 }
 
 export default function Detect(): JSX.Element {
+  const [result, setResult] = useState<Result>({ percentage: '', result: '' })
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>): Promise<void> {
+    event.preventDefault()
+    const image = new FormData(event.currentTarget)
+
+    try {
+      const response = await axios.post('/flask-api/predict', image)
+      console.log(response.data)
+      setResult(response.data)
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <div className="grid min-h-screen w-full">
       <Title>Detect</Title>
@@ -25,9 +34,8 @@ export default function Detect(): JSX.Element {
       <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
         <h1 className="text-lg font-semibold md:text-2xl">Detect</h1>
 
-        <div className="flex flex-1 flex-col items-center justify-center">
+        <div className="max-w-screen-sm">
           <form
-            encType="multipart/form-data"
             onSubmit={(event) => {
               void handleSubmit(event)
             }}
@@ -37,12 +45,14 @@ export default function Detect(): JSX.Element {
               <Input id="picture" name="picture" type="file" accept=".png, .jpg, .jpeg" />
             </div>
 
-            <div>
-              <Button className="mt-4" type="submit">
-                Detect
-              </Button>
+            <div className="mt-4">
+              <Button type="submit">Detect</Button>
             </div>
           </form>
+
+          <p className="mt-4 text-left text-lg font-semibold">
+            {result.percentage} {result.result}
+          </p>
         </div>
       </main>
     </div>
