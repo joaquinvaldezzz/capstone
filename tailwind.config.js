@@ -1,4 +1,6 @@
 const { fontFamily } = require('tailwindcss/defaultTheme')
+const forms = require('@tailwindcss/forms')
+const animate = require('tailwindcss-animate')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -77,5 +79,5 @@ module.exports = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [forms, animate],
 }
