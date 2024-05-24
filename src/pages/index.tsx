@@ -70,6 +70,7 @@ export default function SignIn(): JSX.Element {
                     <Input
                       type="text"
                       data-error={form.formState.errors.username != null}
+                      autoComplete="username"
                       {...field}
                     />
                   </FormControl>
