@@ -2,9 +2,9 @@ import { Head, Html, Main, NextScript } from 'next/document'
 
 export default function Document(): JSX.Element {
   return (
-    <Html lang="en">
+    <Html className="h-full" lang="en">
       <Head />
-      <body className="min-w-80 antialiased">
+      <body className="h-full min-w-80 antialiased">
         <Main />
         <NextScript />
       </body>
