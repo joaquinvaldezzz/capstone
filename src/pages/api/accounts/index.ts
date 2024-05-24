@@ -23,9 +23,19 @@ export default async function handler(
     case 'POST':
       try {
         const account = await Accounts.create(request.body)
-        response.status(201).json({ success: true, data: account })
+        response.status(200).json({ success: true, data: account })
       } catch (error) {
         response.status(400).json({ success: false })
+      }
+      break
+    case 'DELETE':
+      try {
+        await Accounts.deleteMany({})
+        response.status(200).json({ success: true, message: 'All accounts have been deleted.' })
+      } catch (error) {
+        response
+          .status(400)
+          .json({ success: false, message: 'There was a problem deleting all accounts.' })
       }
       break
     default:
