@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { type GetServerSidePropsResult } from 'next'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type ColumnDef } from '@tanstack/react-table'
@@ -57,9 +58,14 @@ interface AccountTypes {
 
 const columns: Array<ColumnDef<Account>> = [
   {
-    accessorKey: 'username',
-    header: 'Username',
-    cell: ({ row }) => row.getValue('username'),
+    accessorKey: 'first_name',
+    header: 'First name',
+    cell: ({ row }) => row.getValue('first_name'),
+  },
+  {
+    accessorKey: 'last_name',
+    header: 'Last name',
+    cell: ({ row }) => row.getValue('last_name'),
   },
   {
     accessorKey: 'role',
@@ -96,34 +102,46 @@ const columns: Array<ColumnDef<Account>> = [
   },
 ]
 
-const FormSchema = z.object({
+const formSchema = z.object({
   first_name: z.string().min(4).max(64),
   last_name: z.string().min(4).max(64),
-  username: z.string().min(4).max(64),
-  default_password: z.string().min(8).max(64),
   role: z.enum(['admin', 'doctor', 'patient']),
 })
-type FormValues = z.infer<typeof FormSchema>
+type FormValues = z.infer<typeof formSchema>
 
 export default function Admin({ accounts, admins, doctors, patients }: AccountTypes): JSX.Element {
+  const [open, setOpen] = useState<boolean>(false)
   const form = useForm<FormValues>({
-    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      first_name: '',
+      last_name: '',
+    },
+    resolver: zodResolver(formSchema),
   })
   const { toast } = useToast()
 
-  async function onSubmit(data: SubmitHandler<FormValues>): Promise<void> {
+  async function onSubmit(data: FormValues): Promise<void> {
     try {
-      const response = await axios.post('/api/accounts', data).then((res) => res.data)
+      const request = await axios.post('/api/accounts', {
+        ...data,
+        username: `${data.first_name.toLowerCase().trim()}.${data.last_name.toLowerCase().trim()}`,
+        password: 'password1234',
+        date_created: new Date(),
+        date_updated: new Date(),
+      })
 
-      console.log(response)
-
-      if (response.status === 200) {
-        form.reset()
+      if (request.status === 200) {
+        console.log(request)
+        form.resetField('first_name')
+        form.resetField('last_name')
+        form.resetField('role')
 
         toast({
-          title: 'User created',
+          title: 'Nice!',
           description: 'The user has been created successfully.',
         })
+
+        setOpen(false)
       }
     } catch (error) {
       toast({
@@ -135,7 +153,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <AdminLayout>
         <Title>Admin</Title>
 
@@ -153,24 +171,24 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                 </TabsList>
 
                 <DialogTrigger asChild>
-                  <Button>New user</Button>
+                  <Button>Create new user</Button>
                 </DialogTrigger>
               </div>
 
               <TabsContent value="all">
-                <DataTable columns={columns} data={accounts} />
+                <DataTable columns={columns} data={accounts} toFilter="first_name" />
               </TabsContent>
 
               <TabsContent value="admin">
-                <DataTable columns={columns} data={admins} />
+                <DataTable columns={columns} data={admins} toFilter="first_name" />
               </TabsContent>
 
               <TabsContent value="doctor">
-                <DataTable columns={columns} data={doctors} />
+                <DataTable columns={columns} data={doctors} toFilter="first_name" />
               </TabsContent>
 
               <TabsContent value="patient">
-                <DataTable columns={columns} data={patients} />
+                <DataTable columns={columns} data={patients} toFilter="first_name" />
               </TabsContent>
             </Tabs>
           </div>
@@ -183,64 +201,24 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
               </DialogDescription>
             </DialogHeader>
 
-            <Form {...form}>
-              <form
-                className="grid gap-4"
-                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<FormValues>)}
-              >
+            <form
+              className="grid gap-4"
+              // eslint-disable-next-line @typescript-eslint/no-misused-promises
+              onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<FormValues>)}
+            >
+              <Form {...form}>
                 <FormField
                   control={form.control}
                   name="first_name"
-                  render={() => (
+                  render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="first-name">First name</FormLabel>
-                      <Input
-                        id="first-name"
-                        {...form.register('first_name')}
-                        type="text"
-                        placeholder=""
-                        data-error={form.formState.errors.first_name != null}
-                        maxLength={64}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="last_name"
-                  render={() => (
-                    <FormItem>
-                      <FormLabel htmlFor="last-name">Last name</FormLabel>
-                      <Input
-                        id="last-name"
-                        {...form.register('last_name')}
-                        type="text"
-                        placeholder=""
-                        data-error={form.formState.errors.last_name != null}
-                        maxLength={64}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="username"
-                  render={() => (
-                    <FormItem>
-                      <FormLabel htmlFor="username">Username</FormLabel>
+                      <FormLabel>First name</FormLabel>
                       <FormControl>
                         <Input
-                          id="username"
-                          {...form.register('username')}
                           type="text"
-                          placeholder=""
-                          data-error={form.formState.errors.username != null}
-                          maxLength={64}
+                          data-error={form.formState.errors.first_name != null}
+                          autoComplete="given-name"
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -250,18 +228,16 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
 
                 <FormField
                   control={form.control}
-                  name="default_password"
-                  render={() => (
+                  name="last_name"
+                  render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="default-password">Default password</FormLabel>
+                      <FormLabel>Last name</FormLabel>
                       <FormControl>
                         <Input
-                          id="default-password"
-                          {...form.register('default_password')}
-                          type="password"
-                          placeholder=""
-                          data-error={form.formState.errors.default_password != null}
-                          maxLength={64}
+                          type="text"
+                          data-error={form.formState.errors.last_name != null}
+                          autoComplete="family-name"
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
@@ -274,12 +250,9 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                   name="role"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel htmlFor="role">Role</FormLabel>
+                      <FormLabel>Role</FormLabel>
                       <Select onValueChange={field.onChange}>
-                        <FormControl
-                          className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive"
-                          id="role"
-                        >
+                        <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
                           <SelectTrigger>
                             <SelectValue placeholder="Select a role" />
                           </SelectTrigger>
@@ -298,8 +271,8 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                 <div>
                   <Button type="submit">Create user</Button>
                 </div>
-              </form>
-            </Form>
+              </Form>
+            </form>
           </DialogContent>
         </main>
         <Toaster />
@@ -311,10 +284,10 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
 export async function getServerSideProps(): Promise<GetServerSidePropsResult<Account>> {
   await connectToDatabase()
 
-  const all = await Accounts.find({}).sort({ date_created: 1 })
-  const admin = await Accounts.find({ role: 'admin' }).sort({ date_created: 1 })
-  const doctor = await Accounts.find({ role: 'doctor' }).sort({ date_created: 1 })
-  const patient = await Accounts.find({ role: 'patient' }).sort({ date_created: 1 })
+  const all = await Accounts.find({}).sort({ date_created: -1 })
+  const admin = await Accounts.find({ role: 'admin' }).sort({ date_created: -1 })
+  const doctor = await Accounts.find({ role: 'doctor' }).sort({ date_created: -1 })
+  const patient = await Accounts.find({ role: 'patient' }).sort({ date_created: -1 })
 
   const accounts = all.map((data) => JSON.parse(JSON.stringify(data)))
   const admins = admin.map((data) => JSON.parse(JSON.stringify(data)))

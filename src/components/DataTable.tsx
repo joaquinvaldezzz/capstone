@@ -25,9 +25,10 @@ import {
 interface Props {
   columns: any
   data: any
+  toFilter: string
 }
 
-export function DataTable({ columns, data }: Props): JSX.Element {
+export function DataTable({ columns, data, toFilter }: Props): JSX.Element {
   const [sorting, setSorting] = useState<SortingState>([])
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
@@ -61,10 +62,10 @@ export function DataTable({ columns, data }: Props): JSX.Element {
         <Input
           className="max-w-sm"
           id="filter"
-          value={(table.getColumn('username')?.getFilterValue() as string) ?? ''}
+          value={(table.getColumn(toFilter)?.getFilterValue() as string) ?? ''}
           placeholder="Filter usernames"
           autoComplete="off"
-          onChange={(event) => table.getColumn('username')?.setFilterValue(event.target.value)}
+          onChange={(event) => table.getColumn(toFilter)?.setFilterValue(event.target.value)}
         />
       </div>
 
