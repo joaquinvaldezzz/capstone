@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { type GetServerSidePropsResult } from 'next'
+import { useRouter } from 'next/router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type ColumnDef } from '@tanstack/react-table'
 import axios from 'axios'
@@ -9,6 +10,17 @@ import { z } from 'zod'
 
 import connectToDatabase from '~/lib/connectToDatabase'
 import Accounts, { type Account } from '~/models/Account'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '~/components/ui/alert-dialog'
 import { Button } from '~/components/ui/button'
 import {
   Dialog,
@@ -56,6 +68,19 @@ interface AccountTypes {
   patients: Account[]
 }
 
+async function onDelete(_id: string): Promise<void> {
+  try {
+    const request = await axios.delete(`/api/accounts/${_id}`)
+
+    if (request.status === 200) {
+      console.log(request)
+      window.location.reload()
+    }
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 const columns: Array<ColumnDef<Account>> = [
   {
     accessorKey: 'first_name',
@@ -78,25 +103,61 @@ const columns: Array<ColumnDef<Account>> = [
     cell: ({ row }) => new Date(row.getValue('date_created')).toLocaleString(),
   },
   {
-    id: 'actions',
-    enableHiding: false,
-    cell: () => {
+    accessorKey: '_id',
+    header: 'Actions',
+    cell: ({ row }) => {
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="size-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
+        <AlertDialog>
+          <DropdownMenu modal={false}>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="size-8 p-0">
+                <span className="sr-only">Open menu</span>
+                <MoreHorizontal className="size-4" />
+              </Button>
+            </DropdownMenuTrigger>
 
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onSelect={(event) => {
+                  event.preventDefault()
+                }}
+              >
+                Edit
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-destructive"
+                onSelect={(event) => {
+                  event.preventDefault()
+                }}
+              >
+                <AlertDialogTrigger>Delete</AlertDialogTrigger>
+
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete your account and
+                      remove your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => {
+                        void onDelete(row.getValue('_id'))
+                      }}
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </AlertDialog>
       )
     },
   },
@@ -111,6 +172,7 @@ type FormValues = z.infer<typeof formSchema>
 
 export default function Admin({ accounts, admins, doctors, patients }: AccountTypes): JSX.Element {
   const [open, setOpen] = useState<boolean>(false)
+  const router = useRouter()
   const form = useForm<FormValues>({
     defaultValues: {
       first_name: '',
@@ -132,9 +194,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
 
       if (request.status === 200) {
         console.log(request)
-        form.resetField('first_name')
-        form.resetField('last_name')
-        form.resetField('role')
+        form.reset()
 
         toast({
           title: 'Nice!',
@@ -142,6 +202,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
         })
 
         setOpen(false)
+        router.reload()
       }
     } catch (error) {
       toast({
@@ -217,7 +278,6 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                         <Input
                           type="text"
                           data-error={form.formState.errors.first_name != null}
-                          autoComplete="given-name"
                           {...field}
                         />
                       </FormControl>
@@ -236,7 +296,6 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                         <Input
                           type="text"
                           data-error={form.formState.errors.last_name != null}
-                          autoComplete="family-name"
                           {...field}
                         />
                       </FormControl>
