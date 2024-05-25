@@ -68,101 +68,6 @@ interface AccountTypes {
   patients: Account[]
 }
 
-async function onDelete(_id: string): Promise<void> {
-  try {
-    const request = await axios.delete(`/api/accounts/${_id}`)
-
-    if (request.status === 200) {
-      console.log(request)
-      window.location.reload()
-    }
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-const columns: Array<ColumnDef<Account>> = [
-  {
-    accessorKey: 'first_name',
-    header: 'First name',
-    cell: ({ row }) => row.getValue('first_name'),
-  },
-  {
-    accessorKey: 'last_name',
-    header: 'Last name',
-    cell: ({ row }) => row.getValue('last_name'),
-  },
-  {
-    accessorKey: 'role',
-    header: 'Role',
-    cell: ({ row }) => <p className="capitalize">{row.getValue('role')}</p>,
-  },
-  {
-    accessorKey: 'date_created',
-    header: 'Date created',
-    cell: ({ row }) => new Date(row.getValue('date_created')).toLocaleString(),
-  },
-  {
-    accessorKey: '_id',
-    header: 'Actions',
-    cell: ({ row }) => {
-      return (
-        <AlertDialog>
-          <DropdownMenu modal={false}>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="size-8 p-0">
-                <span className="sr-only">Open menu</span>
-                <MoreHorizontal className="size-4" />
-              </Button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>Actions</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onSelect={(event) => {
-                  event.preventDefault()
-                }}
-              >
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                className="text-destructive"
-                onSelect={(event) => {
-                  event.preventDefault()
-                }}
-              >
-                <AlertDialogTrigger>Delete</AlertDialogTrigger>
-
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete your account and
-                      remove your data from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => {
-                        void onDelete(row.getValue('_id'))
-                      }}
-                    >
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </AlertDialog>
-      )
-    },
-  },
-]
-
 const formSchema = z.object({
   first_name: z.string().min(4).max(64),
   last_name: z.string().min(4).max(64),
@@ -186,6 +91,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
     try {
       const request = await axios.post('/api/accounts', {
         ...data,
+        full_name: `${data.first_name} ${data.last_name}`,
         username: `${data.first_name.toLowerCase().trim()}.${data.last_name.toLowerCase().trim()}`,
         password: 'password1234',
         date_created: new Date(),
@@ -193,18 +99,20 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
       })
 
       if (request.status === 200) {
-        console.log(request)
         form.reset()
-
-        toast({
-          title: 'Nice!',
-          description: 'The user has been created successfully.',
-        })
-
         setOpen(false)
-        router.reload()
+
+        void router.replace(router.asPath)
+
+        setTimeout(() => {
+          toast({
+            title: 'Nice!',
+            description: 'The user has been created successfully.',
+          })
+        }, 1000)
       }
     } catch (error) {
+      // Display an error message
       toast({
         title: 'Uh oh! Something went wrong.',
         description: 'There was a problem with your request.',
@@ -212,6 +120,107 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
       })
     }
   }
+
+  async function onDelete(_id: string): Promise<void> {
+    try {
+      const request = await axios.delete(`/api/accounts/${_id}`)
+
+      if (request.status === 200) {
+        void router.replace(router.asPath)
+
+        setTimeout(() => {
+          toast({
+            title: 'Nice!',
+            description: 'The user has been deleted successfully.',
+          })
+        }, 1000)
+      }
+    } catch (error) {
+      // Display an error message
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const columns: Array<ColumnDef<Account>> = [
+    {
+      accessorKey: 'full_name',
+      header: 'Name',
+      cell: ({ row }) => row.getValue('full_name'),
+    },
+    {
+      accessorKey: 'role',
+      header: 'Role',
+      cell: ({ row }) => <p className="capitalize">{row.getValue('role')}</p>,
+    },
+    {
+      accessorKey: 'date_created',
+      header: 'Date created',
+      cell: ({ row }) => new Date(row.getValue('date_created')).toLocaleString(),
+    },
+    {
+      accessorKey: '_id',
+      header: 'Actions',
+      cell: ({ row }) => {
+        return (
+          <AlertDialog>
+            <DropdownMenu modal={false}>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="size-8 p-0">
+                  <span className="sr-only">Open menu</span>
+                  <MoreHorizontal className="size-4" />
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onSelect={(event) => {
+                    event.preventDefault()
+                  }}
+                >
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  className="text-destructive"
+                  onSelect={(event) => {
+                    event.preventDefault()
+                  }}
+                >
+                  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete your account and
+                        remove your data from our servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => {
+                          void onDelete(row.getValue('_id'))
+                        }}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </AlertDialog>
+        )
+      },
+    },
+  ]
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -232,24 +241,24 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                 </TabsList>
 
                 <DialogTrigger asChild>
-                  <Button>Create new user</Button>
+                  <Button>New user</Button>
                 </DialogTrigger>
               </div>
 
               <TabsContent value="all">
-                <DataTable columns={columns} data={accounts} toFilter="first_name" />
+                <DataTable columns={columns} data={accounts} toFilter="full_name" />
               </TabsContent>
 
               <TabsContent value="admin">
-                <DataTable columns={columns} data={admins} toFilter="first_name" />
+                <DataTable columns={columns} data={admins} toFilter="full_name" />
               </TabsContent>
 
               <TabsContent value="doctor">
-                <DataTable columns={columns} data={doctors} toFilter="first_name" />
+                <DataTable columns={columns} data={doctors} toFilter="full_name" />
               </TabsContent>
 
               <TabsContent value="patient">
-                <DataTable columns={columns} data={patients} toFilter="first_name" />
+                <DataTable columns={columns} data={patients} toFilter="full_name" />
               </TabsContent>
             </Tabs>
           </div>
