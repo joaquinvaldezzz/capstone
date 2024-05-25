@@ -6,6 +6,7 @@ export interface Account {
   // Personal information
   first_name: string
   last_name: string
+  full_name?: string
   gender?: 'female' | 'male'
   age?: number
   birthdate?: Date
@@ -44,6 +45,10 @@ const accountSchema = new mongoose.Schema<Account>({
   last_name: {
     type: String,
     required: true,
+  },
+  full_name: {
+    type: String,
+    required: false,
   },
   gender: {
     type: String,
