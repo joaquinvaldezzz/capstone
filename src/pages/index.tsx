@@ -2,6 +2,7 @@ import { useRouter } from 'next/router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useForm, type SubmitHandler } from 'react-hook-form'
+import Cookies from 'universal-cookie'
 import { z } from 'zod'
 
 import { Button } from '~/components/ui/button'
@@ -37,6 +38,7 @@ type ForgotPasswordFormValue = z.infer<typeof forgotPasswordFormSchema>
 
 export default function SignIn(): JSX.Element {
   const router = useRouter()
+  const cookies = new Cookies()
   const signInForm = useForm<SignInFormValues>({
     defaultValues: {
       username: '',
@@ -56,6 +58,7 @@ export default function SignIn(): JSX.Element {
       const response = await axios.post('/api/accounts/log-in', data)
 
       if (response.status === 200) {
+        cookies.set('TOKEN', response.data.data.token)
         await router.push('/dashboard/admin')
       }
     } catch (error) {
