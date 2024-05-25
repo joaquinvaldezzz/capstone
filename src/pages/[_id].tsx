@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
 import { useForm, type SubmitHandler } from 'react-hook-form'
@@ -20,9 +20,8 @@ import Title from '~/components/Title'
 
 const formSchema = z
   .object({
-    username: z.string().min(4, 'Username cannot be empty.'),
-    new_password: z.string().min(8, 'Password must be at least 8 characters.').optional(),
-    confirm_password: z.string().min(8, 'Password must be at least 8 characters.').optional(),
+    new_password: z.string().min(8, 'Password must be at least 8 characters.'),
+    confirm_password: z.string().min(8, 'Password must be at least 8 characters.'),
   })
   .refine((data) => data.new_password === data.confirm_password, {
     message: 'Passwords do not match.',
@@ -31,25 +30,29 @@ const formSchema = z
 type FormValues = z.infer<typeof formSchema>
 
 export default function ForgotPassword(): JSX.Element {
-  const [isVisible, setIsVisible] = useState<boolean>(false)
+  const router = useRouter()
   const form = useForm<FormValues>({
     defaultValues: {
-      username: '',
+      new_password: '',
+      confirm_password: '',
     },
     resolver: zodResolver(formSchema),
   })
 
-  async function onSubmit(data: SubmitHandler<FormValues>): Promise<void> {
+  async function onSubmit(data: FormValues): Promise<void> {
+    const { _id } = router.query as { _id: string }
+
     try {
-      const response = await axios.post('/api/accounts/forgot-password', data)
+      const response = await axios.put(`/api/accounts/forgot-password?_id=${_id}`, {
+        password: data.new_password,
+        date_updated: new Date(),
+      })
 
       if (response.status === 200) {
-        console.log(response.data)
-        setIsVisible(true)
+        await router.replace('/')
       }
     } catch (error) {
-      console.log('User not found.')
-      setIsVisible(false)
+      console.log('Failed to reset password.')
     }
   }
 
@@ -71,14 +74,14 @@ export default function ForgotPassword(): JSX.Element {
             <Form {...form}>
               <FormField
                 control={form.control}
-                name="username"
+                name="new_password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>New password</FormLabel>
+                    <FormLabel>Confirm password</FormLabel>
                     <FormControl>
                       <Input
-                        type="text"
-                        data-error={form.formState.errors.username != null}
+                        type="password"
+                        data-error={form.formState.errors.new_password != null}
                         autoComplete="off"
                         {...field}
                       />
@@ -88,47 +91,24 @@ export default function ForgotPassword(): JSX.Element {
                 )}
               />
 
-              {isVisible && (
-                <>
-                  <FormField
-                    control={form.control}
-                    name="new_password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirm password</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="password"
-                            data-error={form.formState.errors.new_password != null}
-                            autoComplete="off"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
-                  <FormField
-                    control={form.control}
-                    name="confirm_password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Username</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="password"
-                            data-error={form.formState.errors.confirm_password != null}
-                            autoComplete="off"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
+              <FormField
+                control={form.control}
+                name="confirm_password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        data-error={form.formState.errors.confirm_password != null}
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </Form>
 
             <Button type="submit" disabled={form.formState.isSubmitting}>

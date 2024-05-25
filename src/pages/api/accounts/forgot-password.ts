@@ -11,22 +11,13 @@ export default async function handler(
     query: { _id },
     method,
   } = request
-
   await connectToDatabase()
 
   switch (method) {
     case 'GET':
       try {
-        const accounts = await Accounts.find({})
+        const accounts = await Accounts.findById(_id)
         response.status(200).json({ success: true, data: accounts })
-      } catch (error) {
-        response.status(400).json({ success: false })
-      }
-      break
-    case 'POST':
-      try {
-        const account = await Accounts.create(request.body)
-        response.status(200).json({ success: true, data: account })
       } catch (error) {
         response.status(400).json({ success: false })
       }
@@ -46,16 +37,6 @@ export default async function handler(
         response.status(404).json({ success: false, message: 'Username not found.' })
       } catch (error) {
         response.status(400).json({ success: false })
-      }
-      break
-    case 'DELETE':
-      try {
-        await Accounts.deleteMany({})
-        response.status(200).json({ success: true, message: 'All accounts have been deleted.' })
-      } catch (error) {
-        response
-          .status(400)
-          .json({ success: false, message: 'There was a problem deleting all accounts.' })
       }
       break
     default:
