@@ -26,8 +26,8 @@ export default async function handler(
               username: request.body.username,
               role: request.body.role,
             })
-              .setProtectedHeader({ alg: 'HS256' })
               .setExpirationTime(EXPIRES)
+              .setProtectedHeader({ alg: 'HS256' })
               .sign(SECRET)
 
             console.log(token)
