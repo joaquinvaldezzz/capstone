@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Button } from '~/components/ui/button'
 import {
   Form,
   FormControl,
@@ -18,7 +19,7 @@ import Title from '~/components/Title'
 
 const formSchema = z.object({
   username: z.string().min(4, 'Please enter your username.'),
-  password: z.string().min(8, 'Password must be at least 8 characters.'),
+  password: z.string().min(8, 'Please enter your password.'),
 })
 type FormValues = z.infer<typeof formSchema>
 
@@ -47,7 +48,7 @@ export default function SignIn(): JSX.Element {
       <Title>Sign in</Title>
 
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <div className="mx-auto size-10"></div>
+        {/* <div className="mx-auto size-10"></div> */}
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Sign in to your account
         </h2>
@@ -55,7 +56,7 @@ export default function SignIn(): JSX.Element {
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form
-          className="space-y-6"
+          className="flex flex-col gap-6"
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
           onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<FormValues>)}
         >
@@ -87,7 +88,7 @@ export default function SignIn(): JSX.Element {
                   <div className="flex items-center justify-between">
                     <FormLabel>Password</FormLabel>
                     <Link
-                      className="text-sm font-semibold text-indigo-600 hover:text-indigo-500"
+                      className="text-sm font-medium text-primary underline-offset-4 hover:underline"
                       href="/forgot-password"
                     >
                       Forgot password?
@@ -107,20 +108,14 @@ export default function SignIn(): JSX.Element {
             />
           </Form>
 
-          <div>
-            <button
-              className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              type="submit"
-              disabled={form.formState.isSubmitting}
-            >
-              Sign in
-            </button>
-          </div>
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            Sign in
+          </Button>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?{' '}
-          <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+          <a href="#" className="font-medium text-primary underline-offset-4 hover:underline">
             Contact us to sign up
           </a>
         </p>
