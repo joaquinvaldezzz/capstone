@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type ColumnDef } from '@tanstack/react-table'
 import axios from 'axios'
-import { MoreHorizontal } from 'lucide-react'
+import { CirclePlus, MoreHorizontal } from 'lucide-react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -241,7 +241,10 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                 </TabsList>
 
                 <DialogTrigger asChild>
-                  <Button>New user</Button>
+                  <Button>
+                    <CirclePlus className="size-3.5" />
+                    New user
+                  </Button>
                 </DialogTrigger>
               </div>
 
