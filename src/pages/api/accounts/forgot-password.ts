@@ -22,6 +22,14 @@ export default async function handler(
         response.status(400).json({ success: false })
       }
       break
+    case 'POST':
+      try {
+        const account = await Accounts.findOne(request.body)
+        response.status(200).json({ success: true, data: account })
+      } catch (error) {
+        response.status(400).json({ success: false })
+      }
+      break
     case 'PUT':
       try {
         const account = await Accounts.findByIdAndUpdate(_id, request.body, {
