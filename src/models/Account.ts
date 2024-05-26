@@ -30,9 +30,9 @@ export interface Account {
 
   // Patient information
   ultrasound_image?: string
-  result?: 'healthy' | 'infected'
+  result?: 'pending' | 'healthy' | 'infected'
   suggestion?: string
-  status?: 'to examine' | 'confirmed' | 'treated' | 'recovered' | 'deceased'
+  status?: 'pending' | 'to examine' | 'confirmed' | 'treated' | 'recovered' | 'deceased'
   date_uploaded?: Date
   date_confirmed?: Date
 }
