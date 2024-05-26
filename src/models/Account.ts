@@ -27,6 +27,14 @@ export interface Account {
   // Account creation and update information
   date_created?: Date
   date_updated?: Date
+
+  // Patient information
+  ultrasound_image?: string
+  result?: 'healthy' | 'infected'
+  suggestion?: string
+  status?: 'to examine' | 'confirmed' | 'treated' | 'recovered' | 'deceased'
+  date_uploaded?: Date
+  date_confirmed?: Date
 }
 
 const accountSchema = new mongoose.Schema<Account>({
@@ -113,6 +121,32 @@ const accountSchema = new mongoose.Schema<Account>({
     required: false,
   },
   date_updated: {
+    type: Date,
+    required: false,
+  },
+
+  // Patient information
+  ultrasound_image: {
+    type: String,
+    required: false,
+  },
+  result: {
+    type: String,
+    required: false,
+  },
+  suggestion: {
+    type: String,
+    required: false,
+  },
+  status: {
+    type: String,
+    required: false,
+  },
+  date_uploaded: {
+    type: Date,
+    required: false,
+  },
+  date_confirmed: {
     type: Date,
     required: false,
   },
