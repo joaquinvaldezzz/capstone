@@ -5,7 +5,7 @@ import { jwtVerify } from 'jose'
 export async function middleware(request: NextRequest): Promise<NextResponse<unknown>> {
   const SECRET = new TextEncoder().encode(`${process.env.JWT_SECRET ?? 'secret'}`)
   const JWT_TOKEN = request.cookies.get('TOKEN')?.value
-  const url = request.url
+  const url = request.nextUrl.pathname
 
   // Admin dashboard
   if (url.includes('/dashboard/admin')) {
