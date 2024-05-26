@@ -121,6 +121,22 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
     }
   }
 
+  async function onEdit(_id: string): Promise<void> {
+    try {
+      const request = await axios.get(`/api/accounts/${_id}`)
+
+      if (request.status === 200) {
+        await router.push(`/dashboard/admin/edit/${_id}`)
+      }
+    } catch (error) {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        variant: 'destructive',
+      })
+    }
+  }
+
   async function onDelete(_id: string): Promise<void> {
     try {
       const request = await axios.delete(`/api/accounts/${_id}`)
@@ -136,7 +152,6 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
         }, 1000)
       }
     } catch (error) {
-      // Display an error message
       toast({
         title: 'Uh oh! Something went wrong.',
         description: 'There was a problem with your request.',
@@ -167,9 +182,9 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
       cell: ({ row }) => {
         return (
           <AlertDialog>
-            <DropdownMenu modal={false}>
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="size-8 p-0">
+                <Button className="size-8 p-0" variant="ghost">
                   <span className="sr-only">Open menu</span>
                   <MoreHorizontal className="size-4" />
                 </Button>
@@ -179,19 +194,18 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onSelect={(event) => {
-                    event.preventDefault()
+                  onClick={() => {
+                    void onEdit(row.getValue('_id'))
                   }}
                 >
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="text-destructive"
                   onSelect={(event) => {
                     event.preventDefault()
                   }}
                 >
-                  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                  <AlertDialogTrigger className="block w-full text-left">Delete</AlertDialogTrigger>
 
                   <AlertDialogContent>
                     <AlertDialogHeader>
