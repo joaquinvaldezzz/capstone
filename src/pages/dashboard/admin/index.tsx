@@ -92,7 +92,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
       const request = await axios.post('/api/accounts', {
         ...data,
         full_name: `${data.first_name} ${data.last_name}`,
-        username: `${data.first_name.toLowerCase().trim()}.${data.last_name.toLowerCase().trim()}`,
+        username: `${data.first_name?.toLowerCase().replace(' ', '.')}.${data.last_name?.toLowerCase().trim()}`,
         password: 'password1234',
         date_created: new Date(),
         date_updated: new Date(),
