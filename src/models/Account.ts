@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 export interface Account {
-  _id: mongoose.Schema.Types.ObjectId
+  _id: string | mongoose.Schema.Types.ObjectId
 
   // Personal information
   first_name: string
