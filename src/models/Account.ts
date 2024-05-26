@@ -42,7 +42,6 @@ const accountSchema = new mongoose.Schema<Account>({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     auto: true,
-    unique: true,
   },
 
   // Personal information
