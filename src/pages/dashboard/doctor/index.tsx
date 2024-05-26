@@ -32,20 +32,27 @@ const links: NavItem[] = [
 ]
 
 interface AccountTypes {
-  patients: Account[]
+  allAccounts: Account[]
+  healthyAccounts: Account[]
+  infectedAccounts: Account[]
 }
 
-export default function Dashboard({ patients }: AccountTypes): JSX.Element {
+export default function Dashboard({
+  allAccounts,
+  healthyAccounts,
+  infectedAccounts,
+}: AccountTypes): JSX.Element {
   const router = useRouter()
 
-  /* function onFileChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    const files = event.target.files
-    const url = URL.createObjectURL(files?.[0]) ?? ''
+  async function onExamine(_id: string): Promise<void> {
+    try {
+      const response = await axios.get(`/api/accounts/${_id}`)
 
-    if (files != null) {
-      setFile(url)
-    }
-  } */
+      if (response.status === 200) {
+        await router.push(`/dashboard/doctor/examine/${_id}`)
+      }
+    } catch (error) {}
+  }
 
   async function onEdit(_id: string): Promise<void> {
     try {
@@ -71,29 +78,55 @@ export default function Dashboard({ patients }: AccountTypes): JSX.Element {
     {
       accessorKey: 'result',
       header: 'Result',
-      cell: ({ row }) => <Badge variant="destructive">{row.getValue('result')}</Badge>,
-    },
-    {
-      accessorKey: 'suggestion',
-      header: 'Suggestion',
-      cell: ({ row }) => <Badge variant="secondary">{row.getValue('suggestion')}</Badge>,
+      cell: ({ row }) => {
+        const result = row.getValue('result')
+        const variant =
+          result === 'pending' ? 'secondary' : result === 'healthy' ? 'success' : 'destructive'
+
+        return (
+          <Badge className="capitalize" variant={variant}>
+            {row.getValue('result') ?? 'Pending'}
+          </Badge>
+        )
+      },
     },
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row }) => <Badge variant="outline">{row.getValue('status')}</Badge>,
+      cell: ({ row }) => (
+        <Badge className="capitalize" variant="outline">
+          {row.getValue('status') ?? 'Pending'}
+        </Badge>
+      ),
     },
-    {
-      accessorKey: 'date_uploaded',
-      header: 'Date uploaded',
-      cell: ({ row }) => row.getValue('date_uploaded'),
-    },
+    // {
+    //   accessorKey: 'date_uploaded',
+    //   header: 'Date uploaded',
+    //   cell: ({ row }) => row.getValue('date_uploaded'),
+    // },
     {
       accessorKey: '_id',
-      header: 'Action',
+      header: 'Examine',
       cell: ({ row }) => (
         <Button
           variant="outline"
+          size="sm"
+          onClick={() => {
+            void onExamine(row.getValue('_id'))
+          }}
+        >
+          Examine
+        </Button>
+      ),
+    },
+    {
+      id: 'edit',
+      accessorKey: '_id',
+      header: 'Edit',
+      cell: ({ row }) => (
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() => {
             void onEdit(row.getValue('_id'))
           }}
@@ -108,7 +141,7 @@ export default function Dashboard({ patients }: AccountTypes): JSX.Element {
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <Title>Dashboard</Title>
 
-      <div className="hidden border-r bg-muted/40 md:block">
+      <div className="fixed inset-y-0 left-0 hidden border-r bg-muted/40 md:block md:w-[220px] lg:w-[280px]">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link className="flex items-center gap-2 font-semibold" href="">
@@ -144,6 +177,8 @@ export default function Dashboard({ patients }: AccountTypes): JSX.Element {
           </div>
         </div>
       </div>
+
+      <div></div>
 
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 md:justify-end lg:h-[60px] lg:px-6">
@@ -200,10 +235,20 @@ export default function Dashboard({ patients }: AccountTypes): JSX.Element {
               </TabsList>
             </div>
 
-            {patients.length > 0 ? (
-              <TabsContent value="all">
-                <DataTable columns={columns} data={patients} toFilter="full_name" />
-              </TabsContent>
+            {allAccounts.length > 0 ? (
+              <>
+                <TabsContent value="all">
+                  <DataTable columns={columns} data={allAccounts} toFilter="full_name" />
+                </TabsContent>
+
+                <TabsContent value="healthy">
+                  <DataTable columns={columns} data={healthyAccounts} toFilter="full_name" />
+                </TabsContent>
+
+                <TabsContent value="infected">
+                  <DataTable columns={columns} data={infectedAccounts} toFilter="full_name" />
+                </TabsContent>
+              </>
             ) : (
               <div className="flex h-full flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
                 <div className="flex flex-col items-center gap-1 text-center">
@@ -225,10 +270,15 @@ export default function Dashboard({ patients }: AccountTypes): JSX.Element {
 export async function getServerSideProps(): Promise<GetServerSidePropsResult<Account>> {
   await connectToDatabase()
 
-  const query = await Accounts.find({ role: 'patient' }).sort({ date_created: -1 })
-  const patients = query.map((data) => JSON.parse(JSON.stringify(data)))
+  const allQuery = await Accounts.find({})
+  const healthyQuery = await Accounts.find({ result: 'healthy' })
+  const infectedQuery = await Accounts.find({ result: 'infected' })
+
+  const allAccounts = allQuery.map((data) => JSON.parse(JSON.stringify(data)))
+  const healthyAccounts = healthyQuery.map((data) => JSON.parse(JSON.stringify(data)))
+  const infectedAccounts = infectedQuery.map((data) => JSON.parse(JSON.stringify(data)))
 
   return {
-    props: { patients },
+    props: { allAccounts, healthyAccounts, infectedAccounts },
   } as unknown as GetServerSidePropsResult<Account>
 }
