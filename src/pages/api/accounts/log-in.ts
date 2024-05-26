@@ -22,15 +22,13 @@ export default async function handler(
         if (account.length > 0) {
           if (account[0].password === request.body.password) {
             const token = await new SignJWT({
-              _id: request.body._id,
+              _id: account[0]._id,
               username: request.body.username,
-              role: request.body.role,
+              role: account[0].role,
             })
               .setExpirationTime(EXPIRES)
               .setProtectedHeader({ alg: 'HS256' })
               .sign(SECRET)
-
-            console.log(token)
 
             response.status(200).json({ success: true, data: { token, account } })
             return
