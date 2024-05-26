@@ -1,9 +1,19 @@
+import { type GetServerSidePropsResult } from 'next'
 import Link from 'next/link'
-import { Home, LogOut, Menu, Package2, Settings, Users } from 'lucide-react'
+import { useRouter } from 'next/router'
+import { type ColumnDef } from '@tanstack/react-table'
+import axios from 'axios'
+import { Home, LogOut, Menu, Package2, Settings } from 'lucide-react'
 
-import type { NavItem } from '~/types/nav'
+import { type NavItem } from '~/types/nav'
+import connectToDatabase from '~/lib/connectToDatabase'
+import Accounts, { type Account } from '~/models/Account'
+import { Badge } from '~/components/ui/badge'
 import { Button } from '~/components/ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '~/components/ui/sheet'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '~/components/ui/tabs'
+import { Toaster } from '~/components/ui/toaster'
+import { DataTable } from '~/components/DataTable'
 import Title from '~/components/Title'
 
 const links: NavItem[] = [
@@ -16,18 +26,84 @@ const links: NavItem[] = [
   {
     id: 2,
     href: '',
-    icon: <Users className="size-5 md:size-4" />,
-    text: 'Patients',
-  },
-  {
-    id: 3,
-    href: '',
     icon: <Settings className="size-5 md:size-4" />,
     text: 'Settings',
   },
 ]
 
-export default function Dashboard(): JSX.Element {
+interface AccountTypes {
+  patients: Account[]
+}
+
+export default function Dashboard({ patients }: AccountTypes): JSX.Element {
+  const router = useRouter()
+
+  /* function onFileChange(event: React.ChangeEvent<HTMLInputElement>): void {
+    const files = event.target.files
+    const url = URL.createObjectURL(files?.[0]) ?? ''
+
+    if (files != null) {
+      setFile(url)
+    }
+  } */
+
+  async function onEdit(_id: string): Promise<void> {
+    try {
+      const response = await axios.get(`/api/accounts/${_id}`)
+
+      if (response.status === 200) {
+        await router.push(`/dashboard/doctor/edit/${_id}`)
+      }
+    } catch (error) {}
+  }
+
+  const columns: Array<ColumnDef<Account>> = [
+    {
+      accessorKey: 'full_name',
+      header: 'Name',
+      cell: ({ row }) => <span className="font-medium">{row.getValue('full_name')}</span>,
+    },
+    {
+      accessorKey: 'ultrasound_image',
+      header: 'Ultrasound image',
+      // cell: ({ row }) => row.getValue('full_name'),
+    },
+    {
+      accessorKey: 'result',
+      header: 'Result',
+      cell: ({ row }) => <Badge variant="destructive">{row.getValue('result')}</Badge>,
+    },
+    {
+      accessorKey: 'suggestion',
+      header: 'Suggestion',
+      cell: ({ row }) => <Badge variant="secondary">{row.getValue('suggestion')}</Badge>,
+    },
+    {
+      accessorKey: 'status',
+      header: 'Status',
+      cell: ({ row }) => <Badge variant="outline">{row.getValue('status')}</Badge>,
+    },
+    {
+      accessorKey: 'date_uploaded',
+      header: 'Date uploaded',
+      cell: ({ row }) => row.getValue('date_uploaded'),
+    },
+    {
+      accessorKey: '_id',
+      header: 'Action',
+      cell: ({ row }) => (
+        <Button
+          variant="outline"
+          onClick={() => {
+            void onEdit(row.getValue('_id'))
+          }}
+        >
+          Edit
+        </Button>
+      ),
+    },
+  ]
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <Title>Dashboard</Title>
@@ -115,16 +191,44 @@ export default function Dashboard(): JSX.Element {
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
 
-          <div className="flex flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
-            <div className="flex flex-col items-center gap-1 text-center">
-              <h3 className="text-2xl font-bold tracking-tight">You have no patients</h3>
-              <p className="text-sm text-muted-foreground">
-                You can start working as soon as you have patients.
-              </p>
+          <Tabs className="flex flex-1 flex-col gap-4 lg:gap-6" defaultValue="all">
+            <div className="flex justify-between gap-4">
+              <TabsList>
+                <TabsTrigger value="all">All</TabsTrigger>
+                <TabsTrigger value="healthy">Healthy</TabsTrigger>
+                <TabsTrigger value="infected">Infected</TabsTrigger>
+              </TabsList>
             </div>
-          </div>
+
+            {patients.length > 0 ? (
+              <TabsContent value="all">
+                <DataTable columns={columns} data={patients} toFilter="full_name" />
+              </TabsContent>
+            ) : (
+              <div className="flex h-full flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
+                <div className="flex flex-col items-center gap-1 text-center">
+                  <h3 className="text-2xl font-bold tracking-tight">You have no patients</h3>
+                  <p className="text-sm text-muted-foreground">
+                    You can start working as soon as you have patients.
+                  </p>
+                </div>
+              </div>
+            )}
+          </Tabs>
         </main>
       </div>
+      <Toaster />
     </div>
   )
+}
+
+export async function getServerSideProps(): Promise<GetServerSidePropsResult<Account>> {
+  await connectToDatabase()
+
+  const query = await Accounts.find({ role: 'patient' }).sort({ date_created: -1 })
+  const patients = query.map((data) => JSON.parse(JSON.stringify(data)))
+
+  return {
+    props: { patients },
+  } as unknown as GetServerSidePropsResult<Account>
 }
