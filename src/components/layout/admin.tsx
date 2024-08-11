@@ -22,7 +22,7 @@ interface NavItemProps extends React.HTMLAttributes<HTMLElement> {
 
 const links: NavItemProps[] = [
   { href: '/dashboard/admin', text: 'Dashboard' },
-  { href: '/dashboard/admin/settings', text: 'Settings' },
+  // { href: '/dashboard/admin/settings', text: 'Settings' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }): JSX.Element {
@@ -82,7 +82,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           </SheetContent>
         </Sheet>
 
-        <div className="ml-auto flex items-center gap-4 md:gap-2 lg:gap-4">
+        {/* <div className="ml-auto flex items-center gap-4 md:gap-2 lg:gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button className="rounded-full" size="icon" variant="secondary">
@@ -97,7 +97,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <DropdownMenuItem>Logout</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-        </div>
+        </div> */}
       </header>
 
       {children}

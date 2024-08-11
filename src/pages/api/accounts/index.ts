@@ -39,7 +39,7 @@ export default async function handler(
         })
 
         if (account !== null) {
-          response.status(200).json({ success: true, data: account })
+          response.status(201).json({ success: true, data: account })
           return
         }
 

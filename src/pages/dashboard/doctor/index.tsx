@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { type ColumnDef } from '@tanstack/react-table'
 import axios from 'axios'
 import { Home, LogOut, Menu, Package2, Settings } from 'lucide-react'
+import Cookies from 'universal-cookie'
 
 import { type NavItem } from '~/types/nav'
 import connectToDatabase from '~/lib/connectToDatabase'
@@ -43,6 +44,7 @@ export default function Dashboard({
   infectedAccounts,
 }: AccountTypes): JSX.Element {
   const router = useRouter()
+  const cookies = new Cookies()
 
   async function onExamine(_id: string): Promise<void> {
     try {
@@ -70,11 +72,11 @@ export default function Dashboard({
       header: 'Name',
       cell: ({ row }) => <span className="font-medium">{row.getValue('full_name')}</span>,
     },
-    {
-      accessorKey: 'ultrasound_image',
-      header: 'Ultrasound image',
-      // cell: ({ row }) => row.getValue('full_name'),
-    },
+    // {
+    //   accessorKey: 'ultrasound_image',
+    //   header: 'Ultrasound image',
+    //   cell: ({ row }) => row.getValue('full_name'),
+    // },
     {
       accessorKey: 'result',
       header: 'Result',
@@ -138,10 +140,10 @@ export default function Dashboard({
   ]
 
   return (
-    <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <div className="grid min-h-screen w-full overflow-hidden md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <Title>Dashboard</Title>
 
-      <div className="fixed inset-y-0 left-0 hidden border-r bg-muted/40 md:block md:w-[220px] lg:w-[280px]">
+      <div className="hidden h-full border-r bg-muted/40 md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link className="flex items-center gap-2 font-semibold" href="">
@@ -167,18 +169,21 @@ export default function Dashboard({
           </div>
 
           <div className="mt-auto p-4">
-            <Link
+            <button
               className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-all hover:text-primary"
-              href=""
+              type="button"
+              onClick={() => {
+                cookies.remove('TOKEN')
+                console.log('Logged out')
+                // router.push('/')
+              }}
             >
               <LogOut className="size-4" />
               Log out
-            </Link>
+            </button>
           </div>
         </div>
       </div>
-
-      <div></div>
 
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 md:justify-end lg:h-[60px] lg:px-6">
@@ -211,13 +216,13 @@ export default function Dashboard({
               </nav>
 
               <div className="mt-auto text-lg font-medium">
-                <Link
+                <button
                   className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
-                  href=""
+                  type="button"
                 >
                   <LogOut className="size-5 md:size-4" />
                   Log out
-                </Link>
+                </button>
               </div>
             </SheetContent>
           </Sheet>
@@ -270,13 +275,13 @@ export default function Dashboard({
 export async function getServerSideProps(): Promise<GetServerSidePropsResult<Account>> {
   await connectToDatabase()
 
-  const allQuery = await Accounts.find({})
-  const healthyQuery = await Accounts.find({ result: 'healthy' })
-  const infectedQuery = await Accounts.find({ result: 'infected' })
+  const allPatients = await Accounts.find({ role: 'patient' })
+  const healthyPatients = await Accounts.find({ role: 'patient', result: 'healthy' })
+  const infectedPatients = await Accounts.find({ role: 'patient', result: 'infected' })
 
-  const allAccounts = allQuery.map((data) => JSON.parse(JSON.stringify(data)))
-  const healthyAccounts = healthyQuery.map((data) => JSON.parse(JSON.stringify(data)))
-  const infectedAccounts = infectedQuery.map((data) => JSON.parse(JSON.stringify(data)))
+  const allAccounts = allPatients.map((data) => JSON.parse(JSON.stringify(data)))
+  const healthyAccounts = healthyPatients.map((data) => JSON.parse(JSON.stringify(data)))
+  const infectedAccounts = infectedPatients.map((data) => JSON.parse(JSON.stringify(data)))
 
   return {
     props: { allAccounts, healthyAccounts, infectedAccounts },

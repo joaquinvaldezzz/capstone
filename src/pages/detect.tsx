@@ -42,7 +42,7 @@ export default function Detect(): JSX.Element {
           >
             <div className="grid w-full max-w-sm gap-2">
               <Label htmlFor="picture">Picture</Label>
-              <Input id="picture" name="picture" type="file" accept=".png, .jpg, .jpeg" />
+              <Input id="picture" name="picture" type="file" accept="image/*" />
             </div>
 
             <div className="mt-4">

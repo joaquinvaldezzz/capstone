@@ -1,4 +1,5 @@
 import { type GetServerSidePropsResult } from 'next'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/router'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -10,7 +11,6 @@ import connectToDatabase from '~/lib/connectToDatabase'
 import Accounts, { type Account } from '~/models/Account'
 import { Button } from '~/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '~/components/ui/form'
-import { Input } from '~/components/ui/input'
 import {
   Select,
   SelectContent,
@@ -27,6 +27,7 @@ interface AccountTypes {
 const formSchema = z.object({
   first_name: z.string().min(1, 'Please enter your first name.'),
   last_name: z.string().min(1, 'Please enter your last name.'),
+  ultrasound_image: z.string().min(1, 'Please upload an ultrasound image.'),
   result: z.enum(['pending', 'healthy', 'infected']),
   status: z.enum(['pending', 'to examine', 'confirmed', 'treated', 'recovered', 'deceased']),
   // ultrasound_image: z.instanceof(File).refine((value) => value.size < 5000000, {
@@ -47,21 +48,12 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
     defaultValues: {
       first_name: account?.first_name,
       last_name: account?.last_name,
+      ultrasound_image: account?.ultrasound_image,
       result: account?.result ?? 'pending',
       status: account?.status ?? 'pending',
     },
     resolver: zodResolver(formSchema),
   })
-
-  /* function onFileChange(event: React.ChangeEvent<HTMLInputElement>): void {
-    const files = event.target.files
-    const url = URL.createObjectURL(files?.[0])
-
-    if (files != null) {
-      setFile(url)
-      console.log(file)
-    }
-  } */
 
   async function onSubmit(data: FormValues): Promise<void> {
     try {
@@ -70,9 +62,8 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
         status: data.status,
       })
 
-      if (response.status === 200) {
-        console.log('Hello')
-        await router.replace('/dashboard/doctor')
+      if (response.status === 201) {
+        await router.push('/dashboard/doctor')
       }
     } catch (error) {
       console.log('Patient not found.')
@@ -83,112 +74,102 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
     <div className="container py-8">
       <Title>Examine</Title>
 
-      <form
-        className="mx-auto grid max-w-screen-sm gap-4"
-        // eslint-disable-next-line @typescript-eslint/no-misused-promises
-        onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<FormValues>)}
-      >
-        <Form {...form}>
-          <div className="grid gap-4 md:grid-cols-2 md:gap-6">
-            <FormField
-              control={form.control}
-              name="first_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First name</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      data-error={form.formState.errors.first_name != null}
-                      readOnly
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+      <div className="mx-auto max-w-screen-sm">
+        <h2 className="text-3xl font-semibold tracking-tight">
+          {account?.first_name}&apos;s diagnosis
+        </h2>
 
-            <FormField
-              control={form.control}
-              name="last_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last name</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      data-error={form.formState.errors.last_name != null}
-                      readOnly
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Ultrasound image
-            </p>
-            <div className="aspect-h-9 aspect-w-16 rounded-md bg-muted">
-              {/* <div className="rounded-md bg-muted"></div> */}
+        <form
+          className="mt-6 grid gap-6"
+          // eslint-disable-next-line @typescript-eslint/no-misused-promises
+          onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<FormValues>)}
+        >
+          <Form {...form}>
+            <div className="space-y-2">
+              <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                Ultrasound image
+              </p>
+              <div className="aspect-h-9 aspect-w-16 rounded-md bg-muted">
+                {account?.ultrasound_image !== undefined ? (
+                  <Image
+                    className="object-contain"
+                    src={account.ultrasound_image}
+                    alt="Ultrasound image"
+                    fill
+                  />
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <p className="text-sm font-medium">No ultrasound image uploaded yet.</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
 
-          <div className="grid gap-4 md:grid-cols-2 md:gap-6">
-            <FormField
-              control={form.control}
-              name="result"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Result</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={account?.result}>
-                      <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a result" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="healthy">Healthy</SelectItem>
-                        <SelectItem value="infected">Infected</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+            <div className="grid gap-4 md:grid-cols-2 md:gap-6">
+              <FormField
+                control={form.control}
+                name="result"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Result</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={account?.result}>
+                        <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a result" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="healthy">Healthy</SelectItem>
+                          <SelectItem value="infected">Infected</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Status</FormLabel>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={account?.status}>
-                      <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a status" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="to examine">To examine</SelectItem>
-                        <SelectItem value="confirmed">Confirmed</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-          </div>
+              <FormField
+                control={form.control}
+                name="status"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Status</FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange} defaultValue={account?.status}>
+                        <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a status" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          <SelectItem value="pending">Pending</SelectItem>
+                          <SelectItem value="to examine">To examine</SelectItem>
+                          <SelectItem value="confirmed">Confirmed</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            </div>
 
-          <Button type="submit">Confirm</Button>
-        </Form>
-      </form>
+            <div className="flex flex-col justify-end gap-2">
+              <Button type="submit">Confirm</Button>
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => {
+                  router.back()
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </Form>
+        </form>
+      </div>
     </div>
   )
 }

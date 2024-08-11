@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import axios from 'axios'
+import { jwtVerify } from 'jose'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import Cookies from 'universal-cookie'
 import { z } from 'zod'
@@ -59,7 +60,18 @@ export default function SignIn(): JSX.Element {
 
       if (response.status === 200) {
         cookies.set('TOKEN', response.data.data.token)
-        await router.push('/dashboard/admin')
+        const { payload } = await jwtVerify(
+          response.data.data.token,
+          new TextEncoder().encode('secret'),
+        )
+
+        if (payload.role === 'admin') {
+          await router.push('/dashboard/admin')
+        } else if (payload.role === 'doctor') {
+          await router.push('/dashboard/doctor')
+        } else if (payload.role === 'patient') {
+          await router.push('/dashboard/patient')
+        }
       }
     } catch (error) {
       console.log('User not found.')
@@ -145,7 +157,7 @@ export default function SignIn(): JSX.Element {
             </Form>
 
             <Button type="submit" disabled={signInForm.formState.isSubmitting}>
-              Sign in
+              {signInForm.formState.isSubmitting ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
 
