@@ -8,24 +8,24 @@
     "prettier-plugin-tailwindcss"
   ],
   "importOrder": [
-    "<BUILTIN_MODULES>",
     "^(react/(.*)$)|^(react$)",
     "^(next/(.*)$)|^(next$)",
     "<THIRD_PARTY_MODULES>",
     "",
     "^types$",
-    "^~/types/(.*)$",
-    "^~/config/(.*)$",
-    "^~/lib/(.*)$",
-    "^~/hooks/(.*)$",
-    "^~/models/(.*)$",
-    "^~/components/ui/(.*)$",
-    "^~/components/(.*)$",
-    "^~/registry/(.*)$",
-    "^~/styles/(.*)$",
-    "^~/app/(.*)$",
+    "^@/types/(.*)$",
+    "^@/config/(.*)$",
+    "^@/lib/(.*)$",
+    "^@/hooks/(.*)$",
+    "^@/components/ui/(.*)$",
+    "^@/components/(.*)$",
+    "^@/registry/(.*)$",
+    "^@/styles/(.*)$",
+    "^@/app/(.*)$",
     "",
-    "^[./]"
+    "^[./]",
+    "",
+    "^@/public/(.*)$"
   ],
   "tailwindFunctions": ["cva", "cn"]
 }
