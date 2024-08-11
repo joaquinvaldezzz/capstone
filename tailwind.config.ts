@@ -1,75 +1,61 @@
-import aspectRatio from '@tailwindcss/aspect-ratio'
 import { type Config } from 'tailwindcss'
-import animate from 'tailwindcss-animate'
 import { fontFamily } from 'tailwindcss/defaultTheme'
+import plugin from 'tailwindcss/plugin'
+
+import { blurs, boxShadows, colors } from './theme'
 
 const config: Config = {
   content: [
-    './src/app/**/*.{ts,tsx}',
-    './src/components/**/*.{ts,tsx}',
-    './src/pages/**/*.{ts,tsx}',
+    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  future: {
-    disableColorOpacityUtilitiesByDefault: true,
-  },
   theme: {
     container: {
       screens: {
-        '2xl': '1400px',
+        xl: '1280px',
       },
       center: true,
-      padding: '2rem',
+      padding: {
+        DEFAULT: '1rem',
+        xl: '2rem',
+      },
+    },
+    blur: { ...blurs },
+    boxShadow: { ...boxShadows },
+    colors: { ...colors },
+    fontSize: {
+      xs: ['0.75rem', { lineHeight: '1.125rem' }],
+      sm: ['0.875rem', { lineHeight: '1.25rem' }],
+      md: ['1rem', { lineHeight: '1.5rem' }],
+      lg: ['1.125rem', { lineHeight: '1.75rem' }],
+      xl: ['1.25rem', { lineHeight: '1.875rem' }],
+      'display-xs': ['1.5rem', { lineHeight: '2rem' }],
+      'display-sm': ['1.875rem', { lineHeight: '2.375rem' }],
+      'display-md': ['2.25rem', { lineHeight: '2.75rem' }],
+      'display-lg': ['3rem', { lineHeight: '3.75rem' }],
+      'display-xl': ['3.75rem', { lineHeight: '4.5rem' }],
+      'display-2xl': ['4.5rem', { lineHeight: '5.625rem' }],
     },
     extend: {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'slide-down': 'slide-down 0.2s ease-out',
+        'slide-up': 'slide-up 0.2s ease-out',
       },
       aria: {
         invalid: 'invalid="true"',
       },
-      borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
-      },
-      colors: {
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
+      content: {
+        'open-quote': 'open-quote',
+        'close-quote': 'close-quote',
       },
       data: {
-        error: 'error="true"',
+        checked: 'state="checked"',
+        open: 'state="open"',
+        closed: 'state="closed"',
+        active: 'state="active"',
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
@@ -83,13 +69,37 @@ const config: Config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        'slide-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-collapsible-content-height)' },
+        },
+        'slide-up': {
+          from: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: '0' },
+        },
+      },
+      ringWidth: {
+        6: '6px',
+      },
+      spacing: {
+        'header-height': 'var(--header-height)',
+        3.5: '0.875rem',
+        4.5: '1.125rem',
+        5.5: '1.375rem',
+        15: '3.75rem',
+        18: '4.5rem',
+        120: '30rem',
       },
     },
   },
-  corePlugins: {
-    aspectRatio: false,
-  },
-  plugins: [aspectRatio, animate],
+  plugins: [
+    plugin(({ addVariant }) => {
+      addVariant('not-first', '&:not(:first-child)')
+      addVariant('not-last', '&:not(:last-child)')
+    }),
+
+    require('tailwindcss-animate'),
+  ],
 }
 
 export default config
