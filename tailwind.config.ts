@@ -4,7 +4,14 @@ import animate from 'tailwindcss-animate'
 import { fontFamily } from 'tailwindcss/defaultTheme'
 
 const config: Config = {
-  content: ['./src/components/**/*.{ts,tsx}', './src/pages/**/*.{ts,tsx}'],
+  content: [
+    './src/app/**/*.{ts,tsx}',
+    './src/components/**/*.{ts,tsx}',
+    './src/pages/**/*.{ts,tsx}',
+  ],
+  future: {
+    disableColorOpacityUtilitiesByDefault: true,
+  },
   theme: {
     container: {
       screens: {
@@ -65,7 +72,7 @@ const config: Config = {
         error: 'error="true"',
       },
       fontFamily: {
-        sans: ['InterVariable', ...fontFamily.sans],
+        sans: ['var(--font-sans)', ...fontFamily.sans],
       },
       keyframes: {
         'accordion-down': {
