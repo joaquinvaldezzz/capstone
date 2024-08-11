@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react'
 import { type Metadata } from 'next'
 import localFont from 'next/font/local'
 
@@ -23,7 +24,7 @@ const inter = localFont({
   variable: '--font-sans',
 })
 
-export default function Layout({ children }: { children: React.ReactNode }): JSX.Element {
+export default function Layout({ children }: { children: ReactNode }): JSX.Element {
   return (
     <html lang="en" className={inter.variable}>
       <body className="min-w-80 antialiased">{children}</body>
