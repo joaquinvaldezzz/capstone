@@ -6,6 +6,7 @@ import '../styles/main.css'
 
 export const metadata: Metadata = {
   title: 'Capstone',
+  description: 'A capstone project.',
 }
 
 const inter = localFont({
@@ -27,7 +28,7 @@ const inter = localFont({
 export default function Layout({ children }: { children: ReactNode }): JSX.Element {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="min-w-80 antialiased">{children}</body>
+      <body className="min-w-80 bg-white text-gray-900 antialiased">{children}</body>
     </html>
   )
 }
