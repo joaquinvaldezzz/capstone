@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import connectToDatabase from '~/lib/connectToDatabase'
-import Accounts from '~/models/Account'
+import Messages from '~/models/Messages'
 
 export default async function handler(
   request: NextApiRequest,
@@ -17,45 +17,45 @@ export default async function handler(
   switch (method) {
     case 'GET':
       try {
-        const accounts = await Accounts.find({})
-        response.status(200).json({ success: true, data: accounts })
+        const messages = await Messages.find({})
+        response.status(200).json({ success: true, data: messages })
       } catch (error) {
         response.status(400).json({ success: false })
       }
       break
     case 'POST':
       try {
-        const account = await Accounts.create(request.body)
-        response.status(200).json({ success: true, data: account })
+        const message = await Messages.create(request.body)
+        response.status(200).json({ success: true, data: message })
       } catch (error) {
         response.status(400).json({ success: false })
       }
       break
     case 'PUT':
       try {
-        const account = await Accounts.findByIdAndUpdate(_id, request.body, {
+        const message = await Messages.findByIdAndUpdate(_id, request.body, {
           new: true,
           runValidators: true,
         })
 
-        if (account !== null) {
-          response.status(201).json({ success: true, data: account })
+        if (message !== null) {
+          response.status(200).json({ success: true, data: message })
           return
         }
 
-        response.status(404).json({ success: false, message: 'Username not found.' })
+        response.status(404).json({ success: false, message: 'Message not found.' })
       } catch (error) {
         response.status(400).json({ success: false })
       }
       break
     case 'DELETE':
       try {
-        await Accounts.deleteMany({})
-        response.status(200).json({ success: true, message: 'All accounts have been deleted.' })
+        await Messages.deleteMany({})
+        response.status(200).json({ success: true, message: 'All messages have been deleted.' })
       } catch (error) {
         response
           .status(400)
-          .json({ success: false, message: 'There was a problem deleting all accounts.' })
+          .json({ success: false, message: 'There was a problem deleting all messages.' })
       }
       break
     default:

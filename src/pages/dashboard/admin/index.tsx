@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { type ColumnDef } from '@tanstack/react-table'
 import axios from 'axios'
-import { MoreHorizontal } from 'lucide-react'
+import { CirclePlus, MoreHorizontal } from 'lucide-react'
 import { useForm, type SubmitHandler } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -92,7 +92,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
       const request = await axios.post('/api/accounts', {
         ...data,
         full_name: `${data.first_name} ${data.last_name}`,
-        username: `${data.first_name.toLowerCase().trim()}.${data.last_name.toLowerCase().trim()}`,
+        username: `${data.first_name?.toLowerCase().replace(' ', '.')}.${data.last_name?.toLowerCase().trim()}`,
         password: 'password1234',
         date_created: new Date(),
         date_updated: new Date(),
@@ -121,6 +121,22 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
     }
   }
 
+  async function onEdit(_id: string): Promise<void> {
+    try {
+      const request = await axios.get(`/api/accounts/${_id}`)
+
+      if (request.status === 200) {
+        await router.push(`/dashboard/admin/edit/${_id}`)
+      }
+    } catch (error) {
+      toast({
+        title: 'Uh oh! Something went wrong.',
+        description: 'There was a problem with your request.',
+        variant: 'destructive',
+      })
+    }
+  }
+
   async function onDelete(_id: string): Promise<void> {
     try {
       const request = await axios.delete(`/api/accounts/${_id}`)
@@ -136,7 +152,6 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
         }, 1000)
       }
     } catch (error) {
-      // Display an error message
       toast({
         title: 'Uh oh! Something went wrong.',
         description: 'There was a problem with your request.',
@@ -167,9 +182,9 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
       cell: ({ row }) => {
         return (
           <AlertDialog>
-            <DropdownMenu modal={false}>
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="size-8 p-0">
+                <Button className="size-8 p-0" variant="ghost">
                   <span className="sr-only">Open menu</span>
                   <MoreHorizontal className="size-4" />
                 </Button>
@@ -179,19 +194,18 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
-                  onSelect={(event) => {
-                    event.preventDefault()
+                  onClick={() => {
+                    void onEdit(row.getValue('_id'))
                   }}
                 >
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  className="text-destructive"
                   onSelect={(event) => {
                     event.preventDefault()
                   }}
                 >
-                  <AlertDialogTrigger>Delete</AlertDialogTrigger>
+                  <AlertDialogTrigger className="block w-full text-left">Delete</AlertDialogTrigger>
 
                   <AlertDialogContent>
                     <AlertDialogHeader>
@@ -241,7 +255,10 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                 </TabsList>
 
                 <DialogTrigger asChild>
-                  <Button>New user</Button>
+                  <Button>
+                    <CirclePlus className="size-3.5" />
+                    New user
+                  </Button>
                 </DialogTrigger>
               </div>
 

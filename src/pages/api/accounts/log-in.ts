@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { SignJWT } from 'jose'
 
 import connectToDatabase from '~/lib/connectToDatabase'
 import Accounts from '~/models/Account'
@@ -8,6 +9,8 @@ export default async function handler(
   response: NextApiResponse,
 ): Promise<void> {
   const { method } = request
+  const EXPIRES = process.env.EXPIRES ?? '10 sec from now'
+  const SECRET = new TextEncoder().encode(`${process.env.JWT_SECRET ?? 'secret'}`)
 
   await connectToDatabase()
 
@@ -18,7 +21,16 @@ export default async function handler(
 
         if (account.length > 0) {
           if (account[0].password === request.body.password) {
-            response.status(200).json({ success: true, data: account })
+            const token = await new SignJWT({
+              _id: account[0]._id,
+              username: request.body.username,
+              role: account[0].role,
+            })
+              .setExpirationTime(EXPIRES)
+              .setProtectedHeader({ alg: 'HS256' })
+              .sign(SECRET)
+
+            response.status(200).json({ success: true, data: { token, account } })
             return
           }
 

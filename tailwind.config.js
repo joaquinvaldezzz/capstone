@@ -1,4 +1,5 @@
 const { fontFamily } = require('tailwindcss/defaultTheme')
+const aspectRatio = require('@tailwindcss/aspect-ratio')
 const animate = require('tailwindcss-animate')
 
 /** @type {import('tailwindcss').Config} */
@@ -78,5 +79,8 @@ module.exports = {
       },
     },
   },
-  plugins: [animate],
+  corePlugins: {
+    aspectRatio: false,
+  },
+  plugins: [aspectRatio, animate],
 }

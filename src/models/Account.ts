@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 
 export interface Account {
-  _id: mongoose.Schema.Types.ObjectId
+  _id: string | mongoose.Schema.Types.ObjectId
 
   // Personal information
   first_name: string
@@ -27,6 +27,14 @@ export interface Account {
   // Account creation and update information
   date_created?: Date
   date_updated?: Date
+
+  // Patient information
+  ultrasound_image?: string
+  result?: 'pending' | 'healthy' | 'infected'
+  suggestion?: string
+  status?: 'pending' | 'to examine' | 'confirmed' | 'treated' | 'recovered' | 'deceased'
+  date_uploaded?: Date
+  date_confirmed?: Date
 }
 
 const accountSchema = new mongoose.Schema<Account>({
@@ -34,7 +42,6 @@ const accountSchema = new mongoose.Schema<Account>({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     auto: true,
-    unique: true,
   },
 
   // Personal information
@@ -113,6 +120,32 @@ const accountSchema = new mongoose.Schema<Account>({
     required: false,
   },
   date_updated: {
+    type: Date,
+    required: false,
+  },
+
+  // Patient information
+  ultrasound_image: {
+    type: String,
+    required: false,
+  },
+  result: {
+    type: String,
+    required: false,
+  },
+  suggestion: {
+    type: String,
+    required: false,
+  },
+  status: {
+    type: String,
+    required: false,
+  },
+  date_uploaded: {
+    type: Date,
+    required: false,
+  },
+  date_confirmed: {
     type: Date,
     required: false,
   },

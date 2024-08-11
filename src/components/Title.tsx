@@ -1,7 +1,7 @@
 import Head from 'next/head'
 
 interface TitleProps {
-  children: string
+  children: React.ReactNode
 }
 
 export default function Title({ children }: TitleProps): JSX.Element {

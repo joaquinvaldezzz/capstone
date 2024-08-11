@@ -63,7 +63,7 @@ export function DataTable({ columns, data, toFilter }: Props): JSX.Element {
           className="max-w-sm"
           id="filter"
           value={(table.getColumn(toFilter)?.getFilterValue() as string) ?? ''}
-          placeholder="Filter usernames"
+          placeholder="Filter names"
           autoComplete="off"
           onChange={(event) => table.getColumn(toFilter)?.setFilterValue(event.target.value)}
         />
