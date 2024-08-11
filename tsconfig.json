@@ -31,8 +31,7 @@
     "**/*.tsx",
     "*.config.js",
     ".next/types/**/*.ts",
-    "next-env.d.ts",
-    "rws.cjs"
+    "next-env.d.ts"
   ],
   "exclude": ["node_modules"]
 }
