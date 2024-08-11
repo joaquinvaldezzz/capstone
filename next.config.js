@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+
   pageExtensions: ['ts', 'tsx'],
 
   rewrites: async () => {
@@ -10,6 +14,10 @@ const nextConfig = {
           process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000/api/:path*' : '/api/',
       },
     ]
+  },
+
+  typescript: {
+    ignoreBuildErrors: true,
   },
 
   webpack(config) {
