@@ -26,10 +26,10 @@
     ]
   },
   "include": [
-    "**/*.js",
     "**/*.ts",
     "**/*.tsx",
     "*.config.js",
+    "*.config.mjs",
     ".next/types/**/*.ts",
     "next-env.d.ts"
   ],
