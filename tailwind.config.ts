@@ -1,9 +1,9 @@
-const { fontFamily } = require('tailwindcss/defaultTheme')
-const aspectRatio = require('@tailwindcss/aspect-ratio')
-const animate = require('tailwindcss-animate')
+import aspectRatio from '@tailwindcss/aspect-ratio'
+import { type Config } from 'tailwindcss'
+import animate from 'tailwindcss-animate'
+import { fontFamily } from 'tailwindcss/defaultTheme'
 
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+const config: Config = {
   content: ['./src/components/**/*.{ts,tsx}', './src/pages/**/*.{ts,tsx}'],
   theme: {
     container: {
@@ -84,3 +84,5 @@ module.exports = {
   },
   plugins: [aspectRatio, animate],
 }
+
+export default config
