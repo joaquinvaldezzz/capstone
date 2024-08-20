@@ -82,7 +82,11 @@ const FormItem = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 
     return (
       <FormItemContext.Provider value={{ id }}>
-        <div className={cn('space-y-1.5', className)} ref={ref} {...props} />
+        <div
+          className={cn('flex flex-col items-start gap-y-1.5', className)}
+          ref={ref}
+          {...props}
+        />
       </FormItemContext.Provider>
     )
   },
