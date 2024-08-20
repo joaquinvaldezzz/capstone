@@ -32,6 +32,7 @@
   "dependencies": {
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.0",
+    "@next/env": "^14.2.5",
     "@radix-ui/react-alert-dialog": "^1.1.1",
     "@radix-ui/react-checkbox": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.1",
@@ -54,6 +55,7 @@
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "drizzle-orm": "^0.33.0",
     "jose": "^5.6.3",
     "js-cookie": "^3.0.5",
     "lucide-react": "^0.427.0",
@@ -81,6 +83,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "drizzle-kit": "^0.24.0",
     "eslint": "^8",
     "eslint-config-airbnb-typescript": "^17.1.0",
     "eslint-config-next": "14.2.5",
