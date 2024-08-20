@@ -576,3 +576,6 @@ next-env.d.ts
 
 # test images
 uploads/
+
+# vercel
+.vercel
