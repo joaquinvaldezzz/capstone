@@ -1,0 +1,32 @@
+/** @type {import('prettier').Config} */
+module.exports = {
+  printWidth: 100,
+  semi: false,
+  singleQuote: true,
+  plugins: [
+    '@prettier/plugin-xml',
+    '@ianvs/prettier-plugin-sort-imports',
+    'prettier-plugin-tailwindcss',
+  ],
+  importOrder: [
+    '^(react/(.*)$)|^(react$)',
+    '^(next/(.*)$)|^(next$)',
+    '<THIRD_PARTY_MODULES>',
+    '',
+    '^types$',
+    '^@/types/(.*)$',
+    '^@/config/(.*)$',
+    '^@/lib/(.*)$',
+    '^@/hooks/(.*)$',
+    '^@/components/ui/(.*)$',
+    '^@/components/(.*)$',
+    '^@/registry/(.*)$',
+    '^@/styles/(.*)$',
+    '^@/app/(.*)$',
+    '',
+    '^[./]',
+    '',
+    '^@/public/(.*)$',
+  ],
+  tailwindFunctions: ['cva', 'cn'],
+}
