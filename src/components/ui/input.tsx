@@ -25,9 +25,10 @@ export interface InputProps
   extends InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants> {}
 
-const Input = forwardRef<HTMLInputElement, InputProps>(({ className, padding, ...props }, ref) => {
-  return <input className={cn(inputVariants({ padding }), className)} ref={ref} {...props} />
-})
-Input.displayName = 'Input'
+export const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ className, padding, ...props }, ref) => {
+    return <input className={cn(inputVariants({ padding }), className)} ref={ref} {...props} />
+  },
+)
 
-export { Input }
+Input.displayName = 'Input'

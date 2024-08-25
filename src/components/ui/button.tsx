@@ -9,7 +9,7 @@ import type { ButtonHTMLAttributes } from 'react'
 
 import { cn } from '@/lib/utils'
 
-const buttonVariants = cva(
+export const buttonVariants = cva(
   'relative inline-flex items-center justify-center rounded-lg border font-semibold shadow-xs focus:outline-none focus:ring-4',
   {
     variants: {
@@ -45,7 +45,7 @@ const buttonVariants = cva(
   },
 )
 
-interface ButtonProps
+export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
@@ -62,7 +62,7 @@ interface ButtonProps
  * </Button>
  * ```
  */
-const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, size, hierarchy, asChild = false, ...props }, ref) => {
     const Component = asChild ? Slot : 'button'
 
@@ -77,5 +77,3 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 )
 
 Button.displayName = 'Button'
-
-export { Button, type ButtonProps }

@@ -11,12 +11,11 @@ import { cn } from '@/lib/utils'
 
 export const labelVariants = cva('text-sm font-medium text-gray-700')
 
-const Label = forwardRef<
+export const Label = forwardRef<
   ElementRef<typeof Root>,
   ComponentPropsWithoutRef<typeof Root> & VariantProps<typeof labelVariants>
 >(({ className, ...props }, ref) => (
   <Root className={cn(labelVariants(), className)} ref={ref} {...props} />
 ))
-Label.displayName = Root.displayName
 
-export { Label }
+Label.displayName = Root.displayName
