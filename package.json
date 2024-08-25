@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "dev": "next dev --turbo",
+    "dev": "next dev",
+    "drizzle": "drizzle-kit push",
     "format": "prettier --write .",
     "lint": "next lint",
     "prepare": "husky",
@@ -100,6 +101,7 @@
     "postcss-import": "^16.1.0",
     "postcss-sort-media-queries": "^5.2.0",
     "prettier": "^3.3.3",
+    "prettier-plugin-packagejson": "^2.5.2",
     "prettier-plugin-tailwindcss": "^0.6.6",
     "typescript": "^5.5.4"
   }

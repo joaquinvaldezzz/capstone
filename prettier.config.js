@@ -1,11 +1,12 @@
 /** @type {import('prettier').Config} */
-module.exports = {
+const config = {
   printWidth: 100,
   semi: false,
   singleQuote: true,
   plugins: [
     '@prettier/plugin-xml',
     '@ianvs/prettier-plugin-sort-imports',
+    'prettier-plugin-packagejson',
     'prettier-plugin-tailwindcss',
   ],
   importOrder: [
@@ -30,3 +31,5 @@ module.exports = {
   ],
   tailwindFunctions: ['cva', 'cn'],
 }
+
+export default config
