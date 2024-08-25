@@ -2,9 +2,12 @@
 
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import type { SubmitHandler } from 'react-hook-form'
+
+import { login } from '@/lib/actions'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -16,12 +19,12 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-const formSchema = z.object({
+export const formSchema = z.object({
   email_address: z.string().email({ message: 'Please enter your email address.' }),
   password: z.string().min(8, { message: 'Your password must be at least 8 characters.' }),
 })
 
-type FormSchema = z.infer<typeof formSchema>
+export type FormSchema = z.infer<typeof formSchema>
 
 export default function Page() {
   const form = useForm<FormSchema>({
@@ -32,8 +35,13 @@ export default function Page() {
     resolver: zodResolver(formSchema),
   })
 
-  function onSubmit(values: FormSchema) {
-    console.log(values)
+  async function onSubmit(values: FormSchema) {
+    const formData = new FormData()
+
+    formData.append('email_address', values.email_address)
+    formData.append('password', values.password)
+
+    await login(formData)
   }
 
   return (
