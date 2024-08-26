@@ -27,6 +27,12 @@
         "children": "never"
       }
     ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": ["*.config.js", "*.config.mjs", "*.config.ts"]
+      }
+    ],
     "@typescript-eslint/consistent-type-imports": [
       "error",
       {
