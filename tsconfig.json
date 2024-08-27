@@ -27,6 +27,7 @@
     ]
   },
   "include": [
+    "svgr.d.ts",
     "**/*.ts",
     "**/*.tsx",
     "*.config.js",
