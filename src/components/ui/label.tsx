@@ -1,11 +1,8 @@
 'use client'
 
-import { forwardRef } from 'react'
+import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from 'react'
 import { Root } from '@radix-ui/react-label'
-import { cva } from 'class-variance-authority'
-
-import type { VariantProps } from 'class-variance-authority'
-import type { ComponentPropsWithoutRef, ElementRef } from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 
