@@ -1,15 +1,12 @@
 'use client'
 
-import { forwardRef } from 'react'
-import { cva } from 'class-variance-authority'
-
-import type { VariantProps } from 'class-variance-authority'
-import type { InputHTMLAttributes } from 'react'
+import { forwardRef, type InputHTMLAttributes } from 'react'
+import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 
 export const inputVariants = cva(
-  'flex w-full rounded-lg border border-gray-300 bg-white text-gray-900 shadow-xs placeholder:text-gray-500 focus:border-brand-300 focus:outline-none focus:ring-4 focus:ring-brand-500/25 disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-50 aria-invalid:border-error-300 aria-invalid:ring-error-500/25 aria-invalid:placeholder:text-error-500',
+  'flex w-full rounded-lg bg-white text-gray-900 shadow-xs ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-500 disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-50 aria-invalid:ring-error-500 aria-invalid:placeholder:text-error-500',
   {
     variants: {
       padding: {
