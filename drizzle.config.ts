@@ -5,7 +5,7 @@ loadEnvConfig(process.cwd())
 
 export default defineConfig({
   dialect: 'postgresql',
-  schema: './src/lib/schema.ts',
+  schema: './src/lib/db-schema.ts',
   dbCredentials: {
     url: process.env.POSTGRES_URL as string,
   },
