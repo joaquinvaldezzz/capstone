@@ -112,7 +112,7 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormItem>
                     <FormLabel>Result</FormLabel>
                     <FormControl>
-                      <Select defaultValue={account?.result} onValueChange={field.onChange}>
+                      <Select onValueChange={field.onChange} defaultValue={account?.result}>
                         <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
                           <SelectTrigger>
                             <SelectValue placeholder="Select a result" />
@@ -136,7 +136,7 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormItem>
                     <FormLabel>Status</FormLabel>
                     <FormControl>
-                      <Select defaultValue={account?.status} onValueChange={field.onChange}>
+                      <Select onValueChange={field.onChange} defaultValue={account?.status}>
                         <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
                           <SelectTrigger>
                             <SelectValue placeholder="Select a status" />
