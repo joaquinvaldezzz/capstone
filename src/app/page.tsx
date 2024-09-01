@@ -1,13 +1,14 @@
 'use client'
 
+import { useRef } from 'react'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm, type SubmitHandler } from 'react-hook-form'
+import { useFormState } from 'react-dom'
+import { useForm } from 'react-hook-form'
 
 import { login } from '@/lib/actions'
 import { loginSchema, type LoginSchema } from '@/lib/form-schema'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import {
   Form,
   FormControl,
@@ -22,23 +23,17 @@ import LGGridPattern from '@/public/svg/lg-grid-pattern.svg'
 import MDGridPattern from '@/public/svg/md-grid-pattern.svg'
 
 export default function Page() {
+  const formRef = useRef<HTMLFormElement>(null)
+  const [state, action] = useFormState(login, { message: '' })
   const form = useForm<LoginSchema>({
     defaultValues: {
       email: '',
       password: '',
-      remember_me: false,
     },
     resolver: zodResolver(loginSchema),
   })
 
-  async function onSubmit(values: LoginSchema) {
-    const formData = new FormData()
-
-    formData.append('email_address', values.email)
-    formData.append('password', values.password)
-
-    await login(formData)
-  }
+  console.log(state)
 
   return (
     <div className="min-h-svh overflow-x-hidden py-12 lg:pt-24">
@@ -60,90 +55,64 @@ export default function Page() {
           <form
             className="relative flex flex-col gap-y-6"
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<LoginSchema>)}
+            onSubmit={form.handleSubmit(() => formRef.current?.submit())}
+            action={action}
+            ref={formRef}
           >
             <div className="flex flex-col gap-y-5">
               <FormField
-                control={form.control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
-                        padding="md"
                         type="email"
                         placeholder="Enter your email"
                         autoComplete="email"
+                        padding="md"
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
               <FormField
-                control={form.control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
-                        padding="md"
                         type="password"
                         placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                         autoComplete="current-password"
+                        padding="md"
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
             </div>
 
             <div className="flex items-center justify-between">
-              <FormField
-                control={form.control}
-                name="remember_me"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex gap-x-2">
-                      <FormControl>
-                        <Checkbox
-                          className="mt-0.5"
-                          size="sm"
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        />
-                      </FormControl>
-                      <FormLabel>Remember for 30 days</FormLabel>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div></div>
 
-              <Button size="md" hierarchy="link-color" asChild>
+              <Button hierarchy="link-color" size="md" asChild>
                 <Link href="#">Forgot password</Link>
               </Button>
             </div>
 
-            <Button size="lg" type="submit">
+            <Button type="submit" size="lg">
               Sign in
             </Button>
           </form>
         </Form>
-
-        <footer>
-          <p className="text-center text-sm text-gray-600">
-            Don&apos;t have an account?{' '}
-            <Button hierarchy="link-color" asChild>
-              <Link href="#">Sign up</Link>
-            </Button>
-          </p>
-        </footer>
       </div>
     </div>
   )
