@@ -98,7 +98,7 @@ export default function SignIn(): JSX.Element {
 
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           {/* <div className="mx-auto size-10"></div> */}
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="text-2xl mt-10 text-center font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
         </div>
@@ -113,7 +113,6 @@ export default function SignIn(): JSX.Element {
           >
             <Form {...signInForm}>
               <FormField
-                control={signInForm.control}
                 name="username"
                 render={({ field }) => (
                   <FormItem>
@@ -121,24 +120,24 @@ export default function SignIn(): JSX.Element {
                     <FormControl>
                       <Input
                         type="text"
-                        data-error={signInForm.formState.errors.username != null}
                         autoComplete="username"
+                        data-error={signInForm.formState.errors.username != null}
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={signInForm.control}
               />
 
               <FormField
-                control={signInForm.control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center justify-between">
                       <FormLabel>Password</FormLabel>
-                      <DialogTrigger className="text-sm font-medium text-primary underline-offset-4 hover:underline">
+                      <DialogTrigger className="text-primary text-sm font-medium underline-offset-4 hover:underline">
                         Forgot password?
                       </DialogTrigger>
                     </div>
@@ -153,6 +152,7 @@ export default function SignIn(): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
+                control={signInForm.control}
               />
             </Form>
 
@@ -163,7 +163,7 @@ export default function SignIn(): JSX.Element {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{' '}
-            <a href="#" className="font-medium text-primary underline-offset-4 hover:underline">
+            <a className="text-primary font-medium underline-offset-4 hover:underline" href="#">
               Contact us to sign up
             </a>
           </p>
@@ -185,7 +185,6 @@ export default function SignIn(): JSX.Element {
         >
           <Form {...forgotPasswordForm}>
             <FormField
-              control={forgotPasswordForm.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
@@ -193,14 +192,15 @@ export default function SignIn(): JSX.Element {
                   <FormControl>
                     <Input
                       type="text"
-                      data-error={forgotPasswordForm.formState.errors.username != null}
                       autoComplete="off"
+                      data-error={forgotPasswordForm.formState.errors.username != null}
                       {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
+              control={forgotPasswordForm.control}
             />
 
             <Button type="submit" disabled={forgotPasswordForm.formState.isSubmitting}>

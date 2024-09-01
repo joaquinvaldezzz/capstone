@@ -89,7 +89,7 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
               <p className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                 Ultrasound image
               </p>
-              <div className="aspect-h-9 aspect-w-16 rounded-md bg-muted">
+              <div className="aspect-h-9 aspect-w-16 bg-muted rounded-md">
                 {account?.ultrasound_image !== undefined ? (
                   <Image
                     className="object-contain"
@@ -107,13 +107,12 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
 
             <div className="grid gap-4 md:grid-cols-2 md:gap-6">
               <FormField
-                control={form.control}
                 name="result"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Result</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={account?.result}>
+                      <Select defaultValue={account?.result} onValueChange={field.onChange}>
                         <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
                           <SelectTrigger>
                             <SelectValue placeholder="Select a result" />
@@ -128,16 +127,16 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     </FormControl>
                   </FormItem>
                 )}
+                control={form.control}
               />
 
               <FormField
-                control={form.control}
                 name="status"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Status</FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange} defaultValue={account?.status}>
+                      <Select defaultValue={account?.status} onValueChange={field.onChange}>
                         <FormControl className="aria-invalid:border-destructive aria-invalid:text-destructive aria-invalid:focus-visible:ring-destructive">
                           <SelectTrigger>
                             <SelectValue placeholder="Select a status" />
@@ -152,17 +151,18 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     </FormControl>
                   </FormItem>
                 )}
+                control={form.control}
               />
             </div>
 
             <div className="flex flex-col justify-end gap-2">
               <Button type="submit">Confirm</Button>
               <Button
-                variant="outline"
                 type="button"
                 onClick={() => {
                   router.back()
                 }}
+                variant="outline"
               >
                 Cancel
               </Button>

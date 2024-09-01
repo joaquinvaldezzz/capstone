@@ -103,7 +103,6 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
           <Form {...form}>
             <div className="grid gap-4 md:grid-cols-2 md:gap-6">
               <FormField
-                control={form.control}
                 name="first_name"
                 render={({ field }) => (
                   <FormItem>
@@ -111,18 +110,18 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormControl>
                       <Input
                         type="text"
-                        data-error={form.formState.errors.first_name != null}
                         autoComplete="off"
+                        data-error={form.formState.errors.first_name != null}
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
 
               <FormField
-                control={form.control}
                 name="last_name"
                 render={({ field }) => (
                   <FormItem>
@@ -130,19 +129,19 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormControl>
                       <Input
                         type="text"
-                        data-error={form.formState.errors.last_name != null}
                         autoComplete="off"
+                        data-error={form.formState.errors.last_name != null}
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
             </div>
 
             <FormField
-              control={form.control}
               name="age"
               render={({ field }) => (
                 <FormItem>
@@ -150,18 +149,18 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormControl>
                     <Input
                       type="number"
-                      data-error={form.formState.errors.age != null}
                       autoComplete="off"
+                      data-error={form.formState.errors.age != null}
                       {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
+              control={form.control}
             />
 
             <FormField
-              control={form.control}
               name="contact_number"
               render={({ field }) => (
                 <FormItem>
@@ -176,10 +175,10 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormMessage />
                 </FormItem>
               )}
+              control={form.control}
             />
 
             <FormField
-              control={form.control}
               name="address.street"
               render={({ field }) => (
                 <FormItem>
@@ -187,19 +186,19 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormControl>
                     <Input
                       type="text"
-                      data-error={form.formState.errors.address?.street != null}
                       autoComplete="off"
+                      data-error={form.formState.errors.address?.street != null}
                       {...field}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
+              control={form.control}
             />
 
             <div className="grid gap-4 md:grid-cols-3 md:gap-6">
               <FormField
-                control={form.control}
                 name="address.city"
                 render={({ field }) => (
                   <FormItem>
@@ -207,18 +206,18 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormControl>
                       <Input
                         type="text"
-                        data-error={form.formState.errors.address?.city != null}
                         autoComplete="off"
+                        data-error={form.formState.errors.address?.city != null}
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
 
               <FormField
-                control={form.control}
                 name="address.province"
                 render={({ field }) => (
                   <FormItem>
@@ -226,18 +225,18 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormControl>
                       <Input
                         type="text"
-                        data-error={form.formState.errors.address?.province != null}
                         autoComplete="off"
+                        data-error={form.formState.errors.address?.province != null}
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
 
               <FormField
-                control={form.control}
                 name="address.zip_code"
                 render={({ field }) => (
                   <FormItem>
@@ -245,25 +244,26 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormControl>
                       <Input
                         type="text"
-                        data-error={form.formState.errors.address?.zip_code != null}
                         autoComplete="off"
+                        data-error={form.formState.errors.address?.zip_code != null}
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
             </div>
 
             <div className="flex flex-col justify-end gap-2">
               <Button type="submit">{form.formState.isSubmitting ? 'Saving...' : 'Save'}</Button>
               <Button
-                variant="outline"
                 type="button"
                 onClick={() => {
                   router.back()
                 }}
+                variant="outline"
               >
                 Cancel
               </Button>

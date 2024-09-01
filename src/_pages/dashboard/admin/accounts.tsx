@@ -80,14 +80,14 @@ export default function Accounts(): JSX.Element {
     <AdminLayout>
       <Title>Settings</Title>
 
-      <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+      <main className="bg-muted/40 flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8 md:p-10">
         <div className="mx-auto grid w-full max-w-6xl gap-2">
           <h1 className="text-3xl font-semibold">Settings</h1>
         </div>
 
         <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-          <nav className="grid gap-4 text-sm text-muted-foreground">
-            <Link className="font-semibold text-primary" href="#">
+          <nav className="text-muted-foreground grid gap-4 text-sm">
+            <Link className="text-primary font-semibold" href="#">
               Create user
             </Link>
           </nav>
@@ -107,7 +107,6 @@ export default function Accounts(): JSX.Element {
                     onSubmit={form.handleSubmit(onSubmit as unknown as SubmitHandler<FormValues>)}
                   >
                     <FormField
-                      control={form.control}
                       name="username"
                       render={() => (
                         <FormItem>
@@ -123,10 +122,10 @@ export default function Accounts(): JSX.Element {
                           <FormMessage className="min-h-5" />
                         </FormItem>
                       )}
+                      control={form.control}
                     />
 
                     <FormField
-                      control={form.control}
                       name="password"
                       render={() => (
                         <FormItem>
@@ -144,10 +143,10 @@ export default function Accounts(): JSX.Element {
                           <FormMessage className="min-h-5" />
                         </FormItem>
                       )}
+                      control={form.control}
                     />
 
                     <FormField
-                      control={form.control}
                       name="role"
                       render={({ field }) => (
                         <FormItem>
@@ -170,6 +169,7 @@ export default function Accounts(): JSX.Element {
                           <FormMessage className="min-h-5" />
                         </FormItem>
                       )}
+                      control={form.control}
                     />
 
                     <div className="-mx-6 -mb-6 border-t px-6 py-4">

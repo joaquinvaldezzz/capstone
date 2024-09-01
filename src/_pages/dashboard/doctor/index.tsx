@@ -111,11 +111,11 @@ export default function Dashboard({
       header: 'Examine',
       cell: ({ row }) => (
         <Button
-          variant="outline"
-          size="sm"
           onClick={() => {
             void onExamine(row.getValue('_id'))
           }}
+          size="sm"
+          variant="outline"
         >
           Examine
         </Button>
@@ -127,11 +127,11 @@ export default function Dashboard({
       header: 'Edit',
       cell: ({ row }) => (
         <Button
-          variant="outline"
-          size="sm"
           onClick={() => {
             void onEdit(row.getValue('_id'))
           }}
+          size="sm"
+          variant="outline"
         >
           Edit
         </Button>
@@ -143,7 +143,7 @@ export default function Dashboard({
     <div className="grid min-h-screen w-full overflow-hidden md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <Title>Dashboard</Title>
 
-      <div className="hidden h-full border-r bg-muted/40 md:block">
+      <div className="bg-muted/40 hidden h-full border-r md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
             <Link className="flex items-center gap-2 font-semibold" href="">
@@ -157,7 +157,7 @@ export default function Dashboard({
               {/* active: flex items-center gap-3 rounded-lg bg-muted px-3 py-2 text-primary transition-all hover:text-primary */}
               {links.map((link) => (
                 <Link
-                  className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary"
+                  className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 transition-all"
                   href={link.href}
                   key={link.id}
                 >
@@ -170,7 +170,7 @@ export default function Dashboard({
 
           <div className="mt-auto p-4">
             <button
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm text-muted-foreground transition-all hover:text-primary"
+              className="text-muted-foreground hover:text-primary flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all"
               type="button"
               onClick={() => {
                 cookies.remove('TOKEN')
@@ -186,26 +186,26 @@ export default function Dashboard({
       </div>
 
       <div className="flex flex-col">
-        <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 md:justify-end lg:h-[60px] lg:px-6">
+        <header className="bg-muted/40 flex h-14 items-center gap-4 border-b px-4 md:justify-end lg:h-[60px] lg:px-6">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+              <Button className="shrink-0 md:hidden" size="icon" variant="outline">
                 <span className="sr-only">Toggle navigation menu</span>
                 <Menu className="size-5" />
               </Button>
             </SheetTrigger>
 
-            <SheetContent side="left" className="flex flex-col">
+            <SheetContent className="flex flex-col" side="left">
               <nav className="grid gap-2 text-lg font-medium">
-                <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
+                <Link className="flex items-center gap-2 text-lg font-semibold" href="#">
                   <span className="sr-only">Acme Inc</span>
-                  <Package2 className="h-6 w-6" />
+                  <Package2 className="size-6" />
                 </Link>
 
                 {/* active: mx-[-0.65rem] flex items-center gap-4 rounded-xl bg-muted px-3 py-2 text-foreground hover:text-foreground */}
                 {links.map((link) => (
                   <Link
-                    className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                    className="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
                     href={link.href}
                     key={link.id}
                   >
@@ -217,7 +217,7 @@ export default function Dashboard({
 
               <div className="mt-auto text-lg font-medium">
                 <button
-                  className="mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground"
+                  className="text-muted-foreground hover:text-foreground mx-[-0.65rem] flex items-center gap-4 rounded-xl px-3 py-2"
                   type="button"
                 >
                   <LogOut className="size-5 md:size-4" />
@@ -229,7 +229,7 @@ export default function Dashboard({
         </header>
 
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-          <h1 className="text-lg font-semibold md:text-2xl">Dashboard</h1>
+          <h1 className="md:text-2xl text-lg font-semibold">Dashboard</h1>
 
           <Tabs className="flex flex-1 flex-col gap-4 lg:gap-6" defaultValue="all">
             <div className="flex justify-between gap-4">
@@ -258,7 +258,7 @@ export default function Dashboard({
               <div className="flex h-full flex-1 items-center justify-center rounded-lg border border-dashed shadow-sm">
                 <div className="flex flex-col items-center gap-1 text-center">
                   <h3 className="text-2xl font-bold tracking-tight">You have no patients</h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">
                     You can start working as soon as you have patients.
                   </p>
                 </div>

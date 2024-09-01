@@ -237,7 +237,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
   ]
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <AdminLayout>
         <Title>Admin</Title>
 
@@ -295,7 +295,6 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
             >
               <Form {...form}>
                 <FormField
-                  control={form.control}
                   name="first_name"
                   render={({ field }) => (
                     <FormItem>
@@ -310,10 +309,10 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                       <FormMessage />
                     </FormItem>
                   )}
+                  control={form.control}
                 />
 
                 <FormField
-                  control={form.control}
                   name="last_name"
                   render={({ field }) => (
                     <FormItem>
@@ -328,10 +327,10 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                       <FormMessage />
                     </FormItem>
                   )}
+                  control={form.control}
                 />
 
                 <FormField
-                  control={form.control}
                   name="role"
                   render={({ field }) => (
                     <FormItem>
@@ -351,6 +350,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                       <FormMessage />
                     </FormItem>
                   )}
+                  control={form.control}
                 />
 
                 <div>

@@ -73,7 +73,6 @@ export default function ForgotPassword(): JSX.Element {
           >
             <Form {...form}>
               <FormField
-                control={form.control}
                 name="new_password"
                 render={({ field }) => (
                   <FormItem>
@@ -81,18 +80,18 @@ export default function ForgotPassword(): JSX.Element {
                     <FormControl>
                       <Input
                         type="password"
-                        data-error={form.formState.errors.new_password != null}
                         autoComplete="off"
+                        data-error={form.formState.errors.new_password != null}
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
 
               <FormField
-                control={form.control}
                 name="confirm_password"
                 render={({ field }) => (
                   <FormItem>
@@ -100,14 +99,15 @@ export default function ForgotPassword(): JSX.Element {
                     <FormControl>
                       <Input
                         type="password"
-                        data-error={form.formState.errors.confirm_password != null}
                         autoComplete="off"
+                        data-error={form.formState.errors.confirm_password != null}
                         {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
+                control={form.control}
               />
             </Form>
 
@@ -117,7 +117,7 @@ export default function ForgotPassword(): JSX.Element {
           </form>
 
           <div className="mt-4 text-center text-sm">
-            <Link href="/" className="underline">
+            <Link className="underline" href="/">
               Back to log in
             </Link>
           </div>
