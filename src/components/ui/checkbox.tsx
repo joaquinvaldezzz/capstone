@@ -11,13 +11,13 @@ interface CheckboxProps extends ComponentPropsWithoutRef<typeof Root> {
 
 function CheckIcon({ ...props }: SVGProps<SVGSVGElement>) {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 12" {...props}>
+    <svg fill="none" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" {...props}>
       <path
+        d="M10 3 4.5 8.5 2 6"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1.667"
-        d="M10 3 4.5 8.5 2 6"
       />
     </svg>
   )
