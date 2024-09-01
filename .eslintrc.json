@@ -66,8 +66,8 @@
           "style",
           "callback",
           "multiline",
-          "shorthand",
-          "unknown"
+          "unknown",
+          "shorthand"
         ],
         "customGroups": {
           "className": "className",
