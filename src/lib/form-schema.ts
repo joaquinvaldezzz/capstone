@@ -1,11 +1,8 @@
-'use client'
-
 import { z } from 'zod'
 
 export const loginSchema = z.object({
-  email: z.string().email({ message: 'Please enter your email address.' }),
-  password: z.string().min(8, { message: 'Your password must be at least 8 characters.' }),
-  remember_me: z.boolean(),
+  email: z.string().email({ message: 'Please enter your email address.' }).trim(),
+  password: z.string().min(8, { message: 'Your password must be at least 8 characters.' }).trim(),
 })
 
 export type LoginSchema = z.infer<typeof loginSchema>
