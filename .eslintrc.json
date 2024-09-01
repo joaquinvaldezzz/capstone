@@ -43,7 +43,7 @@
     "perfectionist/sort-jsx-props": [
       "error",
       {
-        "type": "alphabetical",
+        "type": "natural",
         "order": "asc",
         "ignoreCase": true,
         "ignorePattern": [],
@@ -64,6 +64,7 @@
           "aria-*",
           "tabIndex",
           "style",
+          "callback",
           "multiline",
           "shorthand",
           "unknown"
@@ -84,7 +85,8 @@
           "role": "role",
           "aria": "aria-*",
           "tabIndex": "tabIndex",
-          "style": "style"
+          "style": "style",
+          "callback": "on*"
         }
       }
     ]
