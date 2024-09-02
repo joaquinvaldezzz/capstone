@@ -6,6 +6,7 @@ const config = {
   plugins: [
     '@prettier/plugin-xml',
     '@ianvs/prettier-plugin-sort-imports',
+    'prettier-plugin-jsdoc',
     'prettier-plugin-packagejson',
     'prettier-plugin-sh',
     'prettier-plugin-tailwindcss',
