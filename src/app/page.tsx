@@ -24,8 +24,8 @@ import MDGridPattern from '@/public/svg/md-grid-pattern.svg'
 
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null)
-  const [state, action] = useFormState(login, { message: '' })
-  const form = useForm<LoginSchema>({
+  const [formState, formAction] = useFormState(login, { message: '' })
+  const loginForm = useForm<LoginSchema>({
     defaultValues: {
       email: '',
       password: '',
@@ -33,7 +33,7 @@ export default function Page() {
     resolver: zodResolver(loginSchema),
   })
 
-  console.log(state)
+  console.log(formState)
 
   return (
     <div className="min-h-svh overflow-x-hidden py-12 lg:pt-24">
@@ -51,12 +51,12 @@ export default function Page() {
           </div>
         </header>
 
-        <Form {...form}>
+        <Form {...loginForm}>
           <form
             className="relative flex flex-col gap-y-6"
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            onSubmit={form.handleSubmit(() => formRef.current?.submit())}
-            action={action}
+            onSubmit={loginForm.handleSubmit(() => formRef.current?.submit())}
+            action={formAction}
             ref={formRef}
           >
             <div className="flex flex-col gap-y-5">
@@ -77,7 +77,7 @@ export default function Page() {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
+                control={loginForm.control}
               />
               <FormField
                 name="password"
@@ -96,7 +96,7 @@ export default function Page() {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
+                control={loginForm.control}
               />
             </div>
 
