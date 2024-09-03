@@ -52,7 +52,7 @@ export default function Page() {
 
         <Form {...loginForm}>
           <form
-            className="flex flex-col gap-y-6"
+            className="relative flex flex-col gap-y-6"
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onSubmit={loginForm.handleSubmit(() => formRef.current?.submit())}
             action={formAction}
