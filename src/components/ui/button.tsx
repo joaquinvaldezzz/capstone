@@ -48,17 +48,6 @@ export interface ButtonProps
   asChild?: boolean
 }
 
-/**
- * Button component.
- *
- * @component
- * @example
- * ```tsx
- * <Button size="small" hierarchy="primary" onClick={handleClick}>
- *   Click me
- * </Button>
- * ```
- */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, size, hierarchy, asChild = false, ...props }, ref) => {
     const Component = asChild ? Slot : 'button'
