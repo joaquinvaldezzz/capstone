@@ -1,3 +1,15 @@
 {
-  "cSpell.words": ["heroicons", "hookform", "lucide"]
+  "cSpell.words": [
+    "clsx",
+    "commitlint",
+    "fullhuman",
+    "heroicons",
+    "hookform",
+    "ianvs",
+    "lucide",
+    "packagejson",
+    "purgecss",
+    "svgr",
+    "tailwindcss"
+  ]
 }
