@@ -1,13 +1,12 @@
 'use client'
 
 import { useRef } from 'react'
-import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useFormState } from 'react-dom'
 import { useForm } from 'react-hook-form'
 
 import { login } from '@/lib/actions'
-import { loginSchema, type LoginSchema } from '@/lib/form-schema'
+import { logInFormSchema, type LogInFormSchema } from '@/lib/form-schema'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -25,12 +24,12 @@ import MDGridPattern from '@/public/svg/md-grid-pattern.svg'
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null)
   const [formState, formAction] = useFormState(login, { message: '' })
-  const loginForm = useForm<LoginSchema>({
+  const loginForm = useForm<LogInFormSchema>({
     defaultValues: {
       email: '',
       password: '',
     },
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(logInFormSchema),
   })
 
   console.log(formState)
@@ -53,7 +52,7 @@ export default function Page() {
 
         <Form {...loginForm}>
           <form
-            className="relative flex flex-col gap-y-6"
+            className="flex flex-col gap-y-6"
             // eslint-disable-next-line @typescript-eslint/no-misused-promises
             onSubmit={loginForm.handleSubmit(() => formRef.current?.submit())}
             action={formAction}
@@ -98,14 +97,6 @@ export default function Page() {
                 )}
                 control={loginForm.control}
               />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div></div>
-
-              <Button hierarchy="link-color" size="md" asChild>
-                <Link href="#">Forgot password</Link>
-              </Button>
             </div>
 
             <Button type="submit" size="lg">
