@@ -5,7 +5,7 @@ import { z } from 'zod'
  *
  * This schema defines the validation rules for the signup form fields.
  */
-export const signupSchema = z.object({
+export const signUpFormSchema = z.object({
   first_name: z.string().min(2, { message: 'First name must be at least 2 characters.' }).trim(),
   last_name: z.string().min(2, { message: 'Last name must be at least 2 characters.' }).trim(),
   email: z.string().email({ message: 'Please enter a valid email address.' }).trim(),
@@ -22,17 +22,17 @@ export const signupSchema = z.object({
 })
 
 /** Represents the inferred type of the `signupSchema`. */
-export type SignupSchema = z.infer<typeof signupSchema>
+export type SignUpFormSchema = z.infer<typeof signUpFormSchema>
 
 /**
  * Represents the login schema for user authentication.
  *
  * This schema defines the structure and validation rules for the login form fields.
  */
-export const loginSchema = z.object({
+export const logInFormSchema = z.object({
   email: z.string().email({ message: 'Please enter your email address.' }).trim(),
   password: z.string().min(8, { message: 'Your password must be at least 8 characters.' }).trim(),
 })
 
 /** Represents the inferred type of the `loginSchema`. */
-export type LoginSchema = z.infer<typeof loginSchema>
+export type LogInFormSchema = z.infer<typeof logInFormSchema>
