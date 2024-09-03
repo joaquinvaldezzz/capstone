@@ -2,7 +2,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { jwtVerify, SignJWT, type JWTPayload } from 'jose'
 
-const secretKey = process.env.SECRET
+const secretKey = process.env.JWT_SECRET
 const key = new TextEncoder().encode(secretKey)
 
 interface SessionPayload extends JWTPayload {
@@ -95,6 +95,7 @@ export async function updateSession() {
   }
 
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+
   cookies().set('session', session, {
     httpOnly: true,
     secure: true,
@@ -107,5 +108,5 @@ export async function updateSession() {
 /** Deletes the session by removing the 'session' cookie and redirecting to the home page. */
 export function deleteSession() {
   cookies().delete('session')
-  redirect('/login')
+  redirect('/')
 }
