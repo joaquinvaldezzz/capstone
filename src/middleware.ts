@@ -12,7 +12,7 @@ import { decrypt } from '@/lib/session'
 export default async function middleware(request: NextRequest) {
   // 1. Specify protected and public routes
   const protectedRoutes = ['/dashboard']
-  const publicRoutes = ['/', '/login']
+  const publicRoutes = ['/']
 
   // 2. Check if the current route is protected or public
   const currentPath = request.nextUrl.pathname
@@ -24,18 +24,16 @@ export default async function middleware(request: NextRequest) {
   const session = await decrypt(cookie)
 
   // 4. Redirect if the route is protected and the user is not authenticated
-  if (isProtectedRoute && Boolean(session?.userId)) {
-    console.log('redirecting to landing page')
-    return NextResponse.redirect(new URL('/login', request.nextUrl))
+  if (isProtectedRoute && session?.userId == null) {
+    return NextResponse.redirect(new URL('/', request.nextUrl))
   }
 
   // 5. Redirect if the route is public and the user is authenticated
   if (
     isPublicRoute &&
-    Boolean(session?.userId) &&
+    session?.userId != null &&
     !request.nextUrl.pathname.startsWith('/dashboard')
   ) {
-    console.log('redirecting to dashboard')
     return NextResponse.redirect(new URL('/dashboard', request.nextUrl))
   }
 
