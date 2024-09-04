@@ -1,7 +1,8 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
-import { and, eq } from 'drizzle-orm'
+import bcrypt from 'bcrypt'
+import { eq } from 'drizzle-orm'
 
 import { db } from './db'
 import { users } from './db-schema'
@@ -38,38 +39,37 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   // If the form data is valid, extract the email and password
   const { email, password } = parsedData.data
 
-  // Check if the email already exists in the database
-  const existingEmail = await db.select().from(users).where(eq(users.email, email))
+  // Check if the email exists in the database
+  const existingAccount = await db.select().from(users).where(eq(users.email, email))
 
   // If the email does not exist in the database, return an error message
-  if (existingEmail.length === 0) {
+  if (existingAccount.length === 0) {
     return {
-      message: 'Account does not exist',
+      message: 'Invalid email address or the account does not exist',
       fields: parsedData.data,
     }
   }
 
-  // Check if the email and password match a user in the database
-  const matchedUser = await db
-    .select()
-    .from(users)
-    .where(and(eq(users.email, email), eq(users.password, password)))
+  // Compare the password with the hashed password in the database
+  const passwordMatch = await bcrypt.compare(password, existingAccount[0].password)
 
-  // If the email and password do not match a user in the database, return an error message
-  if (matchedUser.length === 0) {
+  // If the password does not match, return an error message
+  if (!passwordMatch) {
     return {
-      message: 'Invalid email or password',
+      message: 'Invalid password',
       fields: parsedData.data,
     }
   }
 
-  // Get the user ID and create a session
-  const user = matchedUser[0].id.toString()
+  // Get the user ID
+  const user = existingAccount[0].id.toString()
+
+  // Create a session for the user
   await createSession(user)
 
-  // Otherwise, return a success message
+  // If it fails, return an error message
   return {
-    message: 'Logged in successfully',
+    message: 'Login failed',
   }
 }
 
@@ -101,6 +101,9 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
     }
   }
 
+  // Hash the password before storing it in the database
+  const hashedPassword = await bcrypt.hash(parsedData.data.password, 10)
+
   /**
    * If the form data is valid and the email does not exist in the database, insert the user into
    * the database.
@@ -109,6 +112,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
     .insert(users)
     .values({
       ...parsedData.data,
+      password: hashedPassword,
     })
     .execute()
 
