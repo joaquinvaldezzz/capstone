@@ -41,9 +41,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <div className="truncate text-sm font-semibold text-gray-700">
                   {currentUser?.first_name} {currentUser?.last_name}
                 </div>
-                <div className="truncate text-sm text-gray-600">
-                  javaldez1642qc@student.fatima.edu.ph
-                </div>
+                <div className="truncate text-sm text-gray-600">{currentUser?.email}</div>
               </div>
             </div>
             <Button
