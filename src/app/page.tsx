@@ -28,11 +28,10 @@ export default function Page() {
     defaultValues: {
       email: '',
       password: '',
+      ...formState.fields,
     },
     resolver: zodResolver(logInFormSchema),
   })
-
-  console.log(formState)
 
   return (
     <div className="min-h-svh overflow-x-hidden py-12 lg:pt-24">
@@ -59,6 +58,9 @@ export default function Page() {
             ref={formRef}
           >
             <div className="flex flex-col gap-y-5">
+              {formState.message.length > 0 && (
+                <div className="text-sm text-error-500">{formState.message}</div>
+              )}
               <FormField
                 name="email"
                 render={({ field }) => (
