@@ -71,7 +71,11 @@ TableHead.displayName = 'TableHead'
 
 const TableCell = forwardRef<HTMLTableCellElement, TdHTMLAttributes<HTMLTableCellElement>>(
   ({ className, ...props }, ref) => (
-    <td className={cn('px-6 py-4 align-middle', className)} ref={ref} {...props} />
+    <td
+      className={cn('px-6 py-4 align-middle text-sm first-of-type:font-medium', className)}
+      ref={ref}
+      {...props}
+    />
   ),
 )
 TableCell.displayName = 'TableCell'
