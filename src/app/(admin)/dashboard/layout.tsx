@@ -59,7 +59,8 @@ export default function Layout({ children }: { children: ReactNode }) {
           </div>
         </footer>
       </aside>
-      {children}
+
+      <main className="flex-1 px-8 pb-12 pt-8">{children}</main>
     </div>
   )
 }

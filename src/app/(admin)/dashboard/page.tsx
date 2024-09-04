@@ -102,7 +102,7 @@ export default function Page() {
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
-      <main className="flex flex-1 flex-col gap-8 px-8 pt-8">
+      <div className="flex flex-col gap-8">
         <header className="border-b border-b-gray-200 pb-5">
           <div className="flex justify-between gap-4">
             <div>
@@ -168,7 +168,7 @@ export default function Page() {
             </TableBody>
           </Table>
         </section>
-      </main>
+      </div>
 
       <DialogContent>
         <DialogHeader>
