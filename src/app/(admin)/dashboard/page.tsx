@@ -102,81 +102,73 @@ export default function Page() {
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
-      <div className="ml-80 flex">
-        <aside className="fixed inset-y-0 left-0 h-svh min-w-80 border-r border-r-gray-200">
-          <div className="flex h-16 items-center justify-between py-3 pl-4 pr-2">
-            <div></div>
-          </div>
-        </aside>
-
-        <main className="flex flex-1 flex-col gap-8 px-8 pt-8">
-          <header className="border-b border-b-gray-200 pb-5">
-            <div className="flex justify-between gap-4">
-              <div>
-                <h1 className="text-display-sm font-semibold">Team members</h1>
-                <p className="mt-1 text-gray-600">
-                  Manage your team members and their account permissions here.
-                </p>
-              </div>
-              <div className="shrink-0">
-                <DialogTrigger asChild>
-                  <Button type="button" hierarchy="secondary-gray" size="md">
-                    <Plus className="size-5" />
-                    <span className="px-0.5">Add team member</span>
-                  </Button>
-                </DialogTrigger>
-              </div>
-            </div>
-          </header>
-
-          <section className="flex gap-8">
-            <div className="max-w-72 shrink-0">
-              <h2 className="text-sm font-semibold text-gray-700">Admin users</h2>
-              <p className="text-sm text-gray-600">
-                Admins can add and remove users and manage organization-level settings.
+      <main className="flex flex-1 flex-col gap-8 px-8 pt-8">
+        <header className="border-b border-b-gray-200 pb-5">
+          <div className="flex justify-between gap-4">
+            <div>
+              <h1 className="text-display-sm font-semibold">Team members</h1>
+              <p className="mt-1 text-gray-600">
+                Manage your team members and their account permissions here.
               </p>
             </div>
+            <div className="shrink-0">
+              <DialogTrigger asChild>
+                <Button type="button" hierarchy="secondary-gray" size="md">
+                  <Plus className="size-5" />
+                  <span className="px-0.5">Add team member</span>
+                </Button>
+              </DialogTrigger>
+            </div>
+          </div>
+        </header>
 
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(header.column.columnDef.header, header.getContext())}
-                        </TableHead>
-                      )
-                    })}
-                  </TableRow>
-                ))}
-              </TableHeader>
+        <section className="flex gap-8">
+          <div className="max-w-72 shrink-0">
+            <h2 className="text-sm font-semibold text-gray-700">Admin users</h2>
+            <p className="text-sm text-gray-600">
+              Admins can add and remove users and manage organization-level settings.
+            </p>
+          </div>
 
-              <TableBody>
-                {table.getRowModel().rows?.length !== 0 ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell className="h-24 text-center" colSpan={columns.length}>
-                      No results.
-                    </TableCell>
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    )
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+
+            <TableBody>
+              {table.getRowModel().rows?.length !== 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
                   </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </section>
-        </main>
-      </div>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell className="h-24 text-center" colSpan={columns.length}>
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </section>
+      </main>
 
       <DialogContent>
         <DialogHeader>
