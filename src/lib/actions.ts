@@ -1,5 +1,6 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
 import { and, eq } from 'drizzle-orm'
 
 import { db } from './db'
@@ -75,13 +76,29 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
     }
   }
 
-  // If the form data is valid, insert the user into the database
+  // Check if the email already exists in the database
+  const existingUser = await db.select().from(users).where(eq(users.email, parsedData.data.email))
+
+  // If the email already exists in the database, return an error message
+  if (existingUser.length > 0) {
+    return {
+      message: 'Email already exists',
+    }
+  }
+
+  /**
+   * If the form data is valid and the email does not exist in the database, insert the user into
+   * the database.
+   */
   await db
     .insert(users)
     .values({
       ...parsedData.data,
     })
     .execute()
+
+  // Revalidate the dashboard page
+  revalidatePath('/dashboard')
 
   // Return a success message
   return {
