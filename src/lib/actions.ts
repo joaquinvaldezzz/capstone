@@ -12,7 +12,9 @@ interface PreviousState {
   message: string
 }
 
-interface Message extends PreviousState {}
+interface Message extends PreviousState {
+  fields?: Record<string, string>
+}
 
 /**
  * Logs in a user with the provided form data.
@@ -29,11 +31,23 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   if (!parsedData.success) {
     return {
       message: 'Invalid form data',
+      fields: parsedData.data,
     }
   }
 
   // If the form data is valid, extract the email and password
   const { email, password } = parsedData.data
+
+  // Check if the email already exists in the database
+  const existingEmail = await db.select().from(users).where(eq(users.email, email))
+
+  // If the email does not exist in the database, return an error message
+  if (existingEmail.length === 0) {
+    return {
+      message: 'Account does not exist',
+      fields: parsedData.data,
+    }
+  }
 
   // Check if the email and password match a user in the database
   const matchedUser = await db
@@ -45,6 +59,7 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   if (matchedUser.length === 0) {
     return {
       message: 'Invalid email or password',
+      fields: parsedData.data,
     }
   }
 
