@@ -70,6 +70,7 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   // If it fails, return an error message
   return {
     message: 'Login failed',
+    fields: parsedData.data,
   }
 }
 
@@ -88,6 +89,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
   if (!parsedData.success) {
     return {
       message: 'Invalid form data',
+      fields: parsedData.data,
     }
   }
 
@@ -98,6 +100,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
   if (existingUser.length > 0) {
     return {
       message: 'Email already exists',
+      fields: parsedData.data,
     }
   }
 
