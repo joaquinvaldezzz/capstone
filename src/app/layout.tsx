@@ -25,7 +25,7 @@ const inter = localFont({
   variable: '--font-sans',
 })
 
-export default function Layout({ children }: { children: ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={inter.variable} lang="en">
       <body className="min-w-80 bg-white text-gray-900 antialiased">{children}</body>
