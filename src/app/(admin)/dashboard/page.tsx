@@ -1,13 +1,15 @@
 'use client'
 
-import { useRef, useState } from 'react'
-import { Bars3CenterLeftIcon } from '@heroicons/react/24/outline'
+import { useEffect, useState } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
 import { useFormState } from 'react-dom'
 import { useForm } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
+import { getAllUsers } from '@/lib/dal'
+import { type User } from '@/lib/db-schema'
 import { signUpFormSchema, type SignUpFormSchema } from '@/lib/form-schema'
 import { Button } from '@/components/ui/button'
 import {
@@ -36,9 +38,35 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+
+const columns: Array<ColumnDef<User>> = [
+  {
+    accessorKey: 'first_name',
+    header: 'Name',
+    cell: (cell) => `${cell.row.original.first_name} ${cell.row.original.last_name}`,
+  },
+  {
+    accessorKey: 'email',
+    header: 'Email address',
+  },
+  {
+    accessorKey: 'created_at',
+    header: 'Created at',
+    cell: (cell) => new Date(cell.row.original.created_at).toLocaleDateString(),
+  },
+]
 
 export default function Page() {
-  const formRef = useRef<HTMLFormElement>(null)
+  // const formRef = useRef<HTMLFormElement>(null)
+  const [users, setUsers] = useState<User[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [formState, formAction] = useFormState(signUp, { message: '' })
   const signUpForm = useForm<SignUpFormSchema>({
@@ -52,39 +80,102 @@ export default function Page() {
     resolver: zodResolver(signUpFormSchema),
   })
 
+  useEffect(() => {
+    /**
+     * Fetches users with a specific role from the database.
+     *
+     * @returns A promise that resolves when the users are fetched and set in the state.
+     */
+    async function fetchUsers() {
+      const adminUsers = await getAllUsers('admin')
+      if (adminUsers != null) setUsers(adminUsers)
+    }
+
+    void fetchUsers()
+  }, [formState])
+
+  const table = useReactTable({
+    data: users,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+
   return (
     <Dialog onOpenChange={setOpen} open={open}>
-      <div className="flex flex-col">
-        <header>
+      <div className="ml-80 flex">
+        <aside className="fixed inset-y-0 left-0 h-svh min-w-80 border-r border-r-gray-200">
           <div className="flex h-16 items-center justify-between py-3 pl-4 pr-2">
             <div></div>
-
-            <button
-              className="flex size-10 items-center justify-center rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400/15"
-              type="button"
-            >
-              <Bars3CenterLeftIcon className="size-6 stroke-gray-700" />
-            </button>
           </div>
-        </header>
+        </aside>
 
-        <section className="pb-12 pt-8">
-          <div className="container">
-            <h2 className="text-display-xs font-semibold">Team members</h2>
-            <p className="mt-1 text-gray-600">
-              Manage your team members and their account permissions here.
-            </p>
-            <div className="mt-4">
-              <DialogTrigger asChild>
-                <Button type="button" hierarchy="secondary-gray" size="md">
-                  <Plus className="size-5" />
-                  <span className="px-0.5">Add team member</span>
-                </Button>
-              </DialogTrigger>
+        <main className="flex flex-1 flex-col gap-8 px-8 pt-8">
+          <header className="border-b border-b-gray-200 pb-5">
+            <div className="flex justify-between gap-4">
+              <div>
+                <h1 className="text-display-sm font-semibold">Team members</h1>
+                <p className="mt-1 text-gray-600">
+                  Manage your team members and their account permissions here.
+                </p>
+              </div>
+              <div className="shrink-0">
+                <DialogTrigger asChild>
+                  <Button type="button" hierarchy="secondary-gray" size="md">
+                    <Plus className="size-5" />
+                    <span className="px-0.5">Add team member</span>
+                  </Button>
+                </DialogTrigger>
+              </div>
             </div>
-            <hr className="mt-5 border-t-gray-200" />
-          </div>
-        </section>
+          </header>
+
+          <section className="flex gap-8">
+            <div className="max-w-72 shrink-0">
+              <h2 className="text-sm font-semibold text-gray-700">Admin users</h2>
+              <p className="text-sm text-gray-600">
+                Admins can add and remove users and manage organization-level settings.
+              </p>
+            </div>
+
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow key={headerGroup.id}>
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead key={header.id}>
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(header.column.columnDef.header, header.getContext())}
+                        </TableHead>
+                      )
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+
+              <TableBody>
+                {table.getRowModel().rows?.length !== 0 ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id}>
+                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell className="h-24 text-center" colSpan={columns.length}>
+                      No results.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </section>
+        </main>
       </div>
 
       <DialogContent>
@@ -94,13 +185,7 @@ export default function Page() {
         </DialogHeader>
 
         <Form {...signUpForm}>
-          <form
-            className="flex flex-col px-4 lg:px-6"
-            // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression, @typescript-eslint/no-misused-promises
-            onSubmit={signUpForm.handleSubmit((values) => formAction(values))}
-            // action={formAction}
-            // ref={formRef}
-          >
+          <form className="flex flex-col px-4 lg:px-6" action={formAction}>
             <div className="flex flex-col gap-y-5">
               <FormField
                 name="first_name"
