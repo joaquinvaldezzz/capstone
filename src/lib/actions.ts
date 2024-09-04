@@ -3,7 +3,7 @@
 import { and, eq } from 'drizzle-orm'
 
 import { db } from './db'
-import { usersTable } from './db-schema'
+import { users } from './db-schema'
 import { logInFormSchema, signUpFormSchema } from './form-schema'
 import { createSession, deleteSession } from './session'
 
@@ -37,8 +37,8 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   // Check if the email and password match a user in the database
   const matchedUser = await db
     .select()
-    .from(usersTable)
-    .where(and(eq(usersTable.email, email), eq(usersTable.password, password)))
+    .from(users)
+    .where(and(eq(users.email, email), eq(users.password, password)))
 
   // If the email and password do not match a user in the database, return an error message
   if (matchedUser.length === 0) {
@@ -77,7 +77,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
 
   // If the form data is valid, insert the user into the database
   await db
-    .insert(usersTable)
+    .insert(users)
     .values({
       ...parsedData.data,
     })
