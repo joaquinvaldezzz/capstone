@@ -14,6 +14,7 @@ interface PreviousState {
 }
 
 interface Message extends PreviousState {
+  success?: boolean
   fields?: Record<string, string>
 }
 
@@ -124,6 +125,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
   // Return a success message
   return {
     message: 'User created successfully.',
+    success: true,
   }
 }
 
