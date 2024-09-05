@@ -8,6 +8,7 @@ import { getCurrentUser } from '@/lib/dal'
 import { type User } from '@/lib/db-schema'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export default function Layout({ children }: { children: ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>()
@@ -33,16 +34,28 @@ export default function Layout({ children }: { children: ReactNode }) {
         <footer className="px-4 pb-8">
           <div className="flex items-center justify-between border-t border-t-gray-200 pl-2 pt-6">
             <div className="flex flex-1 items-center gap-3">
-              <Avatar>
-                <AvatarImage src="" />
-                <AvatarFallback>{getUserInitials(currentUser)}</AvatarFallback>
-              </Avatar>
-              <div className="max-w-40">
-                <div className="truncate text-sm font-semibold text-gray-700">
-                  {currentUser?.first_name} {currentUser?.last_name}
-                </div>
-                <div className="truncate text-sm text-gray-600">{currentUser?.email}</div>
-              </div>
+              {currentUser == null ? (
+                <>
+                  <Skeleton className="size-10 rounded-full" />
+                  <div>
+                    <Skeleton className="h-3 w-24 rounded-full" />
+                    <Skeleton className="mt-1 h-3 w-20 rounded-full" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Avatar>
+                    <AvatarImage src="" />
+                    <AvatarFallback>{getUserInitials(currentUser)}</AvatarFallback>
+                  </Avatar>
+                  <div className="max-w-40">
+                    <div className="truncate text-sm font-semibold text-gray-700">
+                      {currentUser?.first_name} {currentUser?.last_name}
+                    </div>
+                    <div className="truncate text-sm text-gray-600">{currentUser?.email}</div>
+                  </div>
+                </>
+              )}
             </div>
             <Button
               className="size-9 shrink-0"
