@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
@@ -65,7 +65,7 @@ const columns: Array<ColumnDef<User>> = [
 ]
 
 export default function Page() {
-  // const formRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
   const [users, setUsers] = useState<User[]>([])
   const [open, setOpen] = useState<boolean>(false)
   const [formState, formAction] = useFormState(signUp, { message: '' })
@@ -99,6 +99,27 @@ export default function Page() {
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
+
+  /**
+   * Handles the form submission event.
+   *
+   * @param event - The form submission event.
+   */
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    // Prevent the default form submission behavior
+    event.preventDefault()
+
+    void signUpForm.handleSubmit(() => {
+      // If the form reference is null, return early
+      if (formRef.current === null) return
+
+      // Perform the form action with the form data
+      formAction(new FormData(formRef.current))
+
+      // Close the dialog
+      setOpen(false)
+    })(event)
+  }
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
@@ -175,7 +196,12 @@ export default function Page() {
         </DialogHeader>
 
         <Form {...signUpForm}>
-          <form className="flex flex-col px-4 lg:px-6" action={formAction}>
+          <form
+            className="flex flex-col px-4 lg:px-6"
+            onSubmit={handleSubmit}
+            action={formAction}
+            ref={formRef}
+          >
             <div className="flex flex-col gap-y-5">
               <FormField
                 name="first_name"
