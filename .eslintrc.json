@@ -65,9 +65,9 @@
           "tabIndex",
           "style",
           "callback",
-          "multiline",
+          "shorthand",
           "unknown",
-          "shorthand"
+          "multiline"
         ],
         "customGroups": {
           "className": "className",
