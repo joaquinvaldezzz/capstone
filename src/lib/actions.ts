@@ -31,7 +31,7 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   // If the form data is invalid, return an error message
   if (!parsedData.success) {
     return {
-      message: 'Invalid form data',
+      message: 'Invalid form data.',
       fields: parsedData.data,
     }
   }
@@ -45,7 +45,7 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   // If the email does not exist in the database, return an error message
   if (existingAccount.length === 0) {
     return {
-      message: 'Invalid email address or the account does not exist',
+      message: 'Invalid email address or the account does not exist.',
       fields: parsedData.data,
     }
   }
@@ -56,7 +56,7 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   // If the password does not match, return an error message
   if (!passwordMatch) {
     return {
-      message: 'Invalid password',
+      message: 'You have entered an incorrect password.',
       fields: parsedData.data,
     }
   }
@@ -67,10 +67,9 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   // Create a session for the user
   await createSession(user)
 
-  // If it fails, return an error message
+  // Return a success message
   return {
-    message: 'Login failed',
-    fields: parsedData.data,
+    message: 'Logged in successfully.',
   }
 }
 
@@ -88,7 +87,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
   // If the form data is invalid, return an error message
   if (!parsedData.success) {
     return {
-      message: 'Invalid form data',
+      message: 'Invalid form data.',
       fields: parsedData.data,
     }
   }
@@ -99,7 +98,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
   // If the email already exists in the database, return an error message
   if (existingUser.length > 0) {
     return {
-      message: 'Email already exists',
+      message: 'That email address is already in use.',
       fields: parsedData.data,
     }
   }
@@ -124,7 +123,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
 
   // Return a success message
   return {
-    message: 'User created successfully',
+    message: 'User created successfully.',
   }
 }
 
