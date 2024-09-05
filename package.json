@@ -5,7 +5,8 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "drizzle": "drizzle-kit push",
+    "drizzle:push": "drizzle-kit push",
+    "drizzle:studio": "drizzle-kit studio",
     "format": "prettier --write .",
     "lint": "next lint",
     "lint:fix": "next lint --fix .",
