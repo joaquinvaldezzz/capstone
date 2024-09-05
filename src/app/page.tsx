@@ -2,6 +2,7 @@
 
 import { useRef } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { CircleAlert } from 'lucide-react'
 import { useFormState } from 'react-dom'
 import { useForm } from 'react-hook-form'
 
@@ -49,6 +50,17 @@ export default function Page() {
           </div>
         </header>
 
+        {formState.message.length > 0 && (
+          <div className="relative rounded-xl border border-gray-300 bg-white p-4 shadow-xs">
+            <div className="relative inline-block">
+              <div className="absolute left-1/2 top-1/2 size-[calc(100%+6px)] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-error-600/30" />
+              <div className="absolute left-1/2 top-1/2 size-[calc(100%+12px)] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-error-600/10" />
+              <CircleAlert className="size-5 stroke-error-600" size={20} />
+            </div>
+            <p className="mt-4 text-sm font-semibold text-gray-700">{formState.message}</p>
+          </div>
+        )}
+
         <Form {...loginForm}>
           <form
             className="relative flex flex-col gap-y-6"
@@ -58,9 +70,6 @@ export default function Page() {
             ref={formRef}
           >
             <div className="flex flex-col gap-y-5">
-              {formState.message.length > 0 && (
-                <div className="text-sm text-error-500">{formState.message}</div>
-              )}
               <FormField
                 name="email"
                 render={({ field }) => (
