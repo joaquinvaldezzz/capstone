@@ -7,7 +7,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 export const buttonVariants = cva(
-  'relative inline-flex items-center justify-center rounded-lg border font-semibold shadow-xs focus:outline-none focus:ring-4',
+  'relative inline-flex items-center justify-center rounded-lg border font-semibold shadow-xs focus:outline-none focus:ring-4 disabled:text-gray-400',
   {
     variants: {
       size: {
@@ -19,19 +19,18 @@ export const buttonVariants = cva(
       },
       hierarchy: {
         primary:
-          'border-brand-600 bg-brand-600 text-white hover:border-brand-700 hover:bg-brand-700 focus:ring-brand-500/25 disabled:border-gray-200 disabled:bg-gray-100 disabled:text-gray-400',
+          'border-brand-600 bg-brand-600 text-white hover:border-brand-700 hover:bg-brand-700 focus:ring-brand-500/25 disabled:border-gray-200 disabled:bg-gray-100',
         'secondary-gray':
-          'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-400/15 disabled:border-gray-200 disabled:text-gray-400',
+          'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-400/15 disabled:border-gray-200',
         'secondary-color':
-          'border-brand-300 bg-brand-50 text-brand-700 hover:bg-brand-100 hover:text-brand-800 focus:ring-brand-500/25 disabled:border-brand-200 disabled:bg-white disabled:text-gray-400',
-        'tertiary-gray':
-          'border-transparent text-gray-600 shadow-transparent hover:bg-gray-50 disabled:text-gray-400',
+          'border-brand-300 bg-brand-50 text-brand-700 hover:bg-brand-100 hover:text-brand-800 focus:ring-brand-500/25 disabled:border-brand-200 disabled:bg-white',
+        'tertiary-gray': 'border-transparent text-gray-600 shadow-transparent hover:bg-gray-50',
         'tertiary-color':
-          'border-transparent text-brand-700 shadow-transparent hover:bg-brand-50 hover:text-brand-800 disabled:text-gray-400',
+          'border-transparent text-brand-700 shadow-transparent hover:bg-brand-50 hover:text-brand-800',
         'link-gray':
-          'h-auto rounded border-transparent p-0 text-gray-600 shadow-transparent hover:text-gray-700 focus:ring-2 disabled:text-gray-400',
+          'h-auto rounded border-transparent p-0 text-gray-600 shadow-transparent hover:text-gray-700 focus:ring-2',
         'link-color':
-          'h-auto rounded border-transparent p-0 text-gray-700 shadow-transparent hover:text-brand-800 focus:ring-2 disabled:text-gray-400',
+          'h-auto rounded border-transparent p-0 text-gray-700 shadow-transparent hover:text-brand-800 focus:ring-2',
         button: 'border-transparent shadow-transparent hover:bg-gray-50 focus:ring-gray-400/15',
       },
     },
