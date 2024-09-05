@@ -45,9 +45,9 @@ const DialogContent = forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 disabled:pointer-events-none data-open:bg-gray-100 data-open:text-gray-500">
-        <span className="sr-only">Close</span>
-        <X className="size-4" />
+      <DialogPrimitive.Close className="absolute right-4 top-4 flex size-11 items-center justify-center rounded-lg hover:bg-gray-50">
+        <span className="sr-only">Close dialog</span>
+        <X className="size-6 stroke-gray-400" />
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
   </DialogPortal>
