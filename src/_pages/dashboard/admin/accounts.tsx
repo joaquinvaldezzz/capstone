@@ -108,6 +108,7 @@ export default function Accounts(): JSX.Element {
                   >
                     <FormField
                       name="username"
+                      control={form.control}
                       render={() => (
                         <FormItem>
                           <FormLabel htmlFor="username">Username</FormLabel>
@@ -122,11 +123,11 @@ export default function Accounts(): JSX.Element {
                           <FormMessage className="min-h-5" />
                         </FormItem>
                       )}
-                      control={form.control}
                     />
 
                     <FormField
                       name="password"
+                      control={form.control}
                       render={() => (
                         <FormItem>
                           <FormLabel htmlFor="password">Password</FormLabel>
@@ -143,11 +144,11 @@ export default function Accounts(): JSX.Element {
                           <FormMessage className="min-h-5" />
                         </FormItem>
                       )}
-                      control={form.control}
                     />
 
                     <FormField
                       name="role"
+                      control={form.control}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel htmlFor="role">Role</FormLabel>
@@ -169,7 +170,6 @@ export default function Accounts(): JSX.Element {
                           <FormMessage className="min-h-5" />
                         </FormItem>
                       )}
-                      control={form.control}
                     />
 
                     <div className="-mx-6 -mb-6 border-t px-6 py-4">

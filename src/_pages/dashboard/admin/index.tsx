@@ -296,6 +296,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
               <Form {...form}>
                 <FormField
                   name="first_name"
+                  control={form.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>First name</FormLabel>
@@ -309,11 +310,11 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                       <FormMessage />
                     </FormItem>
                   )}
-                  control={form.control}
                 />
 
                 <FormField
                   name="last_name"
+                  control={form.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Last name</FormLabel>
@@ -327,11 +328,11 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                       <FormMessage />
                     </FormItem>
                   )}
-                  control={form.control}
                 />
 
                 <FormField
                   name="role"
+                  control={form.control}
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Role</FormLabel>
@@ -350,7 +351,6 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                       <FormMessage />
                     </FormItem>
                   )}
-                  control={form.control}
                 />
 
                 <div>

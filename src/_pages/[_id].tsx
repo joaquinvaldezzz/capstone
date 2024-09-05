@@ -74,6 +74,7 @@ export default function ForgotPassword(): JSX.Element {
             <Form {...form}>
               <FormField
                 name="new_password"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Confirm password</FormLabel>
@@ -88,11 +89,11 @@ export default function ForgotPassword(): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
               />
 
               <FormField
                 name="confirm_password"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username</FormLabel>
@@ -107,7 +108,6 @@ export default function ForgotPassword(): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
               />
             </Form>
 

@@ -91,6 +91,7 @@ export default function Page() {
             <div className="flex flex-col gap-y-5">
               <FormField
                 name="email"
+                control={loginForm.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
@@ -106,10 +107,10 @@ export default function Page() {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={loginForm.control}
               />
               <FormField
                 name="password"
+                control={loginForm.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
@@ -125,7 +126,6 @@ export default function Page() {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={loginForm.control}
               />
             </div>
 

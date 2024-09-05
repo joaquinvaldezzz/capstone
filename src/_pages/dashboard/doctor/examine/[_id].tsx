@@ -108,6 +108,7 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
             <div className="grid gap-4 md:grid-cols-2 md:gap-6">
               <FormField
                 name="result"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Result</FormLabel>
@@ -127,11 +128,11 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     </FormControl>
                   </FormItem>
                 )}
-                control={form.control}
               />
 
               <FormField
                 name="status"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Status</FormLabel>
@@ -151,7 +152,6 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     </FormControl>
                   </FormItem>
                 )}
-                control={form.control}
               />
             </div>
 

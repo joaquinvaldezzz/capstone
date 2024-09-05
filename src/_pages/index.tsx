@@ -114,6 +114,7 @@ export default function SignIn(): JSX.Element {
             <Form {...signInForm}>
               <FormField
                 name="username"
+                control={signInForm.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Username</FormLabel>
@@ -128,11 +129,11 @@ export default function SignIn(): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={signInForm.control}
               />
 
               <FormField
                 name="password"
+                control={signInForm.control}
                 render={({ field }) => (
                   <FormItem>
                     <div className="flex items-center justify-between">
@@ -152,7 +153,6 @@ export default function SignIn(): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={signInForm.control}
               />
             </Form>
 
@@ -186,6 +186,7 @@ export default function SignIn(): JSX.Element {
           <Form {...forgotPasswordForm}>
             <FormField
               name="username"
+              control={forgotPasswordForm.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Username</FormLabel>
@@ -200,7 +201,6 @@ export default function SignIn(): JSX.Element {
                   <FormMessage />
                 </FormItem>
               )}
-              control={forgotPasswordForm.control}
             />
 
             <Button type="submit" disabled={forgotPasswordForm.formState.isSubmitting}>

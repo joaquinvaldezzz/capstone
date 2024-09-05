@@ -104,6 +104,7 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
             <div className="grid gap-4 md:grid-cols-2 md:gap-6">
               <FormField
                 name="first_name"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>First name</FormLabel>
@@ -118,11 +119,11 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
               />
 
               <FormField
                 name="last_name"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Last name</FormLabel>
@@ -137,12 +138,12 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
               />
             </div>
 
             <FormField
               name="age"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Age</FormLabel>
@@ -157,11 +158,11 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormMessage />
                 </FormItem>
               )}
-              control={form.control}
             />
 
             <FormField
               name="contact_number"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Contact number</FormLabel>
@@ -175,11 +176,11 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormMessage />
                 </FormItem>
               )}
-              control={form.control}
             />
 
             <FormField
               name="address.street"
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Street</FormLabel>
@@ -194,12 +195,12 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormMessage />
                 </FormItem>
               )}
-              control={form.control}
             />
 
             <div className="grid gap-4 md:grid-cols-3 md:gap-6">
               <FormField
                 name="address.city"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>City</FormLabel>
@@ -214,11 +215,11 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
               />
 
               <FormField
                 name="address.province"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Province</FormLabel>
@@ -233,11 +234,11 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
               />
 
               <FormField
                 name="address.zip_code"
+                control={form.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>ZIP code</FormLabel>
@@ -252,7 +253,6 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={form.control}
               />
             </div>
 
