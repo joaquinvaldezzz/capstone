@@ -7,6 +7,7 @@ const key = new TextEncoder().encode(secretKey)
 
 interface SessionPayload extends JWTPayload {
   userId: string | number
+  userRole: string
   expiresAt: Date
 }
 
@@ -48,9 +49,9 @@ export async function decrypt(session: string | undefined = '') {
  * @param userId - The ID of the user.
  * @returns A promise that resolves to void.
  */
-export async function createSession(userId: string) {
+export async function createSession(userId: string, userRole: string) {
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
-  const session = await encrypt({ userId, expiresAt })
+  const session = await encrypt({ userId, userRole, expiresAt })
 
   cookies().set('session', session, {
     httpOnly: true,
@@ -78,7 +79,7 @@ export async function verifySession() {
     redirect('/')
   }
 
-  return { isAuth: true, userId: Number(session?.userId) }
+  return { userId: Number(session?.userId) }
 }
 
 /**

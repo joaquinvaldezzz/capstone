@@ -62,11 +62,12 @@ export async function login(_previousState: PreviousState, formData: FormData): 
     }
   }
 
-  // Get the user ID
-  const user = existingAccount[0].id.toString()
+  // Get the user ID and their role from the database
+  const userId = existingAccount[0].id.toString()
+  const userRole = existingAccount[0].role.toString()
 
   // Create a session for the user
-  await createSession(user)
+  await createSession(userId, userRole)
 
   // Return a success message
   return {
