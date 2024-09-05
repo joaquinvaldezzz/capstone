@@ -76,6 +76,12 @@ export default function Page() {
       email: '',
       password: '',
       role: 'admin',
+
+      /**
+       * Override the default values with the form state fields if the form was unsuccessful.
+       * Otherwise, use the default values (reset the form).
+       */
+      ...((formState.success ?? false) ? formState.fields : {}),
     },
     resolver: zodResolver(signUpFormSchema),
   })
@@ -106,20 +112,24 @@ export default function Page() {
    * @param event - The form submission event.
    */
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    // Prevent the default form submission behavior
+    // Prevent the default form submission behavior.
     event.preventDefault()
 
     void signUpForm.handleSubmit(() => {
-      // If the form reference is null, return early
+      // If the form reference is null, return early.
       if (formRef.current === null) return
 
-      // Perform the form action with the form data
+      // Perform the form action with the form data.
       formAction(new FormData(formRef.current))
-
-      // Close the dialog
-      setOpen(false)
     })(event)
   }
+
+  useEffect(() => {
+    if (formState.success ?? false) {
+      // Close the dialog if the form submission was successful.
+      setOpen(false)
+    }
+  }, [formState.success])
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
@@ -187,6 +197,8 @@ export default function Page() {
             </TableBody>
           </Table>
         </section>
+
+        <hr className="border-t-gray-200" />
       </div>
 
       <DialogContent>
@@ -203,53 +215,56 @@ export default function Page() {
             ref={formRef}
           >
             <div className="flex flex-col gap-y-5">
-              <FormField
-                name="first_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>First name</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder=""
-                        autoComplete="name"
-                        padding="md"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-                control={signUpForm.control}
-              />
-              <FormField
-                name="last_name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Last name</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder=""
-                        autoComplete="family-name"
-                        padding="md"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-                control={signUpForm.control}
-              />
+              <div className="grid grid-cols-2 gap-4">
+                <FormField
+                  name="first_name"
+                  control={signUpForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>First name</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="e.g. John"
+                          autoComplete="name"
+                          padding="md"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  name="last_name"
+                  control={signUpForm.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Last name</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="e.g. Doe"
+                          autoComplete="family-name"
+                          padding="md"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 name="email"
+                control={signUpForm.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
                         type="email"
-                        placeholder=""
+                        placeholder="e.g. john@doe.com"
                         autoComplete="email"
                         padding="md"
                         {...field}
@@ -258,10 +273,10 @@ export default function Page() {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={signUpForm.control}
               />
               <FormField
                 name="password"
+                control={signUpForm.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
@@ -277,10 +292,10 @@ export default function Page() {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={signUpForm.control}
               />
               <FormField
                 name="role"
+                control={signUpForm.control}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Select a role</FormLabel>
@@ -299,7 +314,6 @@ export default function Page() {
                     <FormMessage />
                   </FormItem>
                 )}
-                control={signUpForm.control}
               />
             </div>
 
