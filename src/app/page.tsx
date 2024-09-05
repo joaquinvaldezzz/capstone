@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef } from 'react'
+import { useRef, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleAlert } from 'lucide-react'
 import { useFormState } from 'react-dom'
@@ -29,10 +29,30 @@ export default function Page() {
     defaultValues: {
       email: '',
       password: '',
+
+      // Override the default values with the previous form state fields
       ...formState.fields,
     },
     resolver: zodResolver(logInFormSchema),
   })
+
+  /**
+   * Handles the form submission event.
+   *
+   * @param event - The form submission event.
+   */
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    // Prevent the default form submission behavior
+    event.preventDefault()
+
+    void loginForm.handleSubmit(() => {
+      // If the form reference is null, return early
+      if (formRef.current === null) return
+
+      // Perform the form action with the form data
+      formAction(new FormData(formRef.current))
+    })(event)
+  }
 
   return (
     <div className="min-h-svh overflow-x-hidden py-12 lg:pt-24">
@@ -64,8 +84,7 @@ export default function Page() {
         <Form {...loginForm}>
           <form
             className="relative flex flex-col gap-y-6"
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            onSubmit={loginForm.handleSubmit(() => formRef.current?.submit())}
+            onSubmit={handleSubmit}
             action={formAction}
             ref={formRef}
           >
@@ -111,7 +130,7 @@ export default function Page() {
             </div>
 
             <Button type="submit" size="lg">
-              Sign in
+              Log in
             </Button>
           </form>
         </Form>
