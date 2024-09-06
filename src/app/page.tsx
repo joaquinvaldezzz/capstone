@@ -1,8 +1,8 @@
 'use client'
 
-import { useRef, type FormEvent } from 'react'
+import { useRef, useState, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CircleAlert } from 'lucide-react'
+import { CircleAlert, Eye, EyeOff } from 'lucide-react'
 import { useFormState } from 'react-dom'
 import { useForm } from 'react-hook-form'
 
@@ -24,6 +24,7 @@ import MDGridPattern from '@/public/svg/md-grid-pattern.svg'
 
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null)
+  const [showPassword, setShowPassword] = useState<boolean>(false)
   const [formState, formAction] = useFormState(login, { message: '' })
   const loginForm = useForm<LogInFormSchema>({
     defaultValues: {
@@ -84,9 +85,9 @@ export default function Page() {
         <Form {...loginForm}>
           <form
             className="relative flex flex-col gap-y-6"
-            onSubmit={handleSubmit}
             action={formAction}
             ref={formRef}
+            onSubmit={handleSubmit}
           >
             <div className="flex flex-col gap-y-5">
               <FormField
@@ -114,15 +115,36 @@ export default function Page() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                        autoComplete="current-password"
-                        padding="md"
-                        {...field}
-                      />
-                    </FormControl>
+                    <div className="flex w-full">
+                      <FormControl>
+                        <Input
+                          className="flex-1 rounded-r-none"
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
+                          autoComplete="current-password"
+                          padding="md"
+                          {...field}
+                        />
+                      </FormControl>
+                      <Button
+                        className="size-11 items-center justify-center rounded-l-none border-l-0 p-3"
+                        type="button"
+                        hierarchy="secondary-gray"
+                        size="lg"
+                        onClick={() => {
+                          setShowPassword(!showPassword)
+                        }}
+                      >
+                        <span className="sr-only">
+                          {showPassword ? 'Hide password' : 'Show password'}
+                        </span>
+                        {showPassword ? (
+                          <EyeOff className="size-5 shrink-0" size={20} />
+                        ) : (
+                          <Eye className="size-5 shrink-0" size={20} />
+                        )}
+                      </Button>
+                    </div>
                     <FormMessage />
                   </FormItem>
                 )}
