@@ -110,11 +110,11 @@ export default function Layout({ children }: { children: ReactNode }) {
             <Button
               className="size-9 shrink-0"
               type="button"
+              hierarchy="tertiary-gray"
+              size="sm"
               onClick={() => {
                 void logout()
               }}
-              hierarchy="tertiary-gray"
-              size="sm"
             >
               <span className="sr-only">Log out</span>
               <LogOut className="size-5 shrink-0" size={20} />

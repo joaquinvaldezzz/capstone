@@ -111,11 +111,11 @@ export default function Dashboard({
       header: 'Examine',
       cell: ({ row }) => (
         <Button
+          size="sm"
+          variant="outline"
           onClick={() => {
             void onExamine(row.getValue('_id'))
           }}
-          size="sm"
-          variant="outline"
         >
           Examine
         </Button>
@@ -127,11 +127,11 @@ export default function Dashboard({
       header: 'Edit',
       cell: ({ row }) => (
         <Button
+          size="sm"
+          variant="outline"
           onClick={() => {
             void onEdit(row.getValue('_id'))
           }}
-          size="sm"
-          variant="outline"
         >
           Edit
         </Button>

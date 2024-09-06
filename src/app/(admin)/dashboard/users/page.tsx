@@ -132,7 +132,7 @@ export default function Page() {
   }, [formState.success])
 
   return (
-    <Dialog onOpenChange={setOpen} open={open}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <div className="flex flex-col gap-8">
         <header className="border-b border-b-gray-200 pb-5">
           <div className="flex justify-between gap-4">
@@ -210,9 +210,9 @@ export default function Page() {
         <Form {...signUpForm}>
           <form
             className="flex flex-col px-4 lg:px-6"
-            onSubmit={handleSubmit}
             action={formAction}
             ref={formRef}
+            onSubmit={handleSubmit}
           >
             <div className="flex flex-col gap-y-5">
               <div className="grid grid-cols-2 gap-4">
@@ -299,7 +299,7 @@ export default function Page() {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Select a role</FormLabel>
-                    <Select name="role" onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select name="role" defaultValue={field.value} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a role" />

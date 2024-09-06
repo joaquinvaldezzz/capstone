@@ -64,9 +64,9 @@
           "aria-*",
           "tabIndex",
           "style",
-          "callback",
           "shorthand",
           "unknown",
+          "callback",
           "multiline"
         ],
         "customGroups": {

@@ -260,10 +260,10 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
               <Button type="submit">{form.formState.isSubmitting ? 'Saving...' : 'Save'}</Button>
               <Button
                 type="button"
+                variant="outline"
                 onClick={() => {
                   router.back()
                 }}
-                variant="outline"
               >
                 Cancel
               </Button>

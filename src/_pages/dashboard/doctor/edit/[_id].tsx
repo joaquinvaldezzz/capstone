@@ -147,10 +147,10 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
               id="picture"
               name="picture"
               type="file"
+              accept="image/*"
               onChange={(event) => {
                 encodeImageFileAsURL(event)
               }}
-              accept="image/*"
             />
           </div>
 
@@ -344,10 +344,10 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
               <Button type="submit">{form.formState.isSubmitting ? 'Saving...' : 'Save'}</Button>
               <Button
                 type="button"
+                variant="outline"
                 onClick={() => {
                   router.back()
                 }}
-                variant="outline"
               >
                 Cancel
               </Button>

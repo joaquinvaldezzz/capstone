@@ -237,7 +237,7 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
   ]
 
   return (
-    <Dialog onOpenChange={setOpen} open={open}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <AdminLayout>
         <Title>Admin</Title>
 
