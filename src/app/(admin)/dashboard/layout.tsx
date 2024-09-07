@@ -108,9 +108,9 @@ export default function Layout({ children }: { children: ReactNode }) {
               )}
             </div>
             <Button
-              className="size-9 shrink-0 p-0"
               type="button"
               hierarchy="tertiary-gray"
+              icon="sm"
               size="sm"
               onClick={() => {
                 void logout()
