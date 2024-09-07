@@ -1,5 +1,5 @@
-import { type InferInsertModel, type InferSelectModel } from 'drizzle-orm'
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
+import { type InferSelectModel } from 'drizzle-orm'
+import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('users', {
   id: serial('id').primaryKey(),
@@ -12,4 +12,12 @@ export const users = pgTable('users', {
 })
 
 export type User = InferSelectModel<typeof users>
-export type NewUser = InferInsertModel<typeof users>
+
+export const sessions = pgTable('sessions', {
+  session_id: serial('session_id').primaryKey(),
+  user_id: integer('user_id')
+    .references(() => users.id)
+    .notNull(),
+  user_role: text('role').notNull(),
+  expires_at: timestamp('expires_at').notNull(),
+})

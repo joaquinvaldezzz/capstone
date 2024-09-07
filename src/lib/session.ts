@@ -2,6 +2,9 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { jwtVerify, SignJWT, type JWTPayload } from 'jose'
 
+import { db } from './db'
+import { sessions } from './db-schema'
+
 const secretKey = process.env.JWT_SECRET
 const key = new TextEncoder().encode(secretKey)
 
@@ -51,6 +54,16 @@ export async function decrypt(session: string | undefined = '') {
  */
 export async function createSession(userId: string, userRole: string) {
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
+
+  await db
+    .insert(sessions)
+    .values({
+      user_id: Number(userId),
+      user_role: userRole,
+      expires_at: expiresAt,
+    })
+    .execute()
+
   const session = await encrypt({ userId, userRole, expiresAt })
 
   cookies().set('session', session, {
