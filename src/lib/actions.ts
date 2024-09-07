@@ -131,6 +131,35 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
 }
 
 /**
+ * Deletes a user from the database.
+ *
+ * @param _previousState - The previous state of the application.
+ * @param formData - The form data containing the user ID.
+ * @returns A promise that resolves to a message indicating the success of the operation.
+ */
+export async function deleteUser(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const userId = formData.get('user-id')
+
+  // Delete the user from the database
+  await db
+    .delete(users)
+    .where(eq(users.id, parseInt(String(userId))))
+    .execute()
+
+  // Revalidate the dashboard page
+  revalidatePath('/dashboard')
+
+  // Return a success message
+  return {
+    message: 'User deleted successfully.',
+    success: true,
+  }
+}
+
+/**
  * Logs out the user by deleting the session.
  *
  * @returns A promise that resolves when the session is deleted.
