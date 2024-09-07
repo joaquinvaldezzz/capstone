@@ -54,8 +54,8 @@ export default function Layout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="ml-80 flex">
-      <aside className="fixed inset-y-0 left-0 flex h-svh w-full max-w-80 flex-col justify-between border-r border-r-gray-200">
+    <div className="ml-72 flex">
+      <aside className="fixed inset-y-0 left-0 flex h-svh w-full max-w-72 flex-col justify-between border-r border-r-gray-200">
         <div className="flex flex-col gap-6 pt-8">
           <div className="h-8" />
 
@@ -82,8 +82,8 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
 
         <footer className="px-4 pb-8">
-          <div className="flex items-center justify-between border-t border-t-gray-200 pl-2 pt-6">
-            <div className="flex flex-1 items-center gap-3">
+          <div className="flex items-center justify-between gap-3 border-t border-t-gray-200 pl-2 pt-6">
+            <div className="flex min-w-0 items-center gap-3">
               {currentUser == null ? (
                 <>
                   <Skeleton className="size-10 rounded-full" />
@@ -98,7 +98,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                     <AvatarImage src="" />
                     <AvatarFallback>{getUserInitials(currentUser)}</AvatarFallback>
                   </Avatar>
-                  <div className="max-w-40">
+                  <div className="min-w-0">
                     <div className="truncate text-sm font-semibold text-gray-700">
                       {currentUser?.first_name} {currentUser?.last_name}
                     </div>
@@ -108,7 +108,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               )}
             </div>
             <Button
-              className="size-9 shrink-0"
+              className="size-9 shrink-0 p-0"
               type="button"
               hierarchy="tertiary-gray"
               size="sm"
@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               }}
             >
               <span className="sr-only">Log out</span>
-              <LogOut className="size-5 shrink-0" size={20} />
+              <LogOut className="size-5" size={20} />
             </Button>
           </div>
         </footer>
