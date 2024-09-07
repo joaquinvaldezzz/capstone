@@ -7,7 +7,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 export const buttonVariants = cva(
-  'relative inline-flex items-center justify-center rounded-lg border font-semibold shadow-xs focus:outline-none focus:ring-4 disabled:text-gray-400',
+  'relative inline-flex items-center justify-center rounded-lg border font-semibold shadow-xs *:shrink-0 focus:outline-none focus:ring-4 disabled:text-gray-400',
   {
     variants: {
       size: {
@@ -24,14 +24,22 @@ export const buttonVariants = cva(
           'border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:ring-gray-400/15 disabled:border-gray-200',
         'secondary-color':
           'border-brand-300 bg-brand-50 text-brand-700 hover:bg-brand-100 hover:text-brand-800 focus:ring-brand-500/25 disabled:border-brand-200 disabled:bg-white',
-        'tertiary-gray': 'border-transparent text-gray-600 shadow-transparent hover:bg-gray-50',
+        'tertiary-gray':
+          'border-transparent text-gray-600 shadow-transparent hover:bg-gray-50 focus:ring-2',
         'tertiary-color':
-          'border-transparent text-brand-700 shadow-transparent hover:bg-brand-50 hover:text-brand-800',
+          'border-transparent text-brand-700 shadow-transparent hover:bg-brand-50 hover:text-brand-800 focus:ring-2',
         'link-gray':
           'h-auto rounded border-transparent p-0 text-gray-600 shadow-transparent hover:text-gray-700 focus:ring-2',
         'link-color':
           'h-auto rounded border-transparent p-0 text-gray-700 shadow-transparent hover:text-brand-800 focus:ring-2',
         button: 'border-transparent shadow-transparent hover:bg-gray-50 focus:ring-gray-400/15',
+      },
+      icon: {
+        sm: 'w-9 p-2',
+        md: 'w-10 p-2.5',
+        lg: 'w-11 p-3',
+        xl: 'w-12 p-3.5',
+        '2xl': 'w-15 p-4',
       },
     },
     defaultVariants: {
@@ -48,12 +56,12 @@ export interface ButtonProps
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, size, hierarchy, asChild = false, ...props }, ref) => {
+  ({ className, size, hierarchy, icon, asChild = false, ...props }, ref) => {
     const Component = asChild ? Slot : 'button'
 
     return (
       <Component
-        className={cn(buttonVariants({ size, hierarchy }), className)}
+        className={cn(buttonVariants({ size, hierarchy, icon }), className)}
         ref={ref}
         {...props}
       />
