@@ -2,6 +2,8 @@ import { type ReactNode } from 'react'
 import { type Metadata } from 'next'
 import localFont from 'next/font/local'
 
+import { Toaster } from '@/components/ui/toaster'
+
 import '../styles/main.css'
 
 export const metadata: Metadata = {
@@ -28,7 +30,10 @@ const inter = localFont({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={inter.variable} lang="en">
-      <body className="min-w-80 bg-white text-gray-900 antialiased">{children}</body>
+      <body className="min-w-80 bg-white text-gray-900 antialiased">
+        {children}
+        <Toaster />
+      </body>
     </html>
   )
 }
