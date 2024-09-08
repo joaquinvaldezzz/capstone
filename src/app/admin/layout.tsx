@@ -20,12 +20,12 @@ export default function Layout({ children }: { children: ReactNode }) {
   const links: NavItem[] = [
     {
       icon: <House className="size-6 stroke-gray-500" />,
-      href: '/dashboard',
+      href: '/admin',
       text: 'Home',
     },
     {
       icon: <Users className="size-6 stroke-gray-500" />,
-      href: '/dashboard/users',
+      href: '/admin/users',
       text: 'Users',
     },
   ]
