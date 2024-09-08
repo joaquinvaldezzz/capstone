@@ -119,11 +119,11 @@ const FormControl = forwardRef<ElementRef<typeof Slot>, ComponentPropsWithoutRef
     return (
       <Slot
         id={formItemId}
-        aria-invalid={!(error == null)}
-        ref={ref}
         aria-describedby={
           error == null ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`
         }
+        aria-invalid={!(error == null)}
+        ref={ref}
         {...props}
       />
     )

@@ -302,8 +302,8 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                       <FormLabel>First name</FormLabel>
                       <FormControl>
                         <Input
-                          type="text"
                           data-error={form.formState.errors.first_name != null}
+                          type="text"
                           {...field}
                         />
                       </FormControl>
@@ -320,8 +320,8 @@ export default function Admin({ accounts, admins, doctors, patients }: AccountTy
                       <FormLabel>Last name</FormLabel>
                       <FormControl>
                         <Input
-                          type="text"
                           data-error={form.formState.errors.last_name != null}
+                          type="text"
                           {...field}
                         />
                       </FormControl>

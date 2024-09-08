@@ -110,9 +110,9 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormLabel>First name</FormLabel>
                     <FormControl>
                       <Input
+                        data-error={form.formState.errors.first_name != null}
                         type="text"
                         autoComplete="off"
-                        data-error={form.formState.errors.first_name != null}
                         {...field}
                       />
                     </FormControl>
@@ -129,9 +129,9 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormLabel>Last name</FormLabel>
                     <FormControl>
                       <Input
+                        data-error={form.formState.errors.last_name != null}
                         type="text"
                         autoComplete="off"
-                        data-error={form.formState.errors.last_name != null}
                         {...field}
                       />
                     </FormControl>
@@ -149,9 +149,9 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormLabel>Age</FormLabel>
                   <FormControl>
                     <Input
+                      data-error={form.formState.errors.age != null}
                       type="number"
                       autoComplete="off"
-                      data-error={form.formState.errors.age != null}
                       {...field}
                     />
                   </FormControl>
@@ -168,8 +168,8 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormLabel>Contact number</FormLabel>
                   <FormControl>
                     <Input
-                      type="number"
                       data-error={form.formState.errors.contact_number != null}
+                      type="number"
                       {...field}
                     />
                   </FormControl>
@@ -186,9 +186,9 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                   <FormLabel>Street</FormLabel>
                   <FormControl>
                     <Input
+                      data-error={form.formState.errors.address?.street != null}
                       type="text"
                       autoComplete="off"
-                      data-error={form.formState.errors.address?.street != null}
                       {...field}
                     />
                   </FormControl>
@@ -206,9 +206,9 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormLabel>City</FormLabel>
                     <FormControl>
                       <Input
+                        data-error={form.formState.errors.address?.city != null}
                         type="text"
                         autoComplete="off"
-                        data-error={form.formState.errors.address?.city != null}
                         {...field}
                       />
                     </FormControl>
@@ -225,9 +225,9 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormLabel>Province</FormLabel>
                     <FormControl>
                       <Input
+                        data-error={form.formState.errors.address?.province != null}
                         type="text"
                         autoComplete="off"
-                        data-error={form.formState.errors.address?.province != null}
                         {...field}
                       />
                     </FormControl>
@@ -244,9 +244,9 @@ export default function Edit({ accounts }: AccountTypes): JSX.Element {
                     <FormLabel>ZIP code</FormLabel>
                     <FormControl>
                       <Input
+                        data-error={form.formState.errors.address?.zip_code != null}
                         type="text"
                         autoComplete="off"
-                        data-error={form.formState.errors.address?.zip_code != null}
                         {...field}
                       />
                     </FormControl>

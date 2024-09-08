@@ -115,9 +115,9 @@ export default function Accounts(): JSX.Element {
                           <Input
                             id="username"
                             {...form.register('username')}
+                            data-error={form.formState.errors.username != null}
                             type="text"
                             placeholder=""
-                            data-error={form.formState.errors.username != null}
                             maxLength={64}
                           />
                           <FormMessage className="min-h-5" />
@@ -135,9 +135,9 @@ export default function Accounts(): JSX.Element {
                             <Input
                               id="password"
                               {...form.register('password')}
+                              data-error={form.formState.errors.password != null}
                               type="password"
                               placeholder=""
-                              data-error={form.formState.errors.password != null}
                               maxLength={64}
                             />
                           </FormControl>

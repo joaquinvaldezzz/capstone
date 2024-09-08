@@ -65,8 +65,8 @@ export default function Layout({ children }: { children: ReactNode }) {
                 <li key={index}>
                   <Link
                     className="group flex items-center justify-between rounded-md px-3 py-2 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400/15 data-active:bg-gray-50"
-                    href={link.href}
                     data-state={pathname === link.href ? 'active' : 'inactive'}
+                    href={link.href}
                   >
                     <div className="flex items-center gap-3">
                       {link.icon}

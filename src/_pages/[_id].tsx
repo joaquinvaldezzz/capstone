@@ -80,9 +80,9 @@ export default function ForgotPassword(): JSX.Element {
                     <FormLabel>Confirm password</FormLabel>
                     <FormControl>
                       <Input
+                        data-error={form.formState.errors.new_password != null}
                         type="password"
                         autoComplete="off"
-                        data-error={form.formState.errors.new_password != null}
                         {...field}
                       />
                     </FormControl>
@@ -99,9 +99,9 @@ export default function ForgotPassword(): JSX.Element {
                     <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input
+                        data-error={form.formState.errors.confirm_password != null}
                         type="password"
                         autoComplete="off"
-                        data-error={form.formState.errors.confirm_password != null}
                         {...field}
                       />
                     </FormControl>

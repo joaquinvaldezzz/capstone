@@ -51,7 +51,7 @@
           "className",
           "id",
           "name",
-          "data-*",
+          "data",
           "src",
           "for",
           "type",
@@ -61,13 +61,13 @@
           "title",
           "alt",
           "role",
-          "aria-*",
+          "aria",
           "tabIndex",
           "style",
           "shorthand",
           "unknown",
-          "callback",
-          "multiline"
+          "multiline",
+          "callback"
         ],
         "customGroups": {
           "className": "className",

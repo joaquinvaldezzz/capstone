@@ -120,9 +120,9 @@ export default function SignIn(): JSX.Element {
                     <FormLabel>Username</FormLabel>
                     <FormControl>
                       <Input
+                        data-error={signInForm.formState.errors.username != null}
                         type="text"
                         autoComplete="username"
-                        data-error={signInForm.formState.errors.username != null}
                         {...field}
                       />
                     </FormControl>
@@ -145,8 +145,8 @@ export default function SignIn(): JSX.Element {
 
                     <FormControl>
                       <Input
-                        type="password"
                         data-error={signInForm.formState.errors.password != null}
+                        type="password"
                         {...field}
                       />
                     </FormControl>
@@ -192,9 +192,9 @@ export default function SignIn(): JSX.Element {
                   <FormLabel>Username</FormLabel>
                   <FormControl>
                     <Input
+                      data-error={forgotPasswordForm.formState.errors.username != null}
                       type="text"
                       autoComplete="off"
-                      data-error={forgotPasswordForm.formState.errors.username != null}
                       {...field}
                     />
                   </FormControl>
