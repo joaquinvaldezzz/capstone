@@ -8,7 +8,7 @@ import { sessions } from './db-schema'
 const secretKey = process.env.JWT_SECRET
 const key = new TextEncoder().encode(secretKey)
 
-interface SessionPayload extends JWTPayload {
+export interface SessionPayload extends JWTPayload {
   userId: string | number
   userRole: string
   expiresAt: Date
@@ -74,7 +74,13 @@ export async function createSession(userId: string, userRole: string) {
     path: '/',
   })
 
-  redirect('/dashboard')
+  if (userRole === 'admin') {
+    redirect('/admin')
+  } else if (userRole === 'doctor') {
+    redirect('/doctor')
+  } else if (userRole === 'patient') {
+    redirect('/patient')
+  }
 }
 
 /**

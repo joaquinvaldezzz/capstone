@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { NextResponse, type MiddlewareConfig, type NextRequest } from 'next/server'
 
-import { decrypt } from '@/lib/session'
+import { decrypt, type SessionPayload } from '@/lib/session'
 
 /**
  * Middleware function that handles route protection and session management.
@@ -11,26 +11,57 @@ import { decrypt } from '@/lib/session'
  */
 export default async function middleware(request: NextRequest) {
   // Specify protected and public routes
-  const protectedRoutes = ['/dashboard']
+  const protectedRoutes = ['/admin', '/doctor', '/patient']
   const publicRoutes = ['/']
 
-  // Check if the current route is protected or public
+  // Get the current path from the request
   const currentPath = request.nextUrl.pathname
+
+  // Check if the current route is protected or public
   const isProtectedRoute = protectedRoutes.includes(currentPath)
   const isPublicRoute = publicRoutes.includes(currentPath)
 
   // Decrypt the session from the cookie
   const cookie = cookies().get('session')?.value
-  const session = await decrypt(cookie)
+  const session = (await decrypt(cookie)) as SessionPayload
 
-  // Redirect to the login page if the route is protected and the user is not authenticated
+  /** Redirect to the login page if the route is protected and the user is not authenticated. */
   if (isProtectedRoute && session?.userId == null) {
     return NextResponse.redirect(new URL('/', request.nextUrl))
   }
 
-  // Redirect to the dashboard if the route is public and the user is authenticated
+  /**
+   * Redirect to their dashboard if they are trying to access a different dashboard while they are
+   * already authenticated as a different user role.
+   */
+  if (isProtectedRoute && session?.userRole === 'admin' && !currentPath.includes('/admin')) {
+    return NextResponse.redirect(new URL('/admin', request.nextUrl))
+  } else if (
+    isProtectedRoute &&
+    session?.userRole === 'doctor' &&
+    !currentPath.includes('/doctor')
+  ) {
+    return NextResponse.redirect(new URL('/doctor', request.nextUrl))
+  } else if (
+    isProtectedRoute &&
+    session?.userRole === 'patient' &&
+    !currentPath.includes('/patient')
+  ) {
+    return NextResponse.redirect(new URL('/patient', request.nextUrl))
+  }
+
+  /**
+   * Redirect to the their dashboard if they are trying to access the login page while they are
+   * already authenticated.
+   */
   if (isPublicRoute && session?.userId != null) {
-    return NextResponse.redirect(new URL('/dashboard', request.nextUrl))
+    if (session?.userRole === 'admin') {
+      return NextResponse.redirect(new URL('/admin', request.nextUrl))
+    } else if (session?.userRole === 'doctor') {
+      return NextResponse.redirect(new URL('/doctor', request.nextUrl))
+    } else if (session?.userRole === 'patient') {
+      return NextResponse.redirect(new URL('/patient', request.nextUrl))
+    }
   }
 
   // Otherwise, continue to the next middleware
