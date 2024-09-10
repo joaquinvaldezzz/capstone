@@ -12,7 +12,7 @@ The repository template includes the following features:
 - **Prettier**: A code formatter that helps you maintain consistent formatting and saves time.
 - **Tailwind CSS**: A utility-first CSS framework that enables you to rapidly design and customize your user interface.
 
-The template also includes some preconfigured settings and dependencies, such as:
+The template also includes some pre-configured settings and dependencies, such as:
 
 - A `.eslintrc.json` file with some common rules for TypeScript and React development.
 - A `.prettierrc.json` file with some default formatting options.
@@ -59,6 +59,16 @@ npm run dev
 ```
 
 This will start the server at http://localhost:3000. You can access the app in your web browser at that address.
+
+### View the Database Locally
+
+To view the database locally, run the following command:
+
+```bash
+npm run drizzle:studio
+```
+
+This will start the Drizzle Studio server at https://local.drizzle.studio. You can access the database in your web browser at that address.
 
 ## Local Production Preview
 
