@@ -1,9 +1,9 @@
 'use client'
 
 import { useRef, useState, type FormEvent } from 'react'
+import { useFormState } from 'react-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleAlert, Eye, EyeOff } from 'lucide-react'
-import { useFormState } from 'react-dom'
 import { useForm } from 'react-hook-form'
 
 import { login } from '@/lib/actions'
