@@ -1,12 +1,13 @@
 'use server'
 
 import { revalidatePath } from 'next/cache'
+import { put } from '@vercel/blob'
 import bcrypt from 'bcrypt'
 import { eq } from 'drizzle-orm'
 
 import { db } from './db'
-import { users } from './db-schema'
-import { logInFormSchema, signUpFormSchema } from './form-schema'
+import { results, users } from './db-schema'
+import { logInFormSchema, resultSchema, signUpFormSchema } from './form-schema'
 import { createSession, deleteSession } from './session'
 
 interface PreviousState {
@@ -69,6 +70,59 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
   // Return a success message
   return {
     message: 'User created successfully.',
+    success: true,
+  }
+}
+
+/**
+ * Adds a new patient to the database and uploads the ultrasound image to the server.
+ *
+ * @param _previousState - The previous state of the application (not used in this function).
+ * @param formData - The form data containing patient information.
+ * @returns A promise that resolves to a message indicating the success or failure of the operation.
+ */
+export async function addPatient(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const formValues = Object.fromEntries(formData)
+  const parsedData = resultSchema.safeParse(formValues)
+
+  // If the form data is invalid, return an error message
+  if (!parsedData.success) {
+    return {
+      message: 'Invalid form data.',
+      success: false,
+      fields: parsedData.data,
+    }
+  }
+
+  // If the form data is valid, insert the patient into the database
+  await db
+    .insert(results)
+    .values({
+      user_id: Number(parsedData.data.patient_name),
+      patient_name: parsedData.data.patient_name,
+      ultrasound_image: parsedData.data.ultrasound_image?.name,
+      diagnosis: 'No diagnosis yet',
+    })
+    .execute()
+
+  // Upload the ultrasound image to the server
+  await put(
+    `ultrasound-images/${String(parsedData.data.ultrasound_image.name)}`,
+    parsedData.data.ultrasound_image,
+    {
+      access: 'public',
+      addRandomSuffix: false,
+    },
+  )
+
+  // Revalidate the results page
+  revalidatePath('/doctor/results')
+
+  return {
+    message: 'Patient added successfully.',
     success: true,
   }
 }
