@@ -6,8 +6,16 @@ import { z } from 'zod'
  * This schema defines the validation rules for the signup form fields.
  */
 export const signUpFormSchema = z.object({
-  first_name: z.string().min(2, { message: 'First name must be at least 2 characters.' }).trim(),
-  last_name: z.string().min(2, { message: 'Last name must be at least 2 characters.' }).trim(),
+  first_name: z
+    .string()
+    .min(2, { message: 'First name must be at least 2 characters.' })
+    .max(64, { message: 'First name must not exceed 64 characters.' })
+    .trim(),
+  last_name: z
+    .string()
+    .min(2, { message: 'Last name must be at least 2 characters.' })
+    .max(64, { message: 'Last name must not exceed 64 characters.' })
+    .trim(),
   email: z.string().email({ message: 'Please enter a valid email address.' }).trim(),
   password: z
     .string()
@@ -36,3 +44,15 @@ export const logInFormSchema = z.object({
 
 /** Represents the inferred type of the `loginSchema`. */
 export type LogInFormSchema = z.infer<typeof logInFormSchema>
+
+export const resultSchema = z.object({
+  patient_name: z
+    .string()
+    .min(2, { message: 'Patient name must be at least 2 characters.' })
+    .trim(),
+  ultrasound_image: z.string().url({ message: 'Please enter a valid URL.' }).trim(),
+  diagnosis: z.string().min(2, { message: 'Diagnosis must be at least 2 characters.' }).trim(),
+})
+
+/** Represents the inferred type of the `resultSchema`. */
+export type ResultSchema = z.infer<typeof resultSchema>
