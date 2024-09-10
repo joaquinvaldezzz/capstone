@@ -19,6 +19,61 @@ interface Message extends PreviousState {
 }
 
 /**
+ * Sign up a user with the provided form data.
+ *
+ * @param _previousState - The previous state of the application.
+ * @param formData - The form data containing user information.
+ * @returns A promise that resolves to a message indicating the result of the sign up operation.
+ */
+export async function signUp(_previousState: PreviousState, formData: FormData): Promise<Message> {
+  const formValues = Object.fromEntries(formData)
+  const parsedData = signUpFormSchema.safeParse(formValues)
+
+  // If the form data is invalid, return an error message
+  if (!parsedData.success) {
+    return {
+      message: 'Invalid form data.',
+      fields: parsedData.data,
+    }
+  }
+
+  // Check if the email already exists in the database
+  const existingUser = await db.select().from(users).where(eq(users.email, parsedData.data.email))
+
+  // If the email already exists in the database, return an error message
+  if (existingUser.length > 0) {
+    return {
+      message: 'That email address is already in use.',
+      fields: parsedData.data,
+    }
+  }
+
+  // Hash the password before storing it in the database
+  const hashedPassword = await bcrypt.hash(parsedData.data.password, 10)
+
+  /**
+   * If the form data is valid and the email does not exist in the database, insert the user into
+   * the database.
+   */
+  await db
+    .insert(users)
+    .values({
+      ...parsedData.data,
+      password: hashedPassword,
+    })
+    .execute()
+
+  // Revalidate the dashboard page
+  revalidatePath('/dashboard')
+
+  // Return a success message
+  return {
+    message: 'User created successfully.',
+    success: true,
+  }
+}
+
+/**
  * Logs in a user with the provided form data.
  *
  * @param _previousState - The previous state of the application.
@@ -76,59 +131,19 @@ export async function login(_previousState: PreviousState, formData: FormData): 
 }
 
 /**
- * Sign up a user with the provided form data.
+ * Updates a user with the provided form data.
  *
- * @param _previousState - The previous state of the application.
- * @param formData - The form data containing user information.
- * @returns A promise that resolves to a message indicating the result of the sign up operation.
+ * @param _previousState - The previous state of the user.
+ * @param formData - The form data containing the user information.
+ * @returns A promise that resolves to a message indicating the result of the update operation.
  */
-export async function signUp(_previousState: PreviousState, formData: FormData): Promise<Message> {
+/* export async function updateUser(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
   const formValues = Object.fromEntries(formData)
-  const parsedData = signUpFormSchema.safeParse(formValues)
-
-  // If the form data is invalid, return an error message
-  if (!parsedData.success) {
-    return {
-      message: 'Invalid form data.',
-      fields: parsedData.data,
-    }
-  }
-
-  // Check if the email already exists in the database
-  const existingUser = await db.select().from(users).where(eq(users.email, parsedData.data.email))
-
-  // If the email already exists in the database, return an error message
-  if (existingUser.length > 0) {
-    return {
-      message: 'That email address is already in use.',
-      fields: parsedData.data,
-    }
-  }
-
-  // Hash the password before storing it in the database
-  const hashedPassword = await bcrypt.hash(parsedData.data.password, 10)
-
-  /**
-   * If the form data is valid and the email does not exist in the database, insert the user into
-   * the database.
-   */
-  await db
-    .insert(users)
-    .values({
-      ...parsedData.data,
-      password: hashedPassword,
-    })
-    .execute()
-
-  // Revalidate the dashboard page
-  revalidatePath('/dashboard')
-
-  // Return a success message
-  return {
-    message: 'User created successfully.',
-    success: true,
-  }
-}
+  const parsedData = resultSchema.safeParse(formValues)
+} */
 
 /**
  * Deletes a user from the database.
