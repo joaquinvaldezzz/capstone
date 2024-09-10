@@ -13,6 +13,7 @@ const config = {
   ],
   importOrder: [
     '^(react/(.*)$)|^(react$)',
+    '^(react-dom/(.*)$)|^(react-dom$)',
     '^(next/(.*)$)|^(next$)',
     '<THIRD_PARTY_MODULES>',
     '',
