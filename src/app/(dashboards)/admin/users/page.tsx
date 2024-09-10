@@ -1,10 +1,10 @@
 'use client'
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useFormState } from 'react-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
-import { useFormState } from 'react-dom'
 import { useForm } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
