@@ -1,5 +1,7 @@
 {
   "cSpell.words": [
+    "argmax",
+    "astype",
     "clsx",
     "commitlint",
     "fullhuman",
@@ -8,9 +10,11 @@
     "ianvs",
     "lucide",
     "packagejson",
+    "PCOS",
     "purgecss",
     "svgr",
     "tailwindcss",
-    "tanstack"
+    "tanstack",
+    "werkzeug"
   ]
 }
