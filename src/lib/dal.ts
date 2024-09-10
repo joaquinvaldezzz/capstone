@@ -4,15 +4,19 @@ import { cache } from 'react'
 import { eq } from 'drizzle-orm'
 
 import { db } from './db'
-import { users, type User } from './db-schema'
+import { results, users, type Result, type User } from './db-schema'
 import { type SignUpFormSchema } from './form-schema'
 import { verifySession } from './session'
 
 /**
- * Retrieves the currently authenticated user.
+ * Retrieves the current user based on the session information.
  *
- * @returns A promise that resolves to the user object if found, or null if not found or an error
- *   occurred.
+ * This function uses caching to optimize performance. It verifies the session and fetches the user
+ * data from the database if the session is valid.
+ *
+ * @returns A promise that resolves to the current user object if found, or null if no valid session
+ *   exists or an error occurs.
+ * @throws Logs an error message to the console if the fetch operation fails.
  */
 export const getCurrentUser = cache(async (): Promise<User | null> => {
   const session = await verifySession()
@@ -29,10 +33,12 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
 })
 
 /**
- * Retrieves all users from the database.
+ * Retrieves all users with the specified role from the database.
  *
- * @returns A promise that resolves to an array of User objects if successful, or null if an error
- *   occurs.
+ * @param role - The role of the users to fetch.
+ * @returns A promise that resolves to an array of users with the specified role, or null if an
+ *   error occurs.
+ * @throws Logs an error message to the console if the fetch operation fails.
  */
 export const getAllUsers = cache(async (role: SignUpFormSchema['role']): Promise<User[] | null> => {
   try {
@@ -40,6 +46,26 @@ export const getAllUsers = cache(async (role: SignUpFormSchema['role']): Promise
     return data
   } catch (error) {
     console.error('Failed to fetch users')
+    return null
+  }
+})
+
+/**
+ * Retrieves all patient results from the database.
+ *
+ * This function uses caching to optimize performance. If the data is already cached, it will return
+ * the cached data. Otherwise, it will fetch the data from the database.
+ *
+ * @returns A promise that resolves to an array of patient results, or null if an error occurs
+ *   during the fetch operation.
+ * @throws Logs an error message to the console if the fetch operation fails.
+ */
+export const getAllPatientResults = cache(async (): Promise<Result[] | null> => {
+  try {
+    const data = await db.select().from(results)
+    return data
+  } catch (error) {
+    console.error('Failed to fetch patient results')
     return null
   }
 })
