@@ -1,10 +1,14 @@
 'use client'
 
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useFormState } from 'react-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table'
 import { useForm } from 'react-hook-form'
 
-import { type Result } from '@/lib/db-schema'
+import { addPatient } from '@/lib/actions'
+import { getAllPatientResults, getAllUsers } from '@/lib/dal'
+import { type Result, type User } from '@/lib/db-schema'
 import { resultSchema, type ResultSchema } from '@/lib/form-schema'
 import { Button } from '@/components/ui/button'
 import {
@@ -43,6 +47,11 @@ import {
 } from '@/components/ui/table'
 
 export default function Page() {
+  const formRef = useRef<HTMLFormElement>(null)
+  const [open, setOpen] = useState<boolean>(false)
+  const [results, setResults] = useState<Result[]>([])
+  const [patients, setPatients] = useState<User[]>([])
+  const [formState, formAction] = useFormState(addPatient, { message: '' })
   const columns: Array<ColumnDef<Result>> = [
     {
       accessorKey: 'id',
@@ -51,6 +60,7 @@ export default function Page() {
     {
       accessorKey: 'created_at',
       header: 'Date added',
+      cell: (cell) => new Date(cell.row.original.created_at).toLocaleString(),
     },
     {
       accessorKey: 'patient_name',
@@ -67,7 +77,7 @@ export default function Page() {
   ]
 
   const table = useReactTable({
-    data: [],
+    data: results,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
@@ -76,13 +86,65 @@ export default function Page() {
     defaultValues: {
       patient_name: '',
       ultrasound_image: '',
-      diagnosis: '',
     },
     resolver: zodResolver(resultSchema),
   })
 
+  useEffect(() => {
+    /**
+     * Fetches users with a specific role from the database.
+     *
+     * @returns A promise that resolves when the users are fetched and set in the state.
+     */
+    async function fetchPatients() {
+      const patientUsers = await getAllUsers('patient')
+      if (patientUsers != null) setPatients(patientUsers)
+    }
+
+    void fetchPatients()
+  }, [])
+
+  useEffect(() => {
+    /**
+     * Fetches patient results from the database.
+     *
+     * @returns A promise that resolves when the results are fetched and set in the state.
+     */
+    async function fetchResults() {
+      const patientResults = await getAllPatientResults()
+      if (patientResults != null) setResults(patientResults)
+    }
+
+    void fetchResults()
+  }, [formState.success])
+
+  /**
+   * Handles the form submission event.
+   *
+   * @param event - The form submission event.
+   */
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    // Prevent the default form submission behavior.
+    event.preventDefault()
+
+    void addPatientForm.handleSubmit(() => {
+      // If the form reference is null, return early.
+      if (formRef.current == null) return
+
+      // Perform the form action with the form data.
+      formAction(new FormData(formRef.current))
+    })(event)
+  }
+
+  useEffect(() => {
+    // If the form state is successful, close the dialog.
+    if (formState.success ?? false) {
+      setOpen(false)
+    }
+  }, [formState.success])
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <div className="flex flex-col gap-8">
         <header className="flex justify-between gap-4">
           <h1 className="text-display-sm font-semibold">Results</h1>
@@ -141,9 +203,9 @@ export default function Page() {
         <Form {...addPatientForm}>
           <form
             className="flex flex-col px-4 lg:px-6"
-            // action={formAction}
-            // ref={formRef}
-            // onSubmit={handleSubmit}
+            action={formAction}
+            ref={formRef}
+            onSubmit={handleSubmit}
           >
             <div className="flex flex-col gap-y-5">
               <div className="grid grid-cols-2 gap-4">
@@ -152,16 +214,25 @@ export default function Page() {
                   control={addPatientForm.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>First name</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="e.g. John"
-                          autoComplete="name"
-                          padding="md"
-                          {...field}
-                        />
-                      </FormControl>
+                      <FormLabel>Select a role</FormLabel>
+                      <Select
+                        name="patient_name"
+                        defaultValue={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select a patient" />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {patients.map((patient) => (
+                            <SelectItem value={String(patient.id)} key={patient.id}>
+                              {patient.first_name} {patient.last_name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -171,12 +242,12 @@ export default function Page() {
                   control={addPatientForm.control}
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Last name</FormLabel>
+                      <FormLabel>Ultrasound image</FormLabel>
                       <FormControl>
                         <Input
-                          type="text"
+                          type="file"
                           placeholder="e.g. Doe"
-                          autoComplete="family-name"
+                          accept="image/*"
                           padding="md"
                           {...field}
                         />
@@ -186,32 +257,6 @@ export default function Page() {
                   )}
                 />
               </div>
-              <FormField
-                name="diagnosis"
-                control={addPatientForm.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Select a role</FormLabel>
-                    <Select
-                      name="diagnosis"
-                      defaultValue={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select a role" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="admin">Admin</SelectItem>
-                        <SelectItem value="doctor">Doctor</SelectItem>
-                        <SelectItem value="patient">Patient</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </div>
 
             <DialogFooter className="-mx-4 lg:-mx-6">
