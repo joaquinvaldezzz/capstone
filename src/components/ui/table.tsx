@@ -14,16 +14,19 @@ const Table = forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement
     </div>
   ),
 )
+
 Table.displayName = 'Table'
 
 const TableHeader = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => <thead className={cn(className)} ref={ref} {...props} />,
 )
+
 TableHeader.displayName = 'TableHeader'
 
 const TableBody = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => <tbody className={cn(className)} ref={ref} {...props} />,
 )
+
 TableBody.displayName = 'TableBody'
 
 const TableFooter = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
@@ -35,17 +38,22 @@ const TableFooter = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTable
     />
   ),
 )
+
 TableFooter.displayName = 'TableFooter'
 
 const TableRow = forwardRef<HTMLTableRowElement, HTMLAttributes<HTMLTableRowElement>>(
   ({ className, ...props }, ref) => (
     <tr
-      className={cn('border-b border-b-gray-200 last:border-0 even:bg-gray-50', className)}
+      className={cn(
+        'border-b border-b-gray-200 last:border-0 even:bg-gray-50 hover:bg-gray-50',
+        className,
+      )}
       ref={ref}
       {...props}
     />
   ),
 )
+
 TableRow.displayName = 'TableRow'
 
 const TableHead = forwardRef<HTMLTableCellElement, ThHTMLAttributes<HTMLTableCellElement>>(
@@ -60,20 +68,19 @@ const TableHead = forwardRef<HTMLTableCellElement, ThHTMLAttributes<HTMLTableCel
     />
   ),
 )
+
 TableHead.displayName = 'TableHead'
 
 const TableCell = forwardRef<HTMLTableCellElement, TdHTMLAttributes<HTMLTableCellElement>>(
   ({ className, ...props }, ref) => (
     <td
-      className={cn(
-        'h-18 px-6 py-4 align-middle text-sm text-gray-600 first-of-type:font-medium first-of-type:text-gray-900',
-        className,
-      )}
+      className={cn('relative h-18 px-6 py-4 align-middle text-sm text-gray-600', className)}
       ref={ref}
       {...props}
     />
   ),
 )
+
 TableCell.displayName = 'TableCell'
 
 const TableCaption = forwardRef<HTMLTableCaptionElement, HTMLAttributes<HTMLTableCaptionElement>>(
@@ -81,6 +88,7 @@ const TableCaption = forwardRef<HTMLTableCaptionElement, HTMLAttributes<HTMLTabl
     <caption className={cn('mt-4 text-sm text-gray-500', className)} ref={ref} {...props} />
   ),
 )
+
 TableCaption.displayName = 'TableCaption'
 
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption }
