@@ -51,6 +51,23 @@ export const getUsers = cache(async (role: SignUpFormSchema['role']): Promise<Us
 })
 
 /**
+ * Retrieves a user by their ID from the database.
+ *
+ * @param id - The unique identifier of the user.
+ * @returns A promise that resolves to the user object if found, or null if not found or an error
+ *   occurs.
+ */
+export const getUserById = cache(async (id: number): Promise<User | null> => {
+  try {
+    const data = await db.select().from(users).where(eq(users.id, id))
+    return data[0]
+  } catch (error) {
+    console.error('Failed to fetch user')
+    return null
+  }
+})
+
+/**
  * Retrieves all patient results from the database.
  *
  * This function uses caching to optimize performance. If the data is already cached, it will return
