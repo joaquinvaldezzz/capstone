@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { House, LogOut, Users } from 'lucide-react'
+import { House, LogOut, Settings, Users } from 'lucide-react'
 
 import { type NavItem } from '@/types/nav'
 import { logout } from '@/lib/actions'
@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: ReactNode }) {
     <div className="ml-72 flex">
       <aside className="fixed inset-y-0 left-0 flex h-svh w-full max-w-72 flex-col justify-between border-r border-r-gray-200">
         <div className="flex flex-col gap-6 pt-8">
-          <div className="h-8" />
+          <div className="h-8 px-4"></div>
 
           <nav className="px-4">
             <ul className="flex flex-col gap-1">
@@ -82,7 +82,26 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
 
         <footer className="px-4 pb-8">
-          <div className="flex items-center justify-between gap-3 border-t border-t-gray-200 pl-2 pt-6">
+          <nav>
+            <ul>
+              <li>
+                <Link
+                  className="group flex items-center justify-between rounded-md px-3 py-2 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400/15 data-active:bg-gray-50"
+                  data-state={pathname === '/admin/settings' ? 'active' : 'inactive'}
+                  href="/admin/settings"
+                >
+                  <div className="flex items-center gap-3">
+                    <Settings className="size-6 stroke-gray-500" />
+                    <span className="font-semibold text-gray-700 group-hover:text-gray-800">
+                      Settings
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+
+          <div className="mt-6 flex items-center justify-between gap-3 border-t border-t-gray-200 pl-2 pt-6">
             <div className="flex min-w-0 items-center gap-3">
               {currentUser == null ? (
                 <>
