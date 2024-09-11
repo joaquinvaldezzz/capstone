@@ -7,7 +7,7 @@ import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tan
 import { useForm } from 'react-hook-form'
 
 import { addPatient } from '@/lib/actions'
-import { getAllPatientResults, getAllUsers } from '@/lib/dal'
+import { getAllPatientResults, getUsers } from '@/lib/dal'
 import { type Result, type User } from '@/lib/db-schema'
 import { resultSchema, type ResultSchema } from '@/lib/form-schema'
 import { Button } from '@/components/ui/button'
@@ -97,7 +97,7 @@ export default function Page() {
      * @returns A promise that resolves when the users are fetched and set in the state.
      */
     async function fetchPatients() {
-      const patientUsers = await getAllUsers('patient')
+      const patientUsers = await getUsers('patient')
       if (patientUsers != null) setPatients(patientUsers)
     }
 

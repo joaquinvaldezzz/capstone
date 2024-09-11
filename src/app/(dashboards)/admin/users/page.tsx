@@ -9,7 +9,7 @@ import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
-import { getAllUsers } from '@/lib/dal'
+import { getUsers } from '@/lib/dal'
 import { type User } from '@/lib/db-schema'
 import { signUpFormSchema, type SignUpFormSchema } from '@/lib/form-schema'
 import { Button } from '@/components/ui/button'
@@ -98,9 +98,9 @@ export default function Page() {
      * @returns A promise that resolves when the users are fetched and set in the state.
      */
     async function fetchUsers() {
-      const admins = await getAllUsers('admin')
-      const doctors = await getAllUsers('doctor')
-      const patients = await getAllUsers('patient')
+      const admins = await getUsers('admin')
+      const doctors = await getUsers('doctor')
+      const patients = await getUsers('patient')
 
       if (admins != null) setAdminUsers(admins)
       if (doctors != null) setDoctorUsers(doctors)

@@ -40,7 +40,7 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
  *   error occurs.
  * @throws Logs an error message to the console if the fetch operation fails.
  */
-export const getAllUsers = cache(async (role: SignUpFormSchema['role']): Promise<User[] | null> => {
+export const getUsers = cache(async (role: SignUpFormSchema['role']): Promise<User[] | null> => {
   try {
     const data = await db.select().from(users).where(eq(users.role, role))
     return data
