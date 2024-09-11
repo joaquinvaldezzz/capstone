@@ -191,13 +191,37 @@ export async function login(_previousState: PreviousState, formData: FormData): 
  * @param formData - The form data containing the user information.
  * @returns A promise that resolves to a message indicating the result of the update operation.
  */
-/* export async function updateUser(
+export async function updateUser(
   _previousState: PreviousState,
   formData: FormData,
 ): Promise<Message> {
   const formValues = Object.fromEntries(formData)
-  const parsedData = resultSchema.safeParse(formValues)
-} */
+  const parsedData = signUpFormSchema.safeParse(formValues)
+
+  // If the form data is invalid, return an error message
+  if (!parsedData.success) {
+    return {
+      message: 'Invalid form data.',
+      fields: parsedData.data,
+    }
+  }
+
+  // If the form data is valid, update the user in the database
+  await db
+    .update(users)
+    .set({
+      ...parsedData.data,
+    })
+    .where(eq(users.id, Number(formData.get('id'))))
+    .execute()
+
+  revalidatePath('/admin', 'layout')
+
+  return {
+    message: 'User updated successfully.',
+    success: true,
+  }
+}
 
 /**
  * Deletes a user from the database.
