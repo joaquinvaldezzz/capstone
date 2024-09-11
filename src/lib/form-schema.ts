@@ -26,7 +26,9 @@ export const signUpFormSchema = z.object({
       message: 'It must contain at least one special character.',
     })
     .trim(),
-  role: z.enum(['admin', 'doctor', 'patient'], { message: 'Please select a role.' }),
+  role: z
+    .enum(['admin', 'doctor', 'patient'], { message: 'Please select a role.' })
+    .or(z.string().min(1, { message: 'Please select a role.' })),
 })
 
 /** Represents the inferred type of the `signupSchema`. */
