@@ -4,12 +4,13 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "concurrently 'npm run next:dev' 'npm run drizzle:studio'",
     "drizzle:push": "drizzle-kit push",
     "drizzle:studio": "drizzle-kit studio",
     "format": "prettier --write .",
     "lint": "next lint",
     "lint:fix": "next lint --fix .",
+    "next:dev": "next dev",
     "prepare": "husky",
     "preview": "npm run build && npm run start",
     "start": "next start"
@@ -84,6 +85,7 @@
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.0",
     "drizzle-kit": "^0.24.0",
     "eslint": "^8",
     "eslint-config-airbnb-typescript": "^17.1.0",
