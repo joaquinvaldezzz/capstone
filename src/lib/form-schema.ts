@@ -45,13 +45,13 @@ export const logInFormSchema = z.object({
 /** Represents the inferred type of the `loginSchema`. */
 export type LogInFormSchema = z.infer<typeof logInFormSchema>
 
+/** Represents the schema for adding a new patient result. */
 export const resultSchema = z.object({
   patient_name: z
     .string()
     .min(2, { message: 'Patient name must be at least 2 characters.' })
     .trim(),
-  ultrasound_image: z.string().url({ message: 'Please enter a valid URL.' }).trim(),
-  diagnosis: z.string().min(2, { message: 'Diagnosis must be at least 2 characters.' }).trim(),
+  ultrasound_image: z.any(),
 })
 
 /** Represents the inferred type of the `resultSchema`. */
