@@ -65,7 +65,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
     .execute()
 
   // Revalidate the dashboard page
-  revalidatePath('/dashboard')
+  revalidatePath('/admin/users')
 
   // Return a success message
   return {

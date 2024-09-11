@@ -1,7 +1,8 @@
 'use client'
 
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { useFormState } from 'react-dom'
+import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table'
 import { Plus } from 'lucide-react'
@@ -47,26 +48,30 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-const columns: Array<ColumnDef<User>> = [
-  {
-    accessorKey: 'first_name',
-    header: 'Name',
-    cell: (cell) => `${cell.row.original.first_name} ${cell.row.original.last_name}`,
-  },
-  {
-    accessorKey: 'email',
-    header: 'Email address',
-  },
-  {
-    accessorKey: 'created_at',
-    header: 'Created at',
-    cell: (cell) => new Date(cell.row.original.created_at).toLocaleDateString(),
-  },
-]
-
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null)
-  const [users, setUsers] = useState<User[]>([])
+  const [adminUsers, setAdminUsers] = useState<User[]>([])
+  const [doctorUsers, setDoctorUsers] = useState<User[]>([])
+  const [patientUsers, setPatientUsers] = useState<User[]>([])
+  const columns: Array<ColumnDef<User>> = useMemo(
+    () => [
+      {
+        accessorKey: 'first_name',
+        header: 'Name',
+        cell: (cell) => `${cell.row.original.first_name} ${cell.row.original.last_name}`,
+      },
+      {
+        accessorKey: 'email',
+        header: 'Email address',
+      },
+      {
+        accessorKey: 'created_at',
+        header: 'Created at',
+        cell: (cell) => new Date(cell.row.original.created_at).toLocaleDateString(),
+      },
+    ],
+    [],
+  )
   const [open, setOpen] = useState<boolean>(false)
   const [formState, formAction] = useFormState(signUp, { message: '' })
   const signUpForm = useForm<SignUpFormSchema>({
@@ -93,15 +98,30 @@ export default function Page() {
      * @returns A promise that resolves when the users are fetched and set in the state.
      */
     async function fetchUsers() {
-      const adminUsers = await getAllUsers('admin')
-      if (adminUsers != null) setUsers(adminUsers)
+      const admins = await getAllUsers('admin')
+      const doctors = await getAllUsers('doctor')
+      const patients = await getAllUsers('patient')
+
+      if (admins != null) setAdminUsers(admins)
+      if (doctors != null) setDoctorUsers(doctors)
+      if (patients != null) setPatientUsers(patients)
     }
 
     void fetchUsers()
-  }, [formState])
+  }, [formState.success])
 
-  const table = useReactTable({
-    data: users,
+  const adminUsersTable = useReactTable({
+    data: adminUsers,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+  const doctorUsersTable = useReactTable({
+    data: doctorUsers,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  })
+  const patientUsersTable = useReactTable({
+    data: patientUsers,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
@@ -128,8 +148,9 @@ export default function Page() {
     if (formState.success ?? false) {
       // Close the dialog if the form submission was successful.
       setOpen(false)
+      signUpForm.reset()
     }
-  }, [formState.success])
+  }, [formState.success, signUpForm])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -161,7 +182,7 @@ export default function Page() {
 
           <Table>
             <TableHeader>
-              {table.getHeaderGroups().map((headerGroup) => (
+              {adminUsersTable.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => {
                     return (
@@ -177,11 +198,15 @@ export default function Page() {
             </TableHeader>
 
             <TableBody>
-              {table.getRowModel().rows?.length !== 0 ? (
-                table.getRowModel().rows.map((row) => (
+              {adminUsersTable.getRowModel().rows?.length !== 0 ? (
+                adminUsersTable.getRowModel().rows.map((row) => (
                   <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
+                        <Link
+                          className="absolute inset-0 size-full"
+                          href={`/admin/users/${cell.row.original.id}`}
+                        />
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
@@ -199,6 +224,110 @@ export default function Page() {
         </section>
 
         <hr className="border-t-gray-200" />
+
+        <section className="flex gap-8">
+          <div className="max-w-72 shrink-0">
+            <h2 className="text-sm font-semibold text-gray-700">Doctors</h2>
+            <p className="text-sm text-gray-600">
+              Doctors can view patient results and schedule appointments with patients.
+            </p>
+          </div>
+
+          <Table>
+            <TableHeader>
+              {doctorUsersTable.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    )
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+
+            <TableBody>
+              {doctorUsersTable.getRowModel().rows?.length !== 0 ? (
+                doctorUsersTable.getRowModel().rows.map((row) => (
+                  <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        <Link
+                          className="absolute inset-0 size-full"
+                          href={`/admin/users/${cell.row.original.id}`}
+                        />
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell className="h-24 text-center" colSpan={columns.length}>
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </section>
+
+        <hr className="border-t-gray-200" />
+
+        <section className="flex gap-8">
+          <div className="max-w-72 shrink-0">
+            <h2 className="text-sm font-semibold text-gray-700">Patients</h2>
+            <p className="text-sm text-gray-600">
+              Patients can view their results and schedule appointments with doctors.
+            </p>
+          </div>
+
+          <Table>
+            <TableHeader>
+              {patientUsersTable.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    )
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+
+            <TableBody>
+              {patientUsersTable.getRowModel().rows?.length !== 0 ? (
+                patientUsersTable.getRowModel().rows.map((row) => (
+                  <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        <Link
+                          className="absolute inset-0 size-full"
+                          href={`/admin/users/${cell.row.original.id}`}
+                        />
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell className="h-24 text-center" colSpan={columns.length}>
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </section>
       </div>
 
       <DialogContent>
