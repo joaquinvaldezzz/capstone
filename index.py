@@ -36,7 +36,7 @@ def index():
 @app.route('/api/predict', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
-        f = request.files['picture']
+        f = request.files['ultrasound_image']
 
         base_path = os.path.dirname(__file__)
         file_path = os.path.join(

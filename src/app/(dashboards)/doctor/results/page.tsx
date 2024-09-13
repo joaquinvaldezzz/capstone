@@ -46,11 +46,18 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+interface Diagnosis {
+  percentage: string
+  result: string
+}
+
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null)
   const [open, setOpen] = useState<boolean>(false)
   const [results, setResults] = useState<Result[]>([])
   const [patients, setPatients] = useState<User[]>([])
+  // const [file, setFile] = useState<File>()
+  const [, setDiagnosis] = useState<Diagnosis>({ percentage: '', result: '' })
   const [formState, formAction] = useFormState(addPatient, { message: '' })
   const columns: Array<ColumnDef<Result>> = [
     {
@@ -85,7 +92,7 @@ export default function Page() {
   const addPatientForm = useForm<ResultSchema>({
     defaultValues: {
       patient_name: '',
-      ultrasound_image: '',
+      ultrasound_image: null,
     },
     resolver: zodResolver(resultSchema),
   })
@@ -123,9 +130,22 @@ export default function Page() {
    *
    * @param event - The form submission event.
    */
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
     event.preventDefault()
+
+    const image = new FormData(event.currentTarget)
+
+    try {
+      const flask = await fetch('/flask-api/predict', {
+        method: 'POST',
+        body: image,
+      })
+      const data = await flask.json()
+      setDiagnosis({ percentage: data.percentage, result: data.result })
+    } catch (error) {
+      console.error(error)
+    }
 
     void addPatientForm.handleSubmit(() => {
       // If the form reference is null, return early.
@@ -205,7 +225,9 @@ export default function Page() {
             className="flex flex-col px-4 lg:px-6"
             action={formAction}
             ref={formRef}
-            onSubmit={handleSubmit}
+            onSubmit={(event) => {
+              void handleSubmit(event)
+            }}
           >
             <div className="flex flex-col gap-y-5">
               <div className="grid grid-cols-2 gap-4">
