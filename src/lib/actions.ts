@@ -5,6 +5,7 @@ import { put } from '@vercel/blob'
 import bcrypt from 'bcrypt'
 import { eq } from 'drizzle-orm'
 
+import { getCurrentUser } from './dal'
 import { db } from './db'
 import { results, users } from './db-schema'
 import { logInFormSchema, resultSchema, signUpFormSchema } from './form-schema'
@@ -97,12 +98,22 @@ export async function addPatient(
     }
   }
 
-  // If the form data is valid, insert the patient into the database
+  const currentDoctor = await getCurrentUser()
+
+  // If the current user is not available, return an error message
+  if (currentDoctor == null) {
+    return {
+      message: 'Failed to get the current doctor.',
+      success: false,
+    }
+  }
+
+  // If the current user is found, insert the patient into the database
   await db
     .insert(results)
     .values({
+      doctor_id: currentDoctor.user_id,
       user_id: Number(parsedData.data.patient_name),
-      patient_name: parsedData.data.patient_name,
       ultrasound_image: parsedData.data.ultrasound_image?.name,
       diagnosis: 'No diagnosis yet',
     })
@@ -172,7 +183,7 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   }
 
   // Get the user ID and their role from the database
-  const userId = existingAccount[0].id.toString()
+  const userId = existingAccount[0].user_id.toString()
   const userRole = existingAccount[0].role.toString()
 
   // Create a session for the user
@@ -212,10 +223,10 @@ export async function updateUser(
     .set({
       ...parsedData.data,
     })
-    .where(eq(users.id, Number(formData.get('id'))))
+    .where(eq(users.user_id, Number(formData.get('id'))))
     .execute()
 
-  revalidatePath('/admin', 'layout')
+  revalidatePath('/admin/users')
 
   return {
     message: 'User updated successfully.',
@@ -239,11 +250,11 @@ export async function deleteUser(
   // Delete the user from the database
   await db
     .delete(users)
-    .where(eq(users.id, parseInt(String(userId))))
+    .where(eq(users.user_id, parseInt(String(userId))))
     .execute()
 
   // Revalidate the dashboard page
-  revalidatePath('/dashboard')
+  revalidatePath('/admin/users')
 
   // Return a success message
   return {
