@@ -61,7 +61,7 @@ export default function Page() {
   const [formState, formAction] = useFormState(addPatient, { message: '' })
   const columns: Array<ColumnDef<Result>> = [
     {
-      accessorKey: 'id',
+      accessorKey: 'result_id',
       header: 'Result number',
     },
     {
@@ -70,7 +70,7 @@ export default function Page() {
       cell: (cell) => new Date(cell.row.original.created_at).toLocaleString(),
     },
     {
-      accessorKey: 'patient_name',
+      accessorKey: 'user_id',
       header: 'Patient name',
     },
     {
@@ -92,7 +92,6 @@ export default function Page() {
   const addPatientForm = useForm<ResultSchema>({
     defaultValues: {
       patient_name: '',
-      ultrasound_image: null,
     },
     resolver: zodResolver(resultSchema),
   })
@@ -249,7 +248,7 @@ export default function Page() {
                         </FormControl>
                         <SelectContent>
                           {patients.map((patient) => (
-                            <SelectItem value={String(patient.id)} key={patient.id}>
+                            <SelectItem value={String(patient.user_id)} key={patient.user_id}>
                               {patient.first_name} {patient.last_name}
                             </SelectItem>
                           ))}
