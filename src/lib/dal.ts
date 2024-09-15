@@ -4,7 +4,7 @@ import { cache } from 'react'
 import { eq, sql } from 'drizzle-orm'
 
 import { db } from './db'
-import { results, users, type User } from './db-schema'
+import { users, type User } from './db-schema'
 import { type SignUpFormSchema } from './form-schema'
 import { verifySession } from './session'
 
@@ -95,7 +95,7 @@ export const getUserById = cache(async (id: number): Promise<User | null> => {
 export const getAllPatientResults = cache(async (): Promise<Result[] | null> => {
   try {
     const { rows } = await db.execute(
-      sql`SELECT * FROM results t1  JOIN users t2 ON t1.user_id = t2.user_id;`,
+      sql`SELECT * FROM results JOIN users t2 ON results.user_id = .user_id;`,
     )
     return rows as unknown as Result[]
   } catch (error) {
@@ -112,10 +112,12 @@ export const getAllPatientResults = cache(async (): Promise<Result[] | null> => 
  *   `null` if an error occurs.
  * @throws Will log an error message to the console if the database query fails.
  */
-export const getPatientResults = cache(async (patientId: number): Promise<any[] | null> => {
+export const getPatientResults = cache(async (patientId: number): Promise<Result[] | null> => {
   try {
-    const data = await db.select().from(results).leftJoin(users, eq(results.user_id, users.user_id))
-    return data
+    const { rows } = await db.execute(
+      sql`SELECT * FROM results t1 JOIN users t2 ON t1.user_id = t2.user_id;`,
+    )
+    return rows as unknown as Result[]
   } catch (error) {
     console.error('Failed to fetch patient results')
     return null

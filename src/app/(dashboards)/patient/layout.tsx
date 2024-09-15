@@ -8,7 +8,6 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { LogOutButton } from '@/components/log-out-button'
 
 import { Nav } from './nav'
-import { Settings } from './settings'
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const currentUser = await getCurrentUser()
@@ -45,8 +44,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
         </div>
 
         <footer className="px-4 pb-8">
-          <Settings />
-
           <div className="mt-6 flex items-center justify-between gap-3 border-t border-t-gray-200 pl-2 pt-6">
             <div className="flex min-w-0 items-center gap-3">
               {currentUser == null ? (
