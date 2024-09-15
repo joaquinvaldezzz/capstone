@@ -53,6 +53,7 @@ export const results = pgTable('results', {
     .notNull(),
   created_at: timestamp('created_at').defaultNow().notNull(),
   ultrasound_image: text('ultrasound_image').notNull(),
+  percentage: text('percentage').notNull(),
   diagnosis: text('diagnosis').notNull(),
 })
 

@@ -11,6 +11,8 @@ import { addPatient } from '@/lib/actions'
 import { getAllPatientResults, getUsers } from '@/lib/dal'
 import { type Result, type User } from '@/lib/db-schema'
 import { resultSchema, type ResultSchema } from '@/lib/form-schema'
+import { determineBadgeColor } from '@/lib/utils'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -47,18 +49,11 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-interface Diagnosis {
-  percentage: string
-  result: string
-}
-
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null)
   const [open, setOpen] = useState<boolean>(false)
   const [results, setResults] = useState<Result[]>([])
   const [patients, setPatients] = useState<User[]>([])
-  // const [file, setFile] = useState<File>()
-  const [, setDiagnosis] = useState<Diagnosis>({ percentage: '', result: '' })
   const [formState, formAction] = useFormState(addPatient, { message: '' })
   const columns: Array<ColumnDef<Result>> = [
     {
@@ -96,8 +91,16 @@ export default function Page() {
       },
     },
     {
+      accessorKey: 'percentage',
+      header: 'Percentage',
+    },
+    {
       accessorKey: 'diagnosis',
       header: 'Diagnosis',
+      cell: (cell) => {
+        const result = cell.row.original.diagnosis
+        return <Badge color={determineBadgeColor(result)}>{result}</Badge>
+      },
     },
   ]
 
@@ -151,25 +154,15 @@ export default function Page() {
     // Prevent the default form submission behavior.
     event.preventDefault()
 
-    const image = new FormData(event.currentTarget)
-
-    try {
-      const flask = await fetch('/flask-api/predict', {
-        method: 'POST',
-        body: image,
-      })
-      const data = await flask.json()
-      setDiagnosis({ percentage: data.percentage, result: data.result })
-    } catch (error) {
-      console.error(error)
-    }
-
-    void addPatientForm.handleSubmit(() => {
+    void addPatientForm.handleSubmit(async () => {
       // If the form reference is null, return early.
       if (formRef.current == null) return
 
+      // Create a new form data object from the form reference.
+      const formData = new FormData(formRef.current)
+
       // Perform the form action with the form data.
-      formAction(new FormData(formRef.current))
+      formAction(formData)
     })(event)
   }
 
@@ -177,8 +170,9 @@ export default function Page() {
     // If the form state is successful, close the dialog.
     if (formState.success ?? false) {
       setOpen(false)
+      addPatientForm.reset()
     }
-  }, [formState.success])
+  }, [addPatientForm, formState.success])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -279,17 +273,11 @@ export default function Page() {
                 <FormField
                   name="ultrasound_image"
                   control={addPatientForm.control}
-                  render={({ field }) => (
+                  render={({ field: { value, ...field } }) => (
                     <FormItem>
                       <FormLabel>Ultrasound image</FormLabel>
                       <FormControl>
-                        <Input
-                          type="file"
-                          placeholder="e.g. Doe"
-                          accept="image/*"
-                          padding="md"
-                          {...field}
-                        />
+                        <Input type="file" accept="image/*" padding="md" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

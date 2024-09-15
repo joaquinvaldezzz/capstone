@@ -108,14 +108,37 @@ export async function addPatient(
     }
   }
 
+  // Initialize the percentage and diagnosis variables
+  let percentage: string = ''
+  let diagnosis: string = ''
+
+  try {
+    // Fetch the prediction from the Flask API
+    const predictionResponse = await fetch('http://127.0.0.1:5000/api/predict', {
+      body: formData,
+      method: 'POST',
+    })
+
+    // Parse the prediction response
+    const data = await predictionResponse.json()
+
+    // Extract the percentage and diagnosis from the prediction response
+    percentage = data.percentage
+    diagnosis = data.result
+  } catch (error) {
+    // Log an error message if the prediction fails
+    console.error(error)
+  }
+
   // If the current user is found, insert the patient into the database
   await db
     .insert(results)
     .values({
       doctor_id: currentDoctor.user_id,
       user_id: Number(parsedData.data.patient_name),
+      percentage,
       ultrasound_image: parsedData.data.ultrasound_image?.name,
-      diagnosis: 'No diagnosis yet',
+      diagnosis,
     })
     .execute()
 
