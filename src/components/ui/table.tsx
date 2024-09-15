@@ -32,7 +32,7 @@ TableBody.displayName = 'TableBody'
 const TableFooter = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSectionElement>>(
   ({ className, ...props }, ref) => (
     <tfoot
-      className={cn('border-t bg-gray-100/50 font-medium [&>tr]:last:border-b-0', className)}
+      className={cn('border-t bg-gray-100/50 font-medium *:last:border-b-0', className)}
       ref={ref}
       {...props}
     />
@@ -44,10 +44,7 @@ TableFooter.displayName = 'TableFooter'
 const TableRow = forwardRef<HTMLTableRowElement, HTMLAttributes<HTMLTableRowElement>>(
   ({ className, ...props }, ref) => (
     <tr
-      className={cn(
-        'border-b border-b-gray-200 last:border-0 even:bg-gray-50 hover:bg-gray-50',
-        className,
-      )}
+      className={cn('border-b border-b-gray-200 last:border-0 hover:bg-gray-50', className)}
       ref={ref}
       {...props}
     />
