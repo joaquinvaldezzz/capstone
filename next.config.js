@@ -4,6 +4,17 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**.vercel-storage.com',
+        port: '',
+        pathname: '/ultrasound-images/**',
+      },
+    ],
+  },
+
   pageExtensions: ['ts', 'tsx'],
 
   rewrites: async () => {

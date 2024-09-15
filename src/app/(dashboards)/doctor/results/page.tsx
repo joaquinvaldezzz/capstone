@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useFormState } from 'react-dom'
+import Image from 'next/image'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table'
 import { useForm } from 'react-hook-form'
@@ -76,6 +77,23 @@ export default function Page() {
     {
       accessorKey: 'ultrasound_image',
       header: 'Ultrasound image',
+      cell: (cell) => {
+        return (
+          <div className="flex items-center gap-3">
+            <Image
+              className="size-10 rounded-full object-cover"
+              src={`https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${cell.row.original.ultrasound_image}`}
+              alt={cell.row.original.ultrasound_image}
+              height={40}
+              width={40}
+              priority
+            />
+            <span className="text-sm font-medium text-gray-900">
+              {cell.row.original.ultrasound_image}
+            </span>
+          </div>
+        )
+      },
     },
     {
       accessorKey: 'diagnosis',
