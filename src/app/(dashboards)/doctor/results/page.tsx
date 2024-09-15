@@ -8,8 +8,8 @@ import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tan
 import { useForm } from 'react-hook-form'
 
 import { addPatient } from '@/lib/actions'
-import { getAllPatientResults, getUsers } from '@/lib/dal'
-import { type Result, type User } from '@/lib/db-schema'
+import { getAllPatientResults, getUsers, type Result } from '@/lib/dal'
+import { type User } from '@/lib/db-schema'
 import { resultSchema, type ResultSchema } from '@/lib/form-schema'
 import { determineBadgeColor } from '@/lib/utils'
 import { Badge } from '@/components/ui/badge'
@@ -66,8 +66,10 @@ export default function Page() {
       cell: (cell) => new Date(cell.row.original.created_at).toLocaleString(),
     },
     {
-      accessorKey: 'user_id',
+      accessorKey: 'first_name',
       header: 'Patient name',
+      cell: (cell) =>
+        String(cell.row.original.first_name) + ' ' + String(cell.row.original.last_name),
     },
     {
       accessorKey: 'ultrasound_image',
