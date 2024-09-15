@@ -10,27 +10,10 @@ export function cn(...inputs: ClassValue[]) {
 
 export function determineBadgeColor(tag: string): VariantProps<typeof badgeVariants>['color'] {
   switch (tag) {
-    case 'Design':
-      return 'brand'
-    case 'infected':
+    case 'Infected':
       return 'error'
-    case 'Payroll':
-      return 'warning'
-    case 'healthy':
+    case 'Healthy':
       return 'success'
-    case 'Accounting System':
-      return 'gray-blue'
-    case 'Product':
-      return 'blue-light'
-    // blue
-    case 'Research':
-      return 'indigo'
-    // purple
-    case 'Presentation':
-    case 'Saas':
-    case 'Tools':
-      return 'pink'
-    // orange
     default:
       return 'gray'
   }
