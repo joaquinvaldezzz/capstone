@@ -3,6 +3,7 @@ asttokens==2.4.1
 astunparse==1.6.3
 attrs==23.2.0
 blinker==1.7.0
+opencv-python==4.10.0.84
 bokeh==3.3.4
 bottle==0.12.25
 branca==0.7.1
