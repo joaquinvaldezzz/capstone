@@ -49,6 +49,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+import React from 'react';
+
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null)
   const [open, setOpen] = useState<boolean>(false)
@@ -119,6 +121,17 @@ export default function Page() {
     resolver: zodResolver(resultSchema),
   })
 
+  const openImage = () => {
+    const imageUrl = 'confusion_matrix.png'; // Replace with the actual path to your image
+    const errorImageUrl = 'path/to/error/image.png'; // Replace with the actual path to your error image
+
+    if (!imageUrl) {
+      window.open(errorImageUrl, '_blank');
+    } else {
+      window.open(imageUrl, '_blank');
+    }
+  };
+
   useEffect(() => {
     /**
      * Fetches users with a specific role from the database.
@@ -181,9 +194,12 @@ export default function Page() {
       <div className="flex flex-col gap-8">
         <header className="flex justify-between gap-4">
           <h1 className="text-display-sm font-semibold">Results</h1>
-          <DialogTrigger asChild>
-            <Button size="md">Add patient</Button>
-          </DialogTrigger>
+          <div className="flex gap-2">
+            <Button size="md" onClick={openImage}>Confusion Matrix</Button>
+            <DialogTrigger asChild>
+              <Button size="md">Add patient</Button>
+            </DialogTrigger>
+          </div>
         </header>
 
         <section>
