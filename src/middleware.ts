@@ -41,7 +41,7 @@ export default async function middleware(request: NextRequest) {
     session?.userRole === 'doctor' &&
     !currentPath.includes('/doctor')
   ) {
-    return NextResponse.redirect(new URL('/doctor', request.nextUrl))
+    return NextResponse.redirect(new URL('/doctor/results', request.nextUrl))
   } else if (
     isProtectedRoute &&
     session?.userRole === 'patient' &&

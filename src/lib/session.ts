@@ -77,7 +77,7 @@ export async function createSession(userId: string, userRole: string) {
   if (userRole === 'admin') {
     redirect('/admin')
   } else if (userRole === 'doctor') {
-    redirect('/doctor')
+    redirect('/doctor/results')
   } else if (userRole === 'patient') {
     redirect('/patient')
   }

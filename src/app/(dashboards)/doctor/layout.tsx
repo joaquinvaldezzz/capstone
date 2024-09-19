@@ -20,14 +20,14 @@ export default function Layout({ children }: { children: ReactNode }) {
   const links: NavItem[] = [
     {
       icon: <House className="size-6 stroke-gray-500" />,
-      href: '/doctor',
+      href: '/doctor/results',
       text: 'Home',
     },
-    {
-      icon: <ClipboardList className="size-6 stroke-gray-500" />,
-      href: '/doctor/results',
-      text: 'Results',
-    },
+    // {
+    //   icon: <ClipboardList className="size-6 stroke-gray-500" />,
+    //   href: '/doctor/results',
+    //   text: 'Results',
+    // },
   ]
 
   useEffect(() => {
