@@ -95,7 +95,7 @@ export const getUserById = cache(async (id: number): Promise<User | null> => {
 export const getAllPatientResults = cache(async (): Promise<Result[] | null> => {
   try {
     const { rows } = await db.execute(
-      sql`SELECT * FROM results JOIN users t2 ON results.user_id = .user_id;`,
+      sql`SELECT * FROM results JOIN users t2 ON results.user_id = t2.user_id;`,
     )
     return rows as unknown as Result[]
   } catch (error) {
