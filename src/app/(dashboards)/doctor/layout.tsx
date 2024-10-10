@@ -20,14 +20,14 @@ export default function Layout({ children }: { children: ReactNode }) {
   const links: NavItem[] = [
     {
       icon: <House className="size-6 stroke-gray-500" />,
-      href: '/doctor/results',
+      href: '/doctor',
       text: 'Home',
     },
-    // {
-    //   icon: <ClipboardList className="size-6 stroke-gray-500" />,
-    //   href: '/doctor/results',
-    //   text: 'Results',
-    // },
+    {
+      icon: <ClipboardList className="size-6 stroke-gray-500" />,
+      href: '/doctor/results',
+      text: 'Results',
+    },
   ]
 
   useEffect(() => {
@@ -54,8 +54,8 @@ export default function Layout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="ml-72 flex">
-      <aside className="fixed inset-y-0 left-0 flex h-svh w-full max-w-72 flex-col justify-between border-r border-r-gray-200">
+    <div className="ml-72 flex print:ml-0">
+      <aside className="fixed inset-y-0 left-0 flex h-svh w-full max-w-72 flex-col justify-between border-r border-r-gray-200 print:hidden">
         <div className="flex flex-col gap-6 pt-8">
           <div className="h-8" />
 
