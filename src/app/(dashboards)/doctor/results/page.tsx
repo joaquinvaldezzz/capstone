@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import React, { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useFormState } from 'react-dom'
 import Image from 'next/image'
+import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { flexRender, getCoreRowModel, useReactTable, type ColumnDef } from '@tanstack/react-table'
 import { useForm } from 'react-hook-form'
@@ -48,8 +49,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-
-import React from 'react';
 
 export default function Page() {
   const formRef = useRef<HTMLFormElement>(null)
@@ -121,16 +120,17 @@ export default function Page() {
     resolver: zodResolver(resultSchema),
   })
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const openImage = () => {
-    const imageUrl = 'confusion_matrix.png'; // Replace with the actual path to your image
-    const errorImageUrl = 'path/to/error/image.png'; // Replace with the actual path to your error image
+    const imageUrl = 'confusion_matrix.png' // Replace with the actual path to your image
+    const errorImageUrl = 'path/to/error/image.png' // Replace with the actual path to your error image
 
-    if (!imageUrl) {
-      window.open(errorImageUrl, '_blank');
+    if (imageUrl.length === 0) {
+      window.open(errorImageUrl, '_blank')
     } else {
-      window.open(imageUrl, '_blank');
+      window.open(imageUrl, '_blank')
     }
-  };
+  }
 
   useEffect(() => {
     /**
@@ -195,7 +195,9 @@ export default function Page() {
         <header className="flex justify-between gap-4">
           <h1 className="text-display-sm font-semibold">Results</h1>
           <div className="flex gap-2">
-            <Button size="md" onClick={openImage}>Confusion Matrix</Button>
+            {/* <Button size="md" onClick={openImage}>
+              Confusion Matrix
+            </Button> */}
             <DialogTrigger asChild>
               <Button size="md">Add patient</Button>
             </DialogTrigger>
@@ -226,6 +228,10 @@ export default function Page() {
                   <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
+                        <Link
+                          className="absolute inset-0"
+                          href={`/doctor/results/${cell.row.original.result_id}`}
+                        ></Link>
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}

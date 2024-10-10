@@ -123,3 +123,22 @@ export const getPatientResults = cache(async (patientId: number): Promise<Result
     return null
   }
 })
+
+/**
+ * Fetches patient results from the database, joining the results with user information.
+ *
+ * @returns {Promise<Result[] | null>} A promise that resolves to an array of `Result` objects or
+ *   `null` if an error occurs.
+ * @throws Will log an error message to the console if the database query fails.
+ */
+export const getPatientResult = cache(async (): Promise<Result[] | null> => {
+  try {
+    const { rows } = await db.execute(
+      sql`SELECT * FROM results JOIN users ON results.user_id = users.user_id;`,
+    )
+    return rows as unknown as Result[]
+  } catch (error) {
+    console.error('Failed to fetch patient result')
+    return null
+  }
+})
