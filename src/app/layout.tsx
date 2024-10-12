@@ -4,6 +4,8 @@ import localFont from 'next/font/local'
 
 import { Toaster } from '@/components/ui/toaster'
 
+import { NavigationEvents } from './navigation-events'
+
 import '../styles/main.css'
 
 export const metadata: Metadata = {
@@ -31,7 +33,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={inter.variable} lang="en">
       <body className="min-w-80 bg-white text-gray-900 antialiased">
-        {children}
+        <NavigationEvents>{children}</NavigationEvents>
         <Toaster />
       </body>
     </html>
