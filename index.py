@@ -1,16 +1,22 @@
 import os
-import random
 
-import cv2
-import matplotlib.pyplot as plt
 import numpy as np
-from PIL import Image
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
-from keras.models import load_model
-from tensorflow.keras.models import load_model
+from keras.models import load_model  # type: ignore
 from tensorflow.keras.preprocessing.image import load_img, img_to_array  # type: ignore
 from werkzeug.utils import secure_filename
+import matplotlib.pyplot as plt
+import numpy as np
+import tensorflow as tf
+import cv2
+from PIL import Image
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+
+import seaborn as sns
+import pandas as pd
+import random
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -20,13 +26,11 @@ print('Model loaded. Check http://127.0.0.1:5000/')
 
 labels = {0: 'Healthy', 1: 'Infected'}
 
-
 def get_randomized_true_label(predicted_label, odds=0.75):
     if random.random() < odds:
         return predicted_label
     else:
         return "Healthy" if predicted_label == "Infected" else "Infected"
-
 
 def load_confusion_matrix(file_path):
     if os.path.exists(file_path):
@@ -34,6 +38,8 @@ def load_confusion_matrix(file_path):
     else:
         return np.zeros((2, 2))  # Initialize a new confusion matrix
 
+import numpy as np
+import matplotlib.pyplot as plt
 
 def save_confusion_matrix(matrix, file_path):
     np.save(file_path, matrix)  # Save the matrix to a .npy file
@@ -72,7 +78,6 @@ def save_confusion_matrix(matrix, file_path):
     plt.savefig(image_file_path)
     plt.close()
 
-
 def update_confusion_matrix(predicted_label, true_label, matrix_file_path):
     # Load the existing confusion matrix (or create a new one if it doesn't exist)
     matrix = load_confusion_matrix(matrix_file_path)
@@ -89,7 +94,6 @@ def update_confusion_matrix(predicted_label, true_label, matrix_file_path):
 
     # Save the updated confusion matrix back to the file
     save_confusion_matrix(matrix, matrix_file_path)
-
 
 def is_grayscale(image, threshold=10):
     image = image.astype(np.float32)
@@ -160,12 +164,10 @@ def upload():
             true_label = get_randomized_true_label(predicted_label)
 
             # Path to save the confusion matrix (npy for data, png for image)
-            confusion_matrix_file_path = os.path.join(
-                base_path, 'confusion_matrix.npy')
+            confusion_matrix_file_path = os.path.join(base_path, 'confusion_matrix.npy')
 
             # Update and save the confusion matrix
-            update_confusion_matrix(
-                predicted_label, true_label, confusion_matrix_file_path)
+            update_confusion_matrix(predicted_label, true_label, confusion_matrix_file_path)
 
             return {'percentage': label, 'result': predicted_label}
         else:
