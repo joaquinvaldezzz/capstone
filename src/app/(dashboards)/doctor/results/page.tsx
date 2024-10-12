@@ -1,8 +1,14 @@
+import { type Metadata } from 'next'
+
 import { getAllPatientResults } from '@/lib/dal'
 import { Button } from '@/components/ui/button'
 import { AddPatientForm } from '@/components/add-patient-form'
 
 import { DataTable } from './data-table'
+
+export const metadata: Metadata = {
+  title: 'Results',
+}
 
 export default async function Page() {
   const results = await getAllPatientResults()
