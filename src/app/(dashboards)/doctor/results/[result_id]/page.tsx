@@ -130,11 +130,11 @@ export default async function Page({ params }: { params: { result_id: string } }
                         <span className="shrink-0 text-gray-400">2.4mb</span>
                       </div>
                     </div>
-                    <div className="ml-4 shrink-0">
+                    {/* <div className="ml-4 shrink-0">
                       <Link className="font-medium text-indigo-600 hover:text-indigo-500" href="#">
                         Download
                       </Link>
-                    </div>
+                    </div> */}
                   </li>
                 </ul>
               </dd>
