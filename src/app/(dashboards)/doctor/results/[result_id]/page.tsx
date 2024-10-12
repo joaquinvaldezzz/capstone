@@ -1,10 +1,9 @@
 import { type Metadata } from 'next'
 import Link from 'next/link'
-import { ChevronLeftIcon, CloudArrowDownIcon, PaperClipIcon } from '@heroicons/react/24/outline'
+import { ChevronLeftIcon, PaperClipIcon } from '@heroicons/react/24/outline'
 import { format } from 'date-fns'
 
 import { getPatientResult } from '@/lib/dal'
-import { Button } from '@/components/ui/button'
 
 import { PrintButton } from './print-button'
 
@@ -81,10 +80,6 @@ export default async function Page({ params }: { params: { result_id: string } }
           </div>
 
           <div className="flex items-center gap-4 print:hidden">
-            <Button hierarchy="secondary-gray" size="md">
-              <CloudArrowDownIcon className="size-5" />
-              Save as PDF
-            </Button>
             <PrintButton />
           </div>
         </div>
