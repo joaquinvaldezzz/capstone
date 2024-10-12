@@ -14,7 +14,7 @@ export function PrintButton() {
       }}
     >
       <PrinterIcon className="size-5" />
-      Print
+      <span>Print</span>
     </Button>
   )
 }
