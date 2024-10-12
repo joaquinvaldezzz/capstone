@@ -33,8 +33,11 @@ export function DataTable({ data }: { data: Result[] }) {
     {
       accessorKey: 'first_name',
       header: 'Patient name',
-      cell: (cell) =>
-        String(cell.row.original.first_name) + ' ' + String(cell.row.original.last_name),
+      cell: (cell) => (
+        <span className="font-medium text-gray-900">
+          {String(cell.row.original.first_name) + ' ' + String(cell.row.original.last_name)}
+        </span>
+      ),
     },
     {
       accessorKey: 'ultrasound_image',
@@ -50,9 +53,7 @@ export function DataTable({ data }: { data: Result[] }) {
               width={40}
               priority
             />
-            <span className="text-sm font-medium text-gray-900">
-              {cell.row.original.ultrasound_image}
-            </span>
+            <span>{cell.row.original.ultrasound_image}</span>
           </div>
         )
       },
