@@ -14,7 +14,7 @@ export const users = pgTable('users', {
   email: text('email').notNull(),
   password: text('password').notNull(),
   role: text('role').notNull(),
-  created_at: timestamp('created_at').defaultNow().notNull(),
+  creation_date: timestamp('creation_date').defaultNow().notNull(),
 })
 
 /** Represents the inferred type of the `users` table. */
