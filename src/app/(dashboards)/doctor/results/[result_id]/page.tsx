@@ -1,6 +1,7 @@
 import { type Metadata } from 'next'
 import Link from 'next/link'
 import { ChevronLeftIcon, CloudArrowDownIcon, PaperClipIcon } from '@heroicons/react/24/outline'
+import { format } from 'date-fns'
 
 import { getPatientResult } from '@/lib/dal'
 import { Button } from '@/components/ui/button'
@@ -66,18 +67,16 @@ export default async function Page({ params }: { params: { result_id: string } }
   return (
     <div>
       <div className="flex flex-col gap-5">
-        <div className="flex items-center gap-2 print:hidden">
+        <Link className="inline-flex w-max items-center gap-2 print:hidden" href="/doctor/results">
           <ChevronLeftIcon className="size-4 text-gray-300" />
-          <Link className="text-sm font-medium text-gray-600" href="/doctor/results">
-            Results
-          </Link>
-        </div>
+          <span className="text-sm font-medium text-gray-600">Results</span>
+        </Link>
 
         <div className="flex items-end justify-between gap-4">
           <div>
             <h2 className="text-display-sm font-semibold">Result #{request.result_id}</h2>
             <div className="mt-1 flex gap-4">
-              <span className="text-gray-600">{new Date(request.created_at).toString()}</span>
+              <span className="text-gray-600">{format(request.created_at, 'MMMM dd, yyyy')}</span>
             </div>
           </div>
 
@@ -92,9 +91,7 @@ export default async function Page({ params }: { params: { result_id: string } }
       </div>
 
       <div className="mt-8">
-        <h3 className="font-semibold">Result Information</h3>
-
-        <div className="mt-6 border-t border-gray-100">
+        <div className="border-t border-gray-100">
           <dl className="divide-y divide-gray-100">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">Patient name</dt>
