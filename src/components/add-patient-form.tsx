@@ -83,14 +83,7 @@ export function AddPatientForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          size="md"
-          onClick={() => {
-            console.log('Add patient button clicked')
-          }}
-        >
-          Add patient
-        </Button>
+        <Button size="md">Add patient</Button>
       </DialogTrigger>
 
       <DialogContent>
