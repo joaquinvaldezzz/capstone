@@ -21,7 +21,7 @@ print('Model loaded. Check http://127.0.0.1:5000/')
 labels = {0: 'Healthy', 1: 'Infected'}
 
 
-def get_randomized_true_label(predicted_label, odds=0.75):
+def get_randomized_true_label(predicted_label, odds=0.90):
     if random.random() < odds:
         return predicted_label
     else:
