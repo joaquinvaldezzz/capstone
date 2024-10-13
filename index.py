@@ -1,22 +1,16 @@
 import os
+import random
 
+import cv2
+import matplotlib.pyplot as plt
 import numpy as np
+from PIL import Image
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from keras.models import load_model
+from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
-import matplotlib.pyplot as plt
-import numpy as np
-import tensorflow as tf
-import cv2
-from PIL import Image
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
-
-import seaborn as sns
-import pandas as pd
-import random
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -167,7 +161,7 @@ def upload():
 
             # Path to save the confusion matrix (npy for data, png for image)
             confusion_matrix_file_path = os.path.join(
-                base_path, 'confusion_matrix.npy')
+                'public/images', 'confusion_matrix.npy')
 
             # Update and save the confusion matrix
             update_confusion_matrix(
