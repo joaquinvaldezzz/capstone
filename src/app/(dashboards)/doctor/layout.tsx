@@ -1,6 +1,6 @@
 import { type ReactNode } from 'react'
 import { type Metadata } from 'next'
-import { ClipboardList, House } from 'lucide-react'
+import { ClipboardList } from 'lucide-react'
 
 import { type NavItem } from '@/types/nav'
 import { getCurrentUser } from '@/lib/dal'
