@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 
 import { type NavItem } from '@/types/nav'
 
-export function Nav({ links }: { links: NavItem[] }) {
+export function SideNav({ links }: { links: NavItem[] }) {
   const pathname = usePathname()
 
   return (

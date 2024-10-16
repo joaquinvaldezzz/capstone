@@ -7,8 +7,7 @@ import { getCurrentUser } from '@/lib/dal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Skeleton } from '@/components/ui/skeleton'
 import { LogOutButton } from '@/components/log-out-button'
-
-import { Nav } from './nav'
+import { SideNav } from '@/components/side-nav'
 
 export const metadata: Metadata = {
   title: 'Inbox',
@@ -44,7 +43,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
       <aside className="fixed inset-y-0 left-0 flex h-svh w-full max-w-72 flex-col justify-between border-r border-r-gray-200">
         <div className="flex flex-1 flex-col gap-6 pt-8">
           <div className="h-8" />
-          <Nav links={links} />
+          <SideNav links={links} />
         </div>
 
         <footer className="px-4 pb-8">
