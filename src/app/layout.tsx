@@ -1,5 +1,4 @@
 import { type ReactNode } from 'react'
-import { type Metadata } from 'next'
 import localFont from 'next/font/local'
 
 import { Toaster } from '@/components/ui/toaster'
@@ -7,11 +6,6 @@ import { Toaster } from '@/components/ui/toaster'
 import { NavigationEvents } from './navigation-events'
 
 import '../styles/main.css'
-
-export const metadata: Metadata = {
-  title: 'Capstone',
-  description: 'A capstone project.',
-}
 
 const inter = localFont({
   src: [
