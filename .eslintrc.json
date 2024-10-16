@@ -40,6 +40,12 @@
       }
     ],
     "@typescript-eslint/explicit-function-return-type": "off",
+    "tailwindcss/no-custom-classname": [
+      "warn",
+      {
+        "whitelist": ["calendly-inline-widget"]
+      }
+    ],
     "perfectionist/sort-jsx-props": [
       "error",
       {
