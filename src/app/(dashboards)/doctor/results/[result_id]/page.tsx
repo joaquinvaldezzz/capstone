@@ -1,4 +1,5 @@
 import { type Metadata } from 'next'
+import Image from 'next/image'
 import Link from 'next/link'
 import { ChevronLeftIcon, PaperClipIcon } from '@heroicons/react/24/outline'
 import { format } from 'date-fns'
@@ -116,22 +117,14 @@ export default async function Page({ params }: { params: { result_id: string } }
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm font-medium leading-6">Attachment</dt>
               <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
-                <ul className="divide-y divide-gray-100 rounded-md border border-gray-200">
-                  <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                    <div className="flex w-0 flex-1 items-center">
-                      <PaperClipIcon className="size-5 shrink-0 text-gray-400" aria-hidden="true" />
-                      <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                        <span className="truncate font-medium">{request.ultrasound_image}</span>
-                        <span className="shrink-0 text-gray-400">2.4mb</span>
-                      </div>
-                    </div>
-                    {/* <div className="ml-4 shrink-0">
-                      <Link className="font-medium text-indigo-600 hover:text-indigo-500" href="#">
-                        Download
-                      </Link>
-                    </div> */}
-                  </li>
-                </ul>
+                <Image
+                  className="w-64 rounded-lg object-cover"
+                  src={`https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${request.ultrasound_image}`}
+                  alt={request.ultrasound_image}
+                  height={256}
+                  width={256}
+                  priority
+                />
               </dd>
             </div>
           </dl>
