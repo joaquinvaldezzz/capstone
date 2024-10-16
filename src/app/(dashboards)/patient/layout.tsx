@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react'
+import { type Metadata } from 'next'
 import { Inbox } from 'lucide-react'
 
 import { type NavItem } from '@/types/nav'
@@ -8,6 +9,10 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { LogOutButton } from '@/components/log-out-button'
 
 import { Nav } from './nav'
+
+export const metadata: Metadata = {
+  title: 'Inbox',
+}
 
 export default async function Layout({ children }: { children: ReactNode }) {
   const currentUser = await getCurrentUser()
@@ -37,9 +42,8 @@ export default async function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="ml-72 flex">
       <aside className="fixed inset-y-0 left-0 flex h-svh w-full max-w-72 flex-col justify-between border-r border-r-gray-200">
-        <div className="flex flex-col gap-6 pt-8">
+        <div className="flex flex-1 flex-col gap-6 pt-8">
           <div className="h-8" />
-
           <Nav links={links} />
         </div>
 
