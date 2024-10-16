@@ -113,7 +113,7 @@ export default function Page() {
 
         <Form {...updateUserForm}>
           <form className="flex flex-col" action={formAction} ref={formRef} onSubmit={handleSubmit}>
-            <input name="id" type="text" value={currentUser.id} hidden readOnly />
+            <input name="id" type="text" value={currentUser.user_id} hidden readOnly />
             <div className="flex flex-col gap-5">
               <div className="flex gap-8">
                 <div className="w-full max-w-72 text-sm font-semibold">Name</div>
