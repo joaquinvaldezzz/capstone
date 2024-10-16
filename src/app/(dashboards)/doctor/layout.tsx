@@ -18,11 +18,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   const links: NavItem[] = [
     {
-      icon: <House className="size-6 stroke-gray-500" />,
-      href: '/doctor',
-      text: 'Home',
-    },
-    {
       icon: <ClipboardList className="size-6 stroke-gray-500" />,
       href: '/doctor/results',
       text: 'Results',
