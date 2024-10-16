@@ -2,7 +2,6 @@ import { type Metadata } from 'next'
 
 import { getAllPatientResults } from '@/lib/dal'
 import { AddPatientForm } from '@/components/add-patient-form'
-import { ConfusionMatrixButton } from '@/components/confusion-matrix-button'
 
 import { DataTable } from './data-table'
 
@@ -22,7 +21,6 @@ export default async function Page() {
       <header className="flex justify-between gap-4">
         <h1 className="text-display-sm font-semibold">Results</h1>
         <div className="flex gap-2">
-          <ConfusionMatrixButton />
           <AddPatientForm />
         </div>
       </header>
