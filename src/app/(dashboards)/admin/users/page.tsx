@@ -67,7 +67,7 @@ export default function Page() {
       {
         accessorKey: 'created_at',
         header: 'Created at',
-        cell: (cell) => new Date(cell.row.original.created_at).toLocaleDateString(),
+        cell: (cell) => new Date(cell.row.original.creation_date).toLocaleDateString(),
       },
     ],
     [],
@@ -205,7 +205,7 @@ export default function Page() {
                       <TableCell key={cell.id}>
                         <Link
                           className="absolute inset-0 size-full"
-                          href={`/admin/users/${cell.row.original.id}`}
+                          href={`/admin/users/${String(cell.row.original.user_id)}`}
                         />
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
@@ -258,7 +258,7 @@ export default function Page() {
                       <TableCell key={cell.id}>
                         <Link
                           className="absolute inset-0 size-full"
-                          href={`/admin/users/${cell.row.original.id}`}
+                          href={`/admin/users/${String(cell.row.original.user_id)}`}
                         />
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
@@ -311,7 +311,7 @@ export default function Page() {
                       <TableCell key={cell.id}>
                         <Link
                           className="absolute inset-0 size-full"
-                          href={`/admin/users/${cell.row.original.id}`}
+                          href={`/admin/users/${String(cell.row.original.user_id)}`}
                         />
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
