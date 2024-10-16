@@ -103,7 +103,7 @@ export default function LogInForm() {
                       <Input
                         type="email"
                         placeholder="Enter your email"
-                        autoComplete="email"
+                        autoComplete="off"
                         padding="md"
                         {...field}
                       />
@@ -124,7 +124,7 @@ export default function LogInForm() {
                           className="flex-1 rounded-r-none"
                           type={showPassword ? 'text' : 'password'}
                           placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                          autoComplete="current-password"
+                          autoComplete="off"
                           padding="md"
                           {...field}
                         />
