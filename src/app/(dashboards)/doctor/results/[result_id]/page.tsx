@@ -1,7 +1,7 @@
 import { type Metadata } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ChevronLeftIcon, PaperClipIcon } from '@heroicons/react/24/outline'
+import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import { format } from 'date-fns'
 
 import { getPatientResult } from '@/lib/dal'
