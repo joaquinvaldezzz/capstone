@@ -55,7 +55,7 @@ export default function LogInForm() {
 
     void loginForm.handleSubmit(() => {
       // If the form reference is null, return early
-      if (formRef.current === null) return
+      if (formRef.current == null) return
 
       // Perform the form action with the form data
       formAction(new FormData(formRef.current))
