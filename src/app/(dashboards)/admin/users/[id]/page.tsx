@@ -1,31 +1,39 @@
-'use client'
-
-import { useEffect, useState } from 'react'
+import { type Metadata } from 'next'
 
 import { getUserById } from '@/lib/dal'
-import { type User } from '@/lib/db-schema'
+import { db } from '@/lib/db'
+import { users } from '@/lib/db-schema'
 
-export default function Page({ params }: { params: { id: number } }) {
-  const [user, setUser] = useState<User | null>(null)
+import { EditUserForm } from './form'
 
-  useEffect(() => {
-    async function fetchUser() {
-      const data = await getUserById(params.id)
-      if (data != null) {
-        setUser(data)
-      }
+export async function generateStaticParams() {
+  const id = await db.select().from(users)
+
+  return id.map((item) => ({
+    param: item.user_id,
+  }))
+}
+
+export async function generateMetadata({ params }: { params: { id: number } }): Promise<Metadata> {
+  const user = await getUserById(params.id)
+
+  if (user == null) {
+    return {
+      title: 'User not found',
     }
-
-    void fetchUser()
-  }, [params.id])
-
-  if (user === null) {
-    return <div>Loading...</div>
   }
 
-  return (
-    <div>
-      <h1>Hello, {user?.first_name}</h1>
-    </div>
-  )
+  return {
+    title: `${user.first_name} ${user.last_name}`,
+  }
+}
+
+export default async function Page({ params }: { params: { id: number } }) {
+  const user = await getUserById(params.id)
+
+  if (user == null) {
+    return <div>User not found</div>
+  }
+
+  return <EditUserForm data={user} />
 }
