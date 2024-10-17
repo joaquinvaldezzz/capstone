@@ -4,6 +4,7 @@ import { getUsers } from '@/lib/dal'
 
 import { columns } from './components/columns'
 import { DataTable } from './components/data-table'
+import { AddNewUser } from './form'
 
 export const metadata: Metadata = {
   title: 'Users',
@@ -27,22 +28,15 @@ export default async function Page() {
             <p className="mt-1 text-gray-600">Manage users and their account permissions here.</p>
           </div>
           <div className="shrink-0">
-            {/* <DialogTrigger asChild>
-              <Button type="button" hierarchy="secondary-gray" size="md">
-                <Plus className="size-5" />
-                <span className="px-0.5">Add team member</span>
-              </Button>
-            </DialogTrigger> */}
+            <AddNewUser />
           </div>
         </div>
       </header>
 
       <section className="flex gap-8">
-        <div className="max-w-72 shrink-0">
+        <div className="w-full max-w-72 shrink-0">
           <h2 className="text-sm font-semibold text-gray-700">Admin users</h2>
-          <p className="text-sm text-gray-600">
-            Admins can add and remove users and manage organization-level settings.
-          </p>
+          <p className="text-sm text-gray-600">Admins can manage all users.</p>
         </div>
 
         <DataTable columns={columns} data={admins} />
@@ -51,7 +45,7 @@ export default async function Page() {
       <hr className="border-t-gray-200" />
 
       <section className="flex gap-8">
-        <div className="max-w-72 shrink-0">
+        <div className="w-full max-w-72 shrink-0">
           <h2 className="text-sm font-semibold text-gray-700">Doctors</h2>
           <p className="text-sm text-gray-600">
             Doctors can view patient results and schedule appointments with patients.
@@ -64,7 +58,7 @@ export default async function Page() {
       <hr className="border-t-gray-200" />
 
       <section className="flex gap-8">
-        <div className="max-w-72 shrink-0">
+        <div className="w-full max-w-72 shrink-0">
           <h2 className="text-sm font-semibold text-gray-700">Patients</h2>
           <p className="text-sm text-gray-600">
             Patients can view their results and schedule appointments with doctors.
