@@ -4,6 +4,7 @@ import { useEffect, useRef, type FormEvent } from 'react'
 import { useFormState } from 'react-dom'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { ChevronLeftIcon } from '@heroicons/react/24/outline'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
@@ -67,7 +68,11 @@ export function EditUserForm({ data }: { data: User }) {
     <div className="flex flex-col gap-6">
       <div className="flex justify-between gap-4 border-b border-b-gray-200 pb-5">
         <div>
-          <h2 className="text-lg font-semibold">
+          <Link className="inline-flex w-max items-center gap-2 print:hidden" href="/admin/users">
+            <ChevronLeftIcon className="size-4 text-gray-300" />
+            <span className="text-sm font-medium text-gray-600">Users</span>
+          </Link>
+          <h2 className="mt-5 text-lg font-semibold">
             {data.first_name} {data.last_name}
           </h2>
           <p className="mt-1 text-sm text-gray-600">Update your photo and personal details here.</p>
