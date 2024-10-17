@@ -1,21 +1,15 @@
-'use client'
-
-import { useEffect, useState, type ReactNode } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { LogOut, Users } from 'lucide-react'
+import { type ReactNode } from 'react'
+import { Users } from 'lucide-react'
 
 import { type NavItem } from '@/types/nav'
-import { logout } from '@/lib/actions'
 import { getCurrentUser } from '@/lib/dal'
-import { type User } from '@/lib/db-schema'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
+import { LogOutButton } from '@/components/log-out-button'
+import { SideNav } from '@/components/side-nav'
 
-export default function Layout({ children }: { children: ReactNode }) {
-  const [currentUser, setCurrentUser] = useState<User | null>()
-  const pathname = usePathname()
+export default async function Layout({ children }: { children: ReactNode }) {
+  const currentUser = await getCurrentUser()
 
   const links: NavItem[] = [
     {
@@ -24,15 +18,6 @@ export default function Layout({ children }: { children: ReactNode }) {
       text: 'Users',
     },
   ]
-
-  useEffect(() => {
-    async function fetchCurrentUser() {
-      const user = await getCurrentUser()
-      setCurrentUser(user)
-    }
-
-    void fetchCurrentUser()
-  }, [])
 
   /**
    * Returns the initials of a user.
@@ -53,27 +38,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <aside className="fixed inset-y-0 left-0 flex h-svh w-full max-w-72 flex-col justify-between border-r border-r-gray-200">
         <div className="flex flex-col gap-6 pt-8">
           <div className="h-8 px-4"></div>
-
-          <nav className="px-4">
-            <ul className="flex flex-col gap-1">
-              {links.map((link, index) => (
-                <li key={index}>
-                  <Link
-                    className="group flex items-center justify-between rounded-md px-3 py-2 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400/15 data-active:bg-gray-50"
-                    data-state={pathname === link.href ? 'active' : 'inactive'}
-                    href={link.href}
-                  >
-                    <div className="flex items-center gap-3">
-                      {link.icon}
-                      <span className="font-semibold text-gray-700 group-hover:text-gray-800">
-                        {link.text}
-                      </span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <SideNav links={links} />
         </div>
 
         <footer className="px-4 pb-8">
@@ -95,25 +60,14 @@ export default function Layout({ children }: { children: ReactNode }) {
                   </Avatar>
                   <div className="min-w-0">
                     <div className="truncate text-sm font-semibold text-gray-700">
-                      {currentUser?.first_name} {currentUser?.last_name}
+                      {currentUser.first_name} {currentUser.last_name}
                     </div>
                     <div className="truncate text-sm text-gray-600">{currentUser?.email}</div>
                   </div>
                 </>
               )}
             </div>
-            <Button
-              type="button"
-              hierarchy="tertiary-gray"
-              icon="sm"
-              size="sm"
-              onClick={() => {
-                void logout()
-              }}
-            >
-              <span className="sr-only">Log out</span>
-              <LogOut className="size-5" size={20} />
-            </Button>
+            <LogOutButton />
           </div>
         </footer>
       </aside>
