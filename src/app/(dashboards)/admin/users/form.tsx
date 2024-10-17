@@ -46,7 +46,6 @@ export function AddNewUser() {
       first_name: '',
       last_name: '',
       email: '',
-      password: '',
       role: '',
     },
     resolver: zodResolver(signUpFormSchema),
@@ -154,25 +153,6 @@ export function AddNewUser() {
                       <Input
                         type="email"
                         placeholder="e.g. john@doe.com"
-                        autoComplete="off"
-                        padding="md"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="password"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                         autoComplete="off"
                         padding="md"
                         {...field}
