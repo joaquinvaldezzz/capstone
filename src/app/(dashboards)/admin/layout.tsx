@@ -3,7 +3,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { House, LogOut, Settings, Users } from 'lucide-react'
+import { LogOut, Users } from 'lucide-react'
 
 import { type NavItem } from '@/types/nav'
 import { logout } from '@/lib/actions'
@@ -18,11 +18,6 @@ export default function Layout({ children }: { children: ReactNode }) {
   const pathname = usePathname()
 
   const links: NavItem[] = [
-    {
-      icon: <House className="size-6 stroke-gray-500" />,
-      href: '/admin',
-      text: 'Home',
-    },
     {
       icon: <Users className="size-6 stroke-gray-500" />,
       href: '/admin/users',
@@ -82,25 +77,6 @@ export default function Layout({ children }: { children: ReactNode }) {
         </div>
 
         <footer className="px-4 pb-8">
-          <nav>
-            <ul>
-              <li>
-                <Link
-                  className="group flex items-center justify-between rounded-md px-3 py-2 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400/15 data-active:bg-gray-50"
-                  data-state={pathname === '/admin/settings' ? 'active' : 'inactive'}
-                  href="/admin/settings"
-                >
-                  <div className="flex items-center gap-3">
-                    <Settings className="size-6 stroke-gray-500" />
-                    <span className="font-semibold text-gray-700 group-hover:text-gray-800">
-                      Settings
-                    </span>
-                  </div>
-                </Link>
-              </li>
-            </ul>
-          </nav>
-
           <div className="mt-6 flex items-center justify-between gap-3 border-t border-t-gray-200 pl-2 pt-6">
             <div className="flex min-w-0 items-center gap-3">
               {currentUser == null ? (

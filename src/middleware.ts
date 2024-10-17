@@ -35,7 +35,7 @@ export default async function middleware(request: NextRequest) {
    * already authenticated as a different user role.
    */
   if (isProtectedRoute && session?.userRole === 'admin' && !currentPath.includes('/admin')) {
-    return NextResponse.redirect(new URL('/admin', request.nextUrl))
+    return NextResponse.redirect(new URL('/admin/users', request.nextUrl))
   } else if (
     isProtectedRoute &&
     session?.userRole === 'doctor' &&
