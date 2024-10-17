@@ -1,7 +1,9 @@
 'use client'
 
-import { useRef, type FormEvent } from 'react'
+import { useEffect, useRef, type FormEvent } from 'react'
 import { useFormState } from 'react-dom'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
@@ -19,6 +21,13 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export function EditUserForm({ data }: { data: User }) {
   const formRef = useRef<HTMLFormElement>(null)
@@ -32,7 +41,8 @@ export function EditUserForm({ data }: { data: User }) {
     },
     resolver: zodResolver(signUpFormSchema),
   })
-  const [, formAction] = useFormState(updateUser, { message: '' })
+  const [formState, formAction] = useFormState(updateUser, { message: '' })
+  const router = useRouter()
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior
@@ -47,6 +57,12 @@ export function EditUserForm({ data }: { data: User }) {
     })(event)
   }
 
+  useEffect(() => {
+    if (formState.success ?? false) {
+      router.push('/admin/users')
+    }
+  }, [formState.success, router])
+
   return (
     <div className="flex flex-col gap-6">
       <div className="flex justify-between gap-4 border-b border-b-gray-200 pb-5">
@@ -58,10 +74,23 @@ export function EditUserForm({ data }: { data: User }) {
         </div>
 
         <div className="flex gap-3">
-          <Button hierarchy="secondary-gray" size="md">
-            Cancel
+          <Button hierarchy="secondary-gray" size="md" asChild>
+            <Link href="/admin/users">Cancel</Link>
           </Button>
-          <Button size="md">Save</Button>
+          <Button
+            size="md"
+            onClick={() => {
+              void form.handleSubmit(() => {
+                // If the form reference is null, return early
+                if (formRef.current == null) return
+
+                // Perform the form action with the form data
+                formAction(new FormData(formRef.current))
+              })()
+            }}
+          >
+            Save
+          </Button>
         </div>
       </div>
 
@@ -72,8 +101,6 @@ export function EditUserForm({ data }: { data: User }) {
           ref={formRef}
           onSubmit={handleSubmit}
         >
-          <input name="password" type="password" value={data.password} hidden readOnly />
-          <input name="id" type="text" value={data.user_id} hidden readOnly />
           <div className="flex gap-8 not-first:pt-5">
             <Label className="w-[280px]" htmlFor="first_name">
               Name
@@ -148,28 +175,28 @@ export function EditUserForm({ data }: { data: User }) {
               control={form.control}
               render={({ field }) => (
                 <FormItem className="flex-row gap-8">
-                  <FormLabel className="w-[280px]">Role</FormLabel>
+                  <FormLabel className="w-[280px] shrink-0">Role</FormLabel>
                   <FormControl>
-                    <Input
-                      className="w-[512px]"
-                      type="text"
-                      placeholder="Role"
-                      autoComplete="off"
-                      padding="md"
-                      {...field}
-                    />
+                    <Select name="role" defaultValue={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger className="w-[512px]">
+                          <SelectValue placeholder="Select a role" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="admin">Admin</SelectItem>
+                        <SelectItem value="doctor">Doctor</SelectItem>
+                        <SelectItem value="patient">Patient</SelectItem>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-
-          <div className="flex justify-end not-first:pt-5">
-            <Button type="submit" size="md">
-              Save
-            </Button>
-          </div>
+          <input name="id" type="text" value={data.user_id} hidden readOnly />
+          <input name="password" type="password" value={data.password} hidden readOnly />
         </form>
       </Form>
     </div>
