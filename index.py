@@ -4,6 +4,7 @@ import random
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np
+import tensorflow as tf
 from PIL import Image
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
@@ -156,16 +157,41 @@ def upload():
             confidence = np.max(predictions)
             label = f'{confidence * 100:.2f}%'
 
+            # Grad-CAM integration
+            last_conv_layer = model.get_layer('out_relu')
+            grad_model = tf.keras.models.Model(inputs=model.inputs, outputs=[last_conv_layer.output, model.output if not isinstance(model.output, list) else model.output[0]])
+
+            with tf.GradientTape() as tape:
+                last_conv_layer_output, preds = grad_model(img_array)
+                top_pred_index = tf.argmax(preds[0])
+                top_class_channel = preds[:, top_pred_index]
+
+            grads = tape.gradient(top_class_channel, last_conv_layer_output)
+            pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+            last_conv_layer_output = last_conv_layer_output[0]
+            heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
+            heatmap = tf.squeeze(heatmap)
+            heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
+            heatmap = tf.expand_dims(heatmap, -1)
+            heatmap = tf.image.resize(heatmap, (224, 224))
+            heatmap = tf.squeeze(heatmap)
+            heatmap = np.uint8(255 * heatmap.numpy())
+            jet = plt.get_cmap('jet')
+            heatmap_jet = jet(heatmap)[:, :, :3]
+            superimposed_img = heatmap_jet * 0.4 + img_array[0]
+            superimposed_img = np.clip(superimposed_img, 0, 1)
+
+            # Save the superimposed image
+            plt.imsave(file_path, superimposed_img)
+
             # Get the true label from a randomizer
             true_label = get_randomized_true_label(predicted_label)
 
             # Path to save the confusion matrix (npy for data, png for image)
-            confusion_matrix_file_path = os.path.join(
-                'public/images', 'confusion_matrix.npy')
+            confusion_matrix_file_path = os.path.join('public/images', 'confusion_matrix.npy')
 
             # Update and save the confusion matrix
-            update_confusion_matrix(
-                predicted_label, true_label, confusion_matrix_file_path)
+            update_confusion_matrix(predicted_label, true_label, confusion_matrix_file_path)
 
             return {'percentage': label, 'result': predicted_label}
         else:
