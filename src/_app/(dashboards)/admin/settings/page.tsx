@@ -37,7 +37,6 @@ export default function Page() {
       first_name: '',
       last_name: '',
       email: '',
-      // @ts-ignore
       password: '',
 
       /**
