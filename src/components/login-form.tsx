@@ -136,7 +136,7 @@ export function LoginForm() {
 
             <Button type="submit">
               {isSubmitting && <Loader2 className="size-4 animate-spin" />}
-              Log in
+              {isSubmitting ? 'Logging in...' : 'Log in'}
             </Button>
           </form>
         </Form>
