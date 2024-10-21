@@ -5,7 +5,6 @@ import { eq, sql } from 'drizzle-orm'
 
 import { db } from './db'
 import { users, type User } from './db-schema'
-import { type SignUpFormSchema } from './form-schema'
 import { verifySession } from './session'
 
 export interface Result {
@@ -50,14 +49,13 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
 /**
  * Retrieves all users with the specified role from the database.
  *
- * @param role - The role of the users to fetch.
  * @returns A promise that resolves to an array of users with the specified role, or null if an
  *   error occurs.
  * @throws Logs an error message to the console if the fetch operation fails.
  */
-export const getUsers = cache(async (role: SignUpFormSchema['role']): Promise<User[] | null> => {
+export const getUsers = cache(async (): Promise<User[] | null> => {
   try {
-    const data = await db.select().from(users).where(eq(users.role, role))
+    const data = await db.select().from(users)
     return data
   } catch (error) {
     console.error('Failed to fetch users')
