@@ -142,7 +142,7 @@ export function LoginForm() {
         </Form>
 
         <div className="mt-4 text-center text-sm">
-          <Link className="underline" href="#">
+          <Link className="underline" href="/forgot-password">
             Forgot your password?
           </Link>
         </div>
