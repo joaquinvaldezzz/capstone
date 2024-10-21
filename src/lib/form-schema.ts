@@ -38,6 +38,36 @@ export const logInFormSchema = z.object({
 /** Represents the inferred type of the `loginSchema`. */
 export type LogInFormSchema = z.infer<typeof logInFormSchema>
 
+/**
+ * Schema for the forgot password form.
+ *
+ * This schema validates the email address and password fields for the forgot password form.
+ */
+export const forgotPasswordFormSchema = z
+  .object({
+    email: z.string().email({ message: 'Please enter your email address.' }).trim(),
+    newPassword: z
+      .string()
+      .min(8, { message: 'Your password must be at least 8 characters.' })
+      .regex(/[a-zA-Z]/, { message: 'Contain at least one letter.' })
+      .regex(/[0-9]/, { message: 'Contain at least one number.' })
+      .regex(/[^a-zA-Z0-9]/, {
+        message: 'Contain at least one special character.',
+      })
+      .trim(),
+    confirmPassword: z
+      .string()
+      .min(8, { message: 'Your password must be at least 8 characters.' })
+      .trim(),
+  })
+  .refine((values) => values.newPassword === values.confirmPassword, {
+    message: 'Passwords do not match.',
+    path: ['confirmPassword'],
+  })
+
+/** Represents the inferred type of the `forgotPasswordFormSchema`. */
+export type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>
+
 /** Represents the schema for adding a new patient result. */
 export const resultSchema = z.object({
   patient_name: z

@@ -9,6 +9,7 @@ const alertVariants = cva(
     variants: {
       variant: {
         default: 'bg-background text-foreground',
+        success: 'border-green-700/50 text-green-700 dark:border-green-700 [&>svg]:text-green-700',
         destructive:
           'border-destructive/50 text-destructive dark:border-destructive [&>svg]:text-destructive',
       },

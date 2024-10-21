@@ -9,7 +9,12 @@ import { eq } from 'drizzle-orm'
 import { getCurrentUser } from './dal'
 import { db } from './db'
 import { results, users } from './db-schema'
-import { logInFormSchema, resultSchema, signUpFormSchema } from './form-schema'
+import {
+  forgotPasswordFormSchema,
+  logInFormSchema,
+  resultSchema,
+  signUpFormSchema,
+} from './form-schema'
 import { createSession, deleteSession } from './session'
 
 interface PreviousState {
@@ -259,6 +264,64 @@ export async function updateUser(
 
   return {
     message: 'User updated successfully.',
+    success: true,
+  }
+}
+
+/**
+ * Updates the user's password based on the provided form data.
+ *
+ * @param _previousState - The previous state (not used in this function).
+ * @param formData - The form data containing the email and new password.
+ * @returns A promise that resolves to a message indicating the result of the password update.
+ */
+export async function updatePassword(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const formValues = Object.fromEntries(formData)
+  const parsedData = forgotPasswordFormSchema.safeParse(formValues)
+
+  // If the form data is invalid, return an error message
+  if (!parsedData.success) {
+    return {
+      message: 'Invalid form data.',
+      success: false,
+      fields: parsedData.data,
+    }
+  }
+
+  // If the form data is valid, extract the email and password
+  const { email, newPassword } = parsedData.data
+
+  // Check if the email exists in the database
+  const existingAccount = await db.select().from(users).where(eq(users.email, email))
+
+  // If the email does not exist in the database, return an error message
+  if (existingAccount.length === 0) {
+    return {
+      message: 'That email address does not exist.',
+      fields: parsedData.data,
+    }
+  }
+
+  // Hash the new password before storing it in the database
+  const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+  // If the email exists in the database, update the password
+  await db
+    .update(users)
+    .set({
+      password: hashedPassword,
+      date_modified: new Date(),
+    })
+    .where(eq(users.email, parsedData.data.email))
+    .execute()
+
+  revalidatePath('/')
+
+  return {
+    message: 'Your password has been updated successfully.',
     success: true,
   }
 }
