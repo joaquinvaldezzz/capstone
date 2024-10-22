@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { ChevronRight, type LucideIcon } from 'lucide-react'
 
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
@@ -30,6 +31,8 @@ export function NavMain({
     }>
   }>
 }) {
+  const pathname = usePathname()
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Getting started</SidebarGroupLabel>
@@ -37,12 +40,17 @@ export function NavMain({
         {items.map((item) => (
           <Collapsible defaultOpen={item.isActive} key={item.title} asChild>
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip={item.title} asChild>
+              <SidebarMenuButton
+                data-active={pathname === item.url ? 'true' : 'false'}
+                tooltip={item.title}
+                asChild
+              >
                 <Link href={item.url}>
                   <item.icon />
                   <span>{item.title}</span>
                 </Link>
               </SidebarMenuButton>
+
               {item.items?.length != null ? (
                 <>
                   <CollapsibleTrigger asChild>
@@ -51,6 +59,7 @@ export function NavMain({
                       <span className="sr-only">Toggle</span>
                     </SidebarMenuAction>
                   </CollapsibleTrigger>
+
                   <CollapsibleContent>
                     <SidebarMenuSub>
                       {item.items?.map((subItem) => (
