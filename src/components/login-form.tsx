@@ -27,7 +27,7 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const [formState, formAction] = useFormState(login, { message: '' })
-  const loginForm = useForm<LogInFormSchema>({
+  const form = useForm<LogInFormSchema>({
     defaultValues: {
       email: '',
       password: '',
@@ -47,7 +47,7 @@ export function LoginForm() {
     // Prevent the default form submission behavior
     event.preventDefault()
 
-    void loginForm.handleSubmit(() => {
+    void form.handleSubmit(() => {
       // If the form reference is null, return early
       if (formRef.current == null) return
 
@@ -82,11 +82,11 @@ export function LoginForm() {
           </Alert>
         )}
 
-        <Form {...loginForm}>
+        <Form {...form}>
           <form className="grid gap-4" action={formAction} ref={formRef} onSubmit={handleSubmit}>
             <FormField
               name="email"
-              control={loginForm.control}
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Email</FormLabel>
@@ -105,7 +105,7 @@ export function LoginForm() {
 
             <FormField
               name="password"
-              control={loginForm.control}
+              control={form.control}
               render={({ field }) => (
                 <FormItem>
                   <div className="flex items-center justify-between">
