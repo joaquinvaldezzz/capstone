@@ -17,6 +17,8 @@
     "lucide",
     "matshow",
     "ndenumerate",
+    "nocache",
+    "noimageindex",
     "nprogress",
     "nums",
     "offcanvas",
