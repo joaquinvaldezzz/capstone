@@ -8,14 +8,16 @@ import { z } from 'zod'
 export const signUpFormSchema = z.object({
   first_name: z
     .string()
-    .min(2, { message: 'First name must be at least 2 characters.' })
+    .min(1, { message: 'First name cannot be blank.' })
     .max(64, { message: 'First name must not exceed 64 characters.' })
     .trim(),
   last_name: z
     .string()
-    .min(2, { message: 'Last name must be at least 2 characters.' })
+    .min(1, { message: 'Last name cannot be blank.' })
     .max(64, { message: 'Last name must not exceed 64 characters.' })
     .trim(),
+  age: z.coerce.number().int().min(1, { message: 'Age cannot be blank.' }),
+  birth_date: z.date({ message: 'Birth date cannot be blank.' }),
   email: z.string().email({ message: 'Please enter a valid email address.' }).trim(),
   role: z
     .enum(['admin', 'doctor', 'patient'], { message: 'Please select a role.' })

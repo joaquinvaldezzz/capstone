@@ -18,7 +18,6 @@ export const columns: Array<ColumnDef<User>> = [
     header: ({ column }) => {
       return (
         <Button
-          className="-ml-4"
           variant="ghost"
           onClick={() => {
             column.toggleSorting(column.getIsSorted() === 'asc')
@@ -37,25 +36,17 @@ export const columns: Array<ColumnDef<User>> = [
   },
   {
     accessorKey: 'role',
-    header: ({ column }) => {
-      return (
-        <Button
-          className="-ml-4"
-          variant="ghost"
-          onClick={() => {
-            column.toggleSorting(column.getIsSorted() === 'asc')
-          }}
-        >
-          Role
-          <ArrowUpDown className="ml-2 size-4" />
-        </Button>
-      )
-    },
+    header: 'Role',
     cell: (cell) => <span className="capitalize">{cell.row.original.role}</span>,
   },
   {
     accessorKey: 'created_at',
     header: 'Date created',
     cell: (cell) => format(cell.row.original.creation_date, 'MMMM dd, yyyy h:mm a'),
+  },
+  {
+    accessorKey: 'date_modified',
+    header: 'Date modified',
+    cell: (cell) => format(cell.row.original.date_modified, 'MMMM dd, yyyy h:mm a'),
   },
 ]
