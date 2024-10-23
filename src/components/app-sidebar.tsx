@@ -13,22 +13,22 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { NavMain } from '@/components/nav-main'
+import { NavMain, type NavMainProps } from '@/components/nav-main'
 import { NavUser, type NavUserProps } from '@/components/nav-user'
 
 interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavUserProps {}
 
-const data = {
-  navMain: [
+const links: NavMainProps = {
+  items: [
     {
-      title: 'Dashboard',
-      url: '/admin',
       icon: LayoutDashboard,
+      url: '/admin',
+      title: 'Dashboard',
     },
     {
-      title: 'Users',
-      url: '/admin/users',
       icon: Users,
+      url: '/admin/users',
+      title: 'Users',
     },
   ],
 }
@@ -55,7 +55,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={links.items} />
       </SidebarContent>
 
       <SidebarFooter>
