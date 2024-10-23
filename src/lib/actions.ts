@@ -14,6 +14,7 @@ import {
   logInFormSchema,
   resultSchema,
   signUpFormSchema,
+  updateAccountFormSchema,
 } from './form-schema'
 import { createSession, deleteSession } from './session'
 
@@ -275,7 +276,40 @@ export async function updateUser(
     .where(eq(users.user_id, Number(formData.get('id'))))
     .execute()
 
-  revalidatePath('/admin/users')
+  revalidatePath('/admin')
+
+  return {
+    message: 'User updated successfully.',
+    success: true,
+  }
+}
+
+export async function updateAccount(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const formValues = Object.fromEntries(formData)
+  const parsedData = updateAccountFormSchema.safeParse(formValues)
+
+  // If the form data is invalid, return an error message
+  if (!parsedData.success) {
+    return {
+      message: 'Invalid form data.',
+      fields: parsedData.data,
+    }
+  }
+
+  // If the form data is valid, update the user in the database
+  await db
+    .update(users)
+    .set({
+      ...parsedData.data,
+      date_modified: new Date(),
+    })
+    .where(eq(users.user_id, Number(formData.get('id'))))
+    .execute()
+
+  revalidatePath('/admin/settings/account')
 
   return {
     message: 'User updated successfully.',
@@ -337,6 +371,28 @@ export async function updatePassword(
 
   return {
     message: 'Your password has been updated successfully.',
+    success: true,
+  }
+}
+
+export async function deleteAccount(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const id = formData.get('id')
+
+  // Delete the user from the database
+  await db
+    .delete(users)
+    .where(eq(users.user_id, parseInt(String(id))))
+    .execute()
+
+  // Revalidate the dashboard page
+  revalidatePath('/admin/settings/account')
+
+  // Return a success message
+  return {
+    message: 'Account deleted successfully.',
     success: true,
   }
 }

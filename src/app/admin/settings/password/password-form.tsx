@@ -1,0 +1,120 @@
+'use client'
+
+import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useFormState } from 'react-dom'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2 } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+
+import { updateAccount } from '@/lib/actions'
+import { updatePasswordFormSchema, type UpdatePasswordFormSchema } from '@/lib/form-schema'
+import { Button } from '@/components/ui/button'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+
+export function PasswordForm() {
+  const formRef = useRef<HTMLFormElement>(null)
+  const [formState, formAction] = useFormState(updateAccount, { message: '' })
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const form = useForm<UpdatePasswordFormSchema>({
+    defaultValues: {
+      oldPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+    resolver: zodResolver(updatePasswordFormSchema),
+  })
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    // Prevent the default form submission behavior.
+    event.preventDefault()
+
+    void form.handleSubmit(() => {
+      console.log(formRef.current)
+      // If the form reference is null, return early.
+      if (formRef.current == null) return
+
+      setIsSubmitting(true)
+
+      // Perform the form action with the form data.
+      formAction(new FormData(formRef.current))
+    })(event)
+  }
+
+  useEffect(() => {
+    // If the form state message is not empty, set the submitting state to false
+    if (formState.success ?? false) {
+      setIsSubmitting(false)
+    }
+  }, [formState])
+
+  return (
+    <Form {...form}>
+      <form
+        className="flex flex-col gap-8"
+        action={formAction}
+        ref={formRef}
+        onSubmit={handleSubmit}
+      >
+        {/* <input name="id" type="text" value={data.user_id} hidden readOnly /> */}
+        <div className="flex flex-col gap-8">
+          <FormField
+            name="oldPassword"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Old password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="newPassword"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>New password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            name="confirmPassword"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm password</FormLabel>
+                <FormControl>
+                  <Input type="password" placeholder="" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+            {isSubmitting ? 'Updating password...' : 'Update password'}
+          </Button>
+        </div>
+      </form>
+    </Form>
+  )
+}
