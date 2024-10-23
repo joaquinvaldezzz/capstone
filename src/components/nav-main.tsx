@@ -1,5 +1,6 @@
 'use client'
 
+import { Fragment } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { ChevronRight, type LucideIcon } from 'lucide-react'
@@ -17,20 +18,20 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar'
 
-export function NavMain({
-  items,
-}: {
+export interface NavMainProps {
   items: Array<{
-    title: string
-    url: string
     icon: LucideIcon
+    url: string
+    title: string
     isActive?: boolean
     items?: Array<{
-      title: string
       url: string
+      title: string
     }>
   }>
-}) {
+}
+
+export function NavMain({ items }: NavMainProps) {
   const pathname = usePathname()
 
   return (
@@ -52,7 +53,7 @@ export function NavMain({
               </SidebarMenuButton>
 
               {item.items?.length != null ? (
-                <>
+                <Fragment>
                   <CollapsibleTrigger asChild>
                     <SidebarMenuAction className="data-[state=open]:rotate-90">
                       <ChevronRight />
@@ -73,7 +74,7 @@ export function NavMain({
                       ))}
                     </SidebarMenuSub>
                   </CollapsibleContent>
-                </>
+                </Fragment>
               ) : null}
             </SidebarMenuItem>
           </Collapsible>
