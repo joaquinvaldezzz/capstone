@@ -54,7 +54,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
       <div className="mt-4 flex items-center justify-between">
         <Input
           className="max-w-sm"
-          placeholder="Filter users..."
+          placeholder="Filter names..."
           value={(table.getColumn('first_name')?.getFilterValue() as string) ?? ''}
           onChange={(event) => table.getColumn('first_name')?.setFilterValue(event.target.value)}
         />
