@@ -1,6 +1,7 @@
 'use client'
 
 import { Fragment, useState } from 'react'
+import Link from 'next/link'
 import {
   flexRender,
   getCoreRowModel,
@@ -13,6 +14,7 @@ import {
   type SortingState,
 } from '@tanstack/react-table'
 
+import { type User } from '@/lib/db-schema'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -31,7 +33,10 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData extends User, TValue>({
+  columns,
+  data,
+}: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
   const table = useReactTable({
@@ -86,6 +91,10 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
                 <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
+                      <Link
+                        className="absolute inset-0"
+                        href={`/admin/users/${String(cell.row.original.user_id)}`}
+                      ></Link>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
