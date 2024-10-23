@@ -35,6 +35,15 @@ export const columns: Array<ColumnDef<User>> = [
     ),
   },
   {
+    accessorKey: 'email',
+    header: 'Email address',
+    cell: (cell) => (
+      <div className="flex flex-1">
+        <span className="truncate">{cell.row.original.email}</span>
+      </div>
+    ),
+  },
+  {
     accessorKey: 'role',
     header: 'Role',
     cell: (cell) => <span className="capitalize">{cell.row.original.role}</span>,
