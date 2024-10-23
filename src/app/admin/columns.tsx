@@ -21,6 +21,15 @@ export const columns: Array<ColumnDef<User>> = [
     ),
   },
   {
+    accessorKey: 'email',
+    header: 'Email address',
+    cell: (cell) => (
+      <div className="flex flex-1">
+        <span className="truncate">{cell.row.original.email}</span>
+      </div>
+    ),
+  },
+  {
     accessorKey: 'role',
     header: 'Role',
     cell: (cell) => <span className="capitalize">{cell.row.original.role}</span>,
@@ -29,10 +38,5 @@ export const columns: Array<ColumnDef<User>> = [
     accessorKey: 'created_at',
     header: 'Date created',
     cell: (cell) => format(cell.row.original.creation_date, 'MMMM dd, yyyy h:mm a'),
-  },
-  {
-    accessorKey: 'date_modified',
-    header: 'Date modified',
-    cell: (cell) => format(cell.row.original.date_modified, 'MMMM dd, yyyy h:mm a'),
   },
 ]
