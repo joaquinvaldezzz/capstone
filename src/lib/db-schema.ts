@@ -22,6 +22,25 @@ export const users = pgTable('users', {
 export type User = InferSelectModel<typeof users>
 
 /**
+ * Represents the schema for the 'patient_information' table in the database.
+ *
+ * The table contains the user ID, age, birth date, gender, and address of the patient.
+ */
+export const patientInformation = pgTable('patient_information', {
+  patient_id: serial('patient_id').primaryKey(),
+  user_id: integer('user_id')
+    .references(() => users.user_id)
+    .notNull(),
+  age: integer('age').notNull(),
+  birth_date: timestamp('birth_date', { mode: 'date' }).notNull(),
+  gender: text('gender').notNull(),
+  address: text('address').notNull(),
+})
+
+/** Represents the inferred type of the `patient_information` table. */
+export type PatientInformation = InferSelectModel<typeof patientInformation>
+
+/**
  * Represents a database table for user sessions.
  *
  * This table stores information about sessions, including the session ID, user ID, user role, and

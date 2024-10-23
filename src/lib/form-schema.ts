@@ -16,8 +16,12 @@ export const signUpFormSchema = z.object({
     .min(1, { message: 'Last name cannot be blank.' })
     .max(64, { message: 'Last name must not exceed 64 characters.' })
     .trim(),
-  age: z.coerce.number().int().min(1, { message: 'Age cannot be blank.' }),
-  birth_date: z.date({ message: 'Birth date cannot be blank.' }),
+  age: z.string().min(1, { message: 'Age cannot be blank.' }),
+  birth_date: z.coerce.date({ message: 'Birth date cannot be blank.' }),
+  gender: z
+    .enum(['female', 'male'], { message: 'Please select a gender.' })
+    .or(z.string().min(1, { message: 'Please select a gender.' })),
+  address: z.string().min(1, { message: 'Address cannot be blank.' }).trim(),
   email: z.string().email({ message: 'Please enter a valid email address.' }).trim(),
   role: z
     .enum(['admin', 'doctor', 'patient'], { message: 'Please select a role.' })

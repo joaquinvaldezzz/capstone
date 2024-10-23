@@ -4,14 +4,11 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useFormState } from 'react-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { CalendarIcon, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
 import { signUpFormSchema, type SignUpFormSchema } from '@/lib/form-schema'
-import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
 import {
   Dialog,
   DialogClose,
@@ -31,7 +28,6 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import {
   Select,
   SelectContent,
@@ -49,8 +45,10 @@ export function CreateUserForm() {
     defaultValues: {
       first_name: '',
       last_name: '',
-      age: 0,
+      age: '',
       birth_date: new Date(),
+      gender: '',
+      address: '',
       email: '',
       role: '',
     },
@@ -74,23 +72,27 @@ export function CreateUserForm() {
 
   function handleCancel() {
     form.reset()
+    setIsSubmitting(false)
   }
 
   useEffect(() => {
+    if (formState.message.length > 0) {
+      setIsSubmitting(false)
+    }
+
     if (formState.success ?? false) {
       setOpen(false)
       form.reset()
       setIsSubmitting(false)
     }
-  }, [form, formState.success])
+  }, [form, formState.message, formState.success])
+
+  console.log(formState.message)
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button">
-          <Plus className="size-5" />
-          <span className="px-0.5">Create user</span>
-        </Button>
+        <Button type="button">Create user</Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -136,25 +138,6 @@ export function CreateUserForm() {
                 />
               </div>
 
-              <FormField
-                name="email"
-                control={form.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="e.g. john@doe.com"
-                        autoComplete="off"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
               <div className="grid grid-cols-2 gap-4">
                 <FormField
                   name="age"
@@ -176,37 +159,16 @@ export function CreateUserForm() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Date of birth</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              className={cn(
-                                'w-full pl-3 text-left font-normal',
-                                field.value == null ? 'text-muted-foreground' : '',
-                              )}
-                              variant="outline"
-                            >
-                              {field.value != null ? (
-                                format(field.value, 'PPP')
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto size-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            disabled={(date) => date > new Date() || date < new Date('1900-01-01')}
-                            mode="single"
-                            selected={field.value}
-                            initialFocus
-                            onSelect={field.onChange}
-                          />
-                        </PopoverContent>
-                      </Popover>
-
+                      <FormControl>
+                        <Input
+                          name={field.name}
+                          type="date"
+                          value={field.value != null ? format(field.value, 'yyyy-MM-dd') : ''}
+                          ref={field.ref}
+                          onBlur={field.onBlur}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
@@ -214,11 +176,66 @@ export function CreateUserForm() {
               </div>
 
               <FormField
+                name="gender"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Gender</FormLabel>
+                    <Select name="gender" defaultValue={field.value} onValueChange={field.onChange}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select a gender" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="female">Female</SelectItem>
+                        <SelectItem value="male">Male</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                name="address"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Address</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="" autoComplete="off" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                name="email"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="e.g. john@doe.com"
+                        autoComplete="off"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
                 name="role"
                 control={form.control}
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select a role</FormLabel>
+                    <FormLabel>Role</FormLabel>
                     <Select name="role" defaultValue={field.value} onValueChange={field.onChange}>
                       <FormControl>
                         <SelectTrigger>

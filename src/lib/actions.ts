@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm'
 
 import { getCurrentUser } from './dal'
 import { db } from './db'
-import { results, users } from './db-schema'
+import { patientInformation, results, users } from './db-schema'
 import {
   forgotPasswordFormSchema,
   logInFormSchema,
@@ -23,7 +23,7 @@ interface PreviousState {
 
 interface Message extends PreviousState {
   success?: boolean
-  fields?: Record<string, string>
+  fields?: Record<string, string | Date>
 }
 
 /**
@@ -66,17 +66,32 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
 
   /**
    * If the form data is valid and the email does not exist in the database, insert the user into
-   * the database.
+   * the database, then return the user ID.
    */
-  await db
+  const id = await db
     .insert(users)
     .values({
       ...parsedData.data,
       password: hashedPassword,
     })
+    .returning({ user_id: users.user_id })
     .execute()
 
-  // Revalidate the dashboard page
+  if (parsedData.data.role === 'patient') {
+    const { age } = parsedData.data
+
+    // If the role is a patient, insert the user into the database alongside the patient information
+    await db
+      .insert(patientInformation)
+      .values({
+        ...parsedData.data,
+        user_id: id[0].user_id,
+        age: Number(age),
+      })
+      .execute()
+  }
+
+  // Revalidate the users page
   revalidatePath('/admin/users')
 
   // Return a success message
