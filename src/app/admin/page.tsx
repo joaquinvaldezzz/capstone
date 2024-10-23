@@ -15,6 +15,26 @@ import { DataTable } from './data-table'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
+  description: 'Dashboard for the admin panel',
+  openGraph: {
+    title: 'Dashboard',
+    description: 'Dashboard for the admin panel',
+    locale: 'en_US',
+    type: 'website',
+  },
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: false,
+      noimageindex: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
 }
 
 export default async function Page() {
