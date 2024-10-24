@@ -10,11 +10,11 @@ import { getCurrentUser } from './dal'
 import { db } from './db'
 import { patientInformation, results, users } from './db-schema'
 import {
-  forgotPasswordFormSchema,
   logInFormSchema,
   resultSchema,
   signUpFormSchema,
   updateAccountFormSchema,
+  updatePasswordFormSchema,
 } from './form-schema'
 import { createSession, deleteSession } from './session'
 
@@ -24,7 +24,7 @@ interface PreviousState {
 
 interface Message extends PreviousState {
   success?: boolean
-  fields?: Record<string, string | Date>
+  fields?: Record<string, string | number | Date>
 }
 
 /**
@@ -329,46 +329,57 @@ export async function updatePassword(
   formData: FormData,
 ): Promise<Message> {
   const formValues = Object.fromEntries(formData)
-  const parsedData = forgotPasswordFormSchema.safeParse(formValues)
+  const parsedData = updatePasswordFormSchema.safeParse(formValues)
 
   // If the form data is invalid, return an error message
   if (!parsedData.success) {
     return {
       message: 'Invalid form data.',
+      fields: parsedData.data,
+    }
+  }
+
+  // If the form data is valid, extract the old password
+  const { oldPassword } = parsedData.data
+
+  // Get the user's hashed password from the database
+  const existingAccount = await db
+    .select()
+    .from(users)
+    .where(eq(users.user_id, Number(formData.get('id'))))
+
+  // Compare the old password with the hashed password in the database
+  const matchingPassword = await bcrypt.compare(oldPassword, existingAccount[0].password)
+
+  // If the old password does not match, return an error message
+  if (!matchingPassword) {
+    return {
+      message: 'The old password you entered is incorrect.',
       success: false,
       fields: parsedData.data,
     }
   }
 
-  // If the form data is valid, extract the email and password
-  const { email, newPassword } = parsedData.data
-
-  // Check if the email exists in the database
-  const existingAccount = await db.select().from(users).where(eq(users.email, email))
-
-  // If the email does not exist in the database, return an error message
-  if (existingAccount.length === 0) {
-    return {
-      message: 'That email address does not exist.',
-      fields: parsedData.data,
-    }
-  }
+  // If the form data is valid, extract the new password
+  const { newPassword } = parsedData.data
 
   // Hash the new password before storing it in the database
   const hashedPassword = await bcrypt.hash(newPassword, 10)
 
-  // If the email exists in the database, update the password
+  // Update the user's password in the database
   await db
     .update(users)
     .set({
       password: hashedPassword,
       date_modified: new Date(),
     })
-    .where(eq(users.email, parsedData.data.email))
+    .where(eq(users.user_id, Number(formData.get('id'))))
     .execute()
 
+  // Revalidate the page
   revalidatePath('/')
 
+  // Return a success message
   return {
     message: 'Your password has been updated successfully.',
     success: true,

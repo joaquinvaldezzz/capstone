@@ -22,7 +22,7 @@ export default async function Page() {
         <h3 className="text-2xl font-semibold tracking-tight">Password</h3>
         <p className="text-sm text-muted-foreground">Change your account password here.</p>
       </div>
-      <PasswordForm />
+      <PasswordForm data={user} />
     </div>
   )
 }
