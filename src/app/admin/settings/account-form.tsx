@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import { updateAccount } from '@/lib/actions'
 import { type User } from '@/lib/db-schema'
 import { updateAccountFormSchema, type UpdateAccountFormSchema } from '@/lib/form-schema'
+import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -40,6 +41,7 @@ export function AccountForm({ data }: { data: User }) {
     },
     resolver: zodResolver(updateAccountFormSchema),
   })
+  const { toast } = useToast()
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
@@ -58,11 +60,21 @@ export function AccountForm({ data }: { data: User }) {
   }
 
   useEffect(() => {
-    // If the form state message is not empty, set the submitting state to false
+    // If the form state success is true, set the is submitting state to false.
     if (formState.success ?? false) {
       setIsSubmitting(false)
     }
   }, [formState])
+
+  useEffect(() => {
+    // If the form state success is true, display a toast notification.
+    if (formState.success ?? false) {
+      toast({
+        title: 'Nice!',
+        description: 'Your account has been successfully updated.',
+      })
+    }
+  }, [formState, toast])
 
   return (
     <Fragment>

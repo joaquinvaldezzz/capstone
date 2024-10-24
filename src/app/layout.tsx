@@ -3,6 +3,8 @@ import localFont from 'next/font/local'
 
 import '../styles/main.css'
 
+import { Toaster } from '@/components/ui/toaster'
+
 const inter = localFont({
   src: [
     {
@@ -22,7 +24,10 @@ const inter = localFont({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={inter.variable} lang="en">
-      <body className="min-w-80 bg-background text-foreground antialiased">{children}</body>
+      <body className="min-w-80 bg-background text-foreground antialiased">
+        {children}
+        <Toaster />
+      </body>
     </html>
   )
 }
