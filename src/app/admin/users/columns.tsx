@@ -4,6 +4,7 @@ import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
 import { type User } from '@/lib/db-schema'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 import { DataTableColumnHeader } from './data-table-column-header'
 
@@ -19,9 +20,18 @@ export const columns: Array<ColumnDef<User>> = [
       return <DataTableColumnHeader title="Name" column={column} />
     },
     cell: (cell) => (
-      <span className="font-medium text-gray-900">
-        {cell.row.original.first_name} {cell.row.original.last_name}
-      </span>
+      <div className="flex items-center gap-2">
+        <Avatar>
+          <AvatarImage src="" />
+          <AvatarFallback>
+            {cell.row.original.first_name[0]}
+            {cell.row.original.last_name[0]}
+          </AvatarFallback>
+        </Avatar>
+        <span className="font-medium text-gray-900">
+          {cell.row.original.first_name} {cell.row.original.last_name}
+        </span>
+      </div>
     ),
   },
   {
