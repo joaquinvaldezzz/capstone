@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
-import { updateProfileFormSchema, UpdateProfileFormSchema } from '@/lib/form-schema'
+import { updateProfileFormSchema, type UpdateProfileFormSchema } from '@/lib/form-schema'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -44,6 +44,8 @@ export function ProfileForm() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
     event.preventDefault()
+
+    console.log(form.getValues())
 
     void form.handleSubmit(() => {
       // If the form reference is null, return early.
@@ -89,7 +91,7 @@ export function ProfileForm() {
                     <Input
                       name={field.name}
                       type="date"
-                      value={field.value != null ? format(field.value, 'yyyy-MM-dd') : ''}
+                      value={field.value != null ? format(field.value, 'yyyy-mm-dd') : ''}
                       ref={field.ref}
                       onBlur={field.onBlur}
                       onChange={field.onChange}
