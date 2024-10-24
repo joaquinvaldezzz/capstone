@@ -155,28 +155,6 @@ export function AccountForm({ data }: { data: User }) {
           </div>
         </form>
       </Form>
-
-      <div className="flex flex-col gap-6">
-        <div>
-          <h3 className="text-2xl font-semibold tracking-tight">Delete account</h3>
-          <p className="text-sm text-muted-foreground">
-            Deleting your account will remove all your data and cannot be undone.
-          </p>
-        </div>
-
-        <div>
-          <Button
-            type="button"
-            variant="destructive"
-            onClick={() => {
-              console.log('Delete account')
-            }}
-          >
-            {/* {isSubmitting && <Loader2 className="size-4 animate-spin" />} */}
-            Delete account
-          </Button>
-        </div>
-      </div>
     </Fragment>
   )
 }
