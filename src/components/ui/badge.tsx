@@ -5,48 +5,31 @@ import { cva, type VariantProps } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 
-export const badgeVariants = cva(
-  'inline-flex items-center rounded-full text-center font-medium ring-1 ring-inset',
+const badgeVariants = cva(
+  'inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
   {
     variants: {
-      size: {
-        sm: 'px-2 py-0.5 text-xs',
-        md: 'px-2.5 py-0.5 text-sm',
-        lg: 'px-3 py-1 text-sm',
-      },
-      type: {
-        '': '',
-      },
-      color: {
-        gray: 'bg-gray-50 text-gray-700 ring-gray-200',
-        brand: 'bg-brand-50 text-brand-700 ring-brand-200',
-        error: 'bg-error-50 text-error-700 ring-error-200',
-        warning: 'bg-warning-50 text-warning-700 ring-warning-200',
-        success: 'bg-success-50 text-success-700 ring-success-200',
-        'gray-blue': 'bg-gray-blue-50 text-gray-blue-700 ring-gray-blue-200',
-        'blue-light': 'bg-blue-light-50 text-blue-light-700 ring-blue-light-200',
-        blue: 'bg-blue-50 text-blue-700 ring-blue-200',
-        indigo: 'bg-indigo-50 text-indigo-700 ring-indigo-200',
-        purple: 'bg-purple-50 text-purple-700 ring-purple-200',
-        pink: 'bg-pink-50 text-pink-700 ring-pink-200',
-        orange: 'bg-orange-50 text-orange-700 ring-orange-200',
+      variant: {
+        default: 'border-transparent bg-primary text-primary-foreground hover:bg-primary/80',
+        secondary:
+          'border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        destructive:
+          'border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80',
+        outline: 'text-foreground',
       },
     },
     defaultVariants: {
-      size: 'sm',
-      color: 'gray',
+      variant: 'default',
     },
   },
 )
 
 export interface BadgeProps
-  extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>,
+  extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
-export function Badge({ className, size, type, color, children, ...props }: BadgeProps) {
-  return (
-    <div className={cn(badgeVariants({ size, type, color }), className)} {...props}>
-      {children}
-    </div>
-  )
+function Badge({ className, variant, ...props }: BadgeProps) {
+  return <div className={cn(badgeVariants({ variant }), className)} {...props} />
 }
+
+export { Badge, badgeVariants }
