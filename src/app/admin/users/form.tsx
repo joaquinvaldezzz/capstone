@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { useFormState } from 'react-dom'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
+import { Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
@@ -92,7 +93,10 @@ export function CreateUserForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button type="button">Create user</Button>
+        <Button type="button">
+          <Plus />
+          New user
+        </Button>
       </DialogTrigger>
 
       <DialogContent>
