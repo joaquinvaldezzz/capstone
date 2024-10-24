@@ -18,6 +18,13 @@ import { type User } from '@/lib/db-schema'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
   Table,
   TableBody,
   TableCell,
@@ -26,6 +33,8 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
+import { DataTableFacetedFilter } from './data-table-faceted-filter'
+import { DataTableViewOptions } from './data-table-view-options'
 import { CreateUserForm } from './form'
 
 interface DataTableProps<TData, TValue> {
@@ -57,14 +66,30 @@ export function DataTable<TData extends User, TValue>({
   return (
     <Fragment>
       <div className="mt-4 flex items-center justify-between">
-        <Input
-          className="max-w-sm"
-          placeholder="Filter names..."
-          value={(table.getColumn('first_name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) => table.getColumn('first_name')?.setFilterValue(event.target.value)}
-        />
+        <div className="flex flex-1 items-center gap-2">
+          <Input
+            className="max-w-64 shrink-0"
+            placeholder="Filter names..."
+            value={(table.getColumn('first_name')?.getFilterValue() as string) ?? ''}
+            onChange={(event) => table.getColumn('first_name')?.setFilterValue(event.target.value)}
+          />
+          {table.getColumn('role') != null && (
+            <DataTableFacetedFilter
+              title="Role"
+              column={table.getColumn('role')}
+              options={[
+                { value: 'admin', label: 'Admin' },
+                { value: 'doctor', label: 'Doctor' },
+                { value: 'patient', label: 'Patient' },
+              ]}
+            />
+          )}
+        </div>
 
-        <CreateUserForm />
+        <div className="flex items-center gap-2">
+          <CreateUserForm />
+          <DataTableViewOptions table={table} />
+        </div>
       </div>
 
       <div className="mt-4 rounded-md border">
@@ -111,7 +136,28 @@ export function DataTable<TData extends User, TValue>({
         </Table>
       </div>
 
-      <div className="flex items-center justify-between py-4">
+      <div className="flex items-center justify-end gap-8 bg-white py-4">
+        <div className="flex items-center space-x-2">
+          <p className="text-sm font-medium">Rows per page</p>
+          <Select
+            value={`${table.getState().pagination.pageSize}`}
+            onValueChange={(value) => {
+              table.setPageSize(Number(value))
+            }}
+          >
+            <SelectTrigger className="h-9 w-20">
+              <SelectValue placeholder={table.getState().pagination.pageSize} />
+            </SelectTrigger>
+            <SelectContent side="top">
+              {[10, 20, 30, 40, 50].map((pageSize) => (
+                <SelectItem value={`${pageSize}`} key={pageSize}>
+                  {pageSize}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
         <div className="flex items-center justify-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
         </div>

@@ -2,31 +2,21 @@
 
 import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { ArrowUpDown } from 'lucide-react'
 
 import { type User } from '@/lib/db-schema'
-import { Button } from '@/components/ui/button'
+
+import { DataTableColumnHeader } from './data-table-column-header'
 
 export const columns: Array<ColumnDef<User>> = [
   {
     accessorKey: 'user_id',
-    header: 'User ID',
+    header: ({ column }) => <DataTableColumnHeader title="User ID" column={column} />,
     cell: (cell) => cell.row.original.user_id,
   },
   {
     accessorKey: 'first_name',
     header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => {
-            column.toggleSorting(column.getIsSorted() === 'asc')
-          }}
-        >
-          Name
-          <ArrowUpDown className="ml-2 size-4" />
-        </Button>
-      )
+      return <DataTableColumnHeader title="Name" column={column} />
     },
     cell: (cell) => (
       <span className="font-medium text-gray-900">
@@ -36,7 +26,7 @@ export const columns: Array<ColumnDef<User>> = [
   },
   {
     accessorKey: 'email',
-    header: 'Email address',
+    header: ({ column }) => <DataTableColumnHeader title="Email" column={column} />,
     cell: (cell) => (
       <div className="flex flex-1">
         <span className="truncate">{cell.row.original.email}</span>
@@ -45,17 +35,17 @@ export const columns: Array<ColumnDef<User>> = [
   },
   {
     accessorKey: 'role',
-    header: 'Role',
+    header: ({ column }) => <DataTableColumnHeader title="Role" column={column} />,
     cell: (cell) => <span className="capitalize">{cell.row.original.role}</span>,
   },
   {
     accessorKey: 'created_at',
-    header: 'Date created',
+    header: ({ column }) => <DataTableColumnHeader title="Date created" column={column} />,
     cell: (cell) => format(cell.row.original.creation_date, 'MMMM dd, yyyy h:mm a'),
   },
   {
     accessorKey: 'date_modified',
-    header: 'Date modified',
+    header: ({ column }) => <DataTableColumnHeader title="Date modified" column={column} />,
     cell: (cell) => format(cell.row.original.date_modified, 'MMMM dd, yyyy h:mm a'),
   },
 ]
