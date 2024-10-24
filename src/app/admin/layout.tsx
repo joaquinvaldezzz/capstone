@@ -19,9 +19,10 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   const user: NavUserProps = {
     user: {
+      avatar: '',
+      initials: currentUser.first_name.charAt(0).concat(currentUser.last_name.charAt(0)),
       name: currentUser.first_name.concat(' ', currentUser.last_name),
       email: currentUser.email,
-      avatar: '',
     },
   }
 
