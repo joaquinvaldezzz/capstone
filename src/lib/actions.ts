@@ -10,11 +10,13 @@ import { getCurrentUser } from './dal'
 import { db } from './db'
 import { patientInformation, results, users } from './db-schema'
 import {
+  forgotPasswordFormSchema,
   logInFormSchema,
   resultSchema,
   signUpFormSchema,
   updateAccountFormSchema,
   updatePasswordFormSchema,
+  updateProfileFormSchema,
 } from './form-schema'
 import { createSession, deleteSession } from './session'
 
@@ -317,6 +319,39 @@ export async function updateAccount(
   }
 }
 
+export async function updateProfile(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const formValues = Object.fromEntries(formData)
+  const parsedData = updateProfileFormSchema.safeParse(formValues)
+
+  // If the form data is invalid, return an error message
+  if (!parsedData.success) {
+    return {
+      message: 'Invalid form data.',
+      fields: parsedData.data,
+    }
+  }
+
+  // If the form data is valid, update the user in the database
+  await db
+    .update(users)
+    .set({
+      ...parsedData.data,
+      date_modified: new Date(),
+    })
+    .where(eq(users.user_id, Number(formData.get('id'))))
+    .execute()
+
+  revalidatePath('/admin/settings/profile')
+
+  return {
+    message: 'User updated successfully.',
+    success: true,
+  }
+}
+
 /**
  * Updates the user's password based on the provided form data.
  *
@@ -386,6 +421,70 @@ export async function updatePassword(
   }
 }
 
+/**
+ * Handles the forgot password functionality.
+ *
+ * This function processes the form data for a forgot password request. It validates the form data,
+ * checks if the email exists in the database, hashes the new password, then updates the user's
+ * password in the database.
+ *
+ * @param _previousState - The previous state (not used in this function).
+ * @param formData - The form data containing the email and new password.
+ * @returns A promise that resolves to a message indicating the result of the operation.
+ */
+export async function forgotPassword(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const formValues = Object.fromEntries(formData)
+  const parsedData = forgotPasswordFormSchema.safeParse(formValues)
+
+  // If the form data is invalid, return an error message
+  if (!parsedData.success) {
+    return {
+      message: 'Invalid form data.',
+      fields: parsedData.data,
+    }
+  }
+
+  // If the form data is valid, extract data
+  const { email, newPassword } = parsedData.data
+
+  // Check if the email exists in the database
+  const existingAccount = await db.select().from(users).where(eq(users.email, email))
+
+  // If the email does not exist in the database, return an error message
+  if (existingAccount.length === 0) {
+    return {
+      message: 'That email address does not exist.',
+      success: false,
+      fields: parsedData.data,
+    }
+  }
+
+  // If the email exists in the database, hash the new password before storing it
+  const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+  // Then update the user's password in the database
+  await db
+    .update(users)
+    .set({
+      password: hashedPassword,
+      date_modified: new Date(),
+    })
+    .where(eq(users.email, email))
+    .execute()
+
+  // Revalidate the page
+  revalidatePath('/')
+
+  // Return a success message
+  return {
+    message: 'Your password has been updated successfully.',
+    success: true,
+  }
+}
+
 export async function deleteAccount(
   _previousState: PreviousState,
   formData: FormData,
@@ -443,5 +542,5 @@ export async function deleteUser(
  * @returns A promise that resolves when the session is deleted.
  */
 export async function logout() {
-  deleteSession()
+  await deleteSession()
 }

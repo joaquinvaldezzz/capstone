@@ -1,12 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { useFormState } from 'react-dom'
+import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleAlert, CircleCheck, Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
-import { updatePassword } from '@/lib/actions'
+import { forgotPassword } from '@/lib/actions'
 import { forgotPasswordFormSchema, type ForgotPasswordFormSchema } from '@/lib/form-schema'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -24,8 +23,8 @@ import { Input } from '@/components/ui/input'
 export function ForgotPasswordForm() {
   const formRef = useRef<HTMLFormElement>(null)
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [formState, formAction] = useFormState(updatePassword, { message: '' })
+
+  const [formState, formAction, isSubmitting] = useActionState(forgotPassword, { message: '' })
   const form = useForm<ForgotPasswordFormSchema>({
     defaultValues: {
       email: '',
@@ -48,23 +47,17 @@ export function ForgotPasswordForm() {
     event.preventDefault()
 
     void form.handleSubmit(() => {
-      // If the form reference is null, return early
-      if (formRef.current == null) return
+      startTransition(() => {
+        // If the form reference is null, return early
+        if (formRef.current == null) return
 
-      // Set the submitting state to true
-      setIsSubmitting(true)
-
-      // Perform the form action with the form data
-      formAction(new FormData(formRef.current))
+        // Perform the form action with the form data
+        formAction(new FormData(formRef.current))
+      })
     })(event)
   }
 
   useEffect(() => {
-    // If the form state message is not empty, set the submitting state to false
-    if (formState.message.length > 0) {
-      setIsSubmitting(false)
-    }
-
     // If the form state success is true, reset the form fields
     if (formState.success ?? false) {
       form.reset()
