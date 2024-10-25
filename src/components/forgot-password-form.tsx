@@ -1,6 +1,7 @@
 'use client'
 
 import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
+import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleAlert, CircleCheck, Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -178,6 +179,12 @@ export function ForgotPasswordForm() {
             </Button>
           </form>
         </Form>
+
+        <div className="mt-4 text-center text-sm">
+          <Link className="underline" href="/">
+            Return to login page
+          </Link>
+        </div>
       </CardContent>
     </Card>
   )
