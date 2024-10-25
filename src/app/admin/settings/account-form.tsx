@@ -1,7 +1,6 @@
 'use client'
 
-import { Fragment, useEffect, useRef, useState, type FormEvent } from 'react'
-import { useFormState } from 'react-dom'
+import { Fragment, startTransition, useActionState, useEffect, useRef, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -30,8 +29,8 @@ import {
 
 export function AccountForm({ data }: { data: User }) {
   const formRef = useRef<HTMLFormElement>(null)
-  const [formState, formAction] = useFormState(updateAccount, { message: '' })
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [formState, formAction, isSubmitting] = useActionState(updateAccount, { message: '' })
+
   const form = useForm<UpdateAccountFormSchema>({
     defaultValues: {
       first_name: data.first_name,
@@ -48,23 +47,15 @@ export function AccountForm({ data }: { data: User }) {
     event.preventDefault()
 
     void form.handleSubmit(() => {
-      console.log(formRef.current)
-      // If the form reference is null, return early.
-      if (formRef.current == null) return
+      startTransition(() => {
+        // If the form reference is null, return early.
+        if (formRef.current == null) return
 
-      setIsSubmitting(true)
-
-      // Perform the form action with the form data.
-      formAction(new FormData(formRef.current))
+        // Perform the form action with the form data.
+        formAction(new FormData(formRef.current))
+      })
     })(event)
   }
-
-  useEffect(() => {
-    // If the form state success is true, set the is submitting state to false.
-    if (formState.success ?? false) {
-      setIsSubmitting(false)
-    }
-  }, [formState])
 
   useEffect(() => {
     // If the form state success is true, display a toast notification.

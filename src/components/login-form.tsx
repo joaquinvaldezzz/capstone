@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { useFormState } from 'react-dom'
+import { startTransition, useActionState, useRef, useState, type FormEvent } from 'react'
 import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleAlert, Loader2 } from 'lucide-react'
@@ -25,8 +24,7 @@ import { Input } from '@/components/ui/input'
 export function LoginForm() {
   const formRef = useRef<HTMLFormElement>(null)
   const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
-  const [formState, formAction] = useFormState(login, { message: '' })
+  const [formState, formAction, isSubmitting] = useActionState(login, { message: '' })
   const form = useForm<LogInFormSchema>({
     defaultValues: {
       email: '',
@@ -48,23 +46,15 @@ export function LoginForm() {
     event.preventDefault()
 
     void form.handleSubmit(() => {
-      // If the form reference is null, return early
-      if (formRef.current == null) return
+      startTransition(() => {
+        // If the form reference is null, return early
+        if (formRef.current == null) return
 
-      // Set the submitting state to true
-      setIsSubmitting(true)
-
-      // Perform the form action with the form data
-      formAction(new FormData(formRef.current))
+        // Perform the form action with the form data
+        formAction(new FormData(formRef.current))
+      })
     })(event)
   }
-
-  useEffect(() => {
-    // If the form state message is not empty, set the submitting state to false
-    if (formState.message.length > 0) {
-      setIsSubmitting(false)
-    }
-  }, [formState])
 
   return (
     <Card className="mx-auto max-w-sm">

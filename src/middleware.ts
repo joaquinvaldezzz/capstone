@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/await-thenable */
 import { cookies } from 'next/headers'
 import { NextResponse, type MiddlewareConfig, type NextRequest } from 'next/server'
 
@@ -22,7 +23,8 @@ export default async function middleware(request: NextRequest) {
   const isPublicRoute = publicRoutes.includes(currentPath)
 
   // Decrypt the session from the cookie
-  const cookie = cookies().get('session')?.value
+  const cookieStore = await cookies()
+  const cookie = cookieStore.get('session')?.value
   const session = (await decrypt(cookie)) as SessionPayload
 
   /** Redirect to the login page if the route is protected and the user is not authenticated. */

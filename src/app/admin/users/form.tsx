@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { useFormState } from 'react-dom'
+import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { Plus } from 'lucide-react'
@@ -40,8 +39,8 @@ import {
 export function CreateUserForm() {
   const [open, setOpen] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
-  const [formState, formAction] = useFormState(signUp, { message: '' })
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [formState, formAction, isSubmitting] = useActionState(signUp, { message: '' })
+
   const form = useForm<SignUpFormSchema>({
     defaultValues: {
       first_name: '',
@@ -61,34 +60,26 @@ export function CreateUserForm() {
     event.preventDefault()
 
     void form.handleSubmit(() => {
-      // If the form reference is null, return early.
-      if (formRef.current == null) return
+      startTransition(() => {
+        // If the form reference is null, return early
+        if (formRef.current == null) return
 
-      setIsSubmitting(true)
-
-      // Perform the form action with the form data.
-      formAction(new FormData(formRef.current))
+        // Perform the form action with the form data
+        formAction(new FormData(formRef.current))
+      })
     })(event)
   }
 
   function handleCancel() {
     form.reset()
-    setIsSubmitting(false)
   }
 
   useEffect(() => {
-    if (formState.message.length > 0) {
-      setIsSubmitting(false)
-    }
-
     if (formState.success ?? false) {
       setOpen(false)
       form.reset()
-      setIsSubmitting(false)
     }
-  }, [form, formState.message, formState.success])
-
-  console.log(formState.message)
+  }, [form, formState.success])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

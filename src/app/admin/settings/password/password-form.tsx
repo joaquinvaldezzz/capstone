@@ -1,7 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type FormEvent } from 'react'
-import { useFormState } from 'react-dom'
+import { startTransition, useActionState, useEffect, useRef, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
@@ -23,8 +22,7 @@ import { Input } from '@/components/ui/input'
 
 export function PasswordForm({ data }: { data: User }) {
   const formRef = useRef<HTMLFormElement>(null)
-  const [formState, formAction] = useFormState(updatePassword, { message: '' })
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [formState, formAction, isSubmitting] = useActionState(updatePassword, { message: '' })
   const form = useForm<UpdatePasswordFormSchema>({
     defaultValues: {
       oldPassword: '',
@@ -40,30 +38,19 @@ export function PasswordForm({ data }: { data: User }) {
     event.preventDefault()
 
     void form.handleSubmit(() => {
-      // If the form reference is null, return early.
-      if (formRef.current == null) return
+      startTransition(() => {
+        // If the form reference is null, return early.
+        if (formRef.current == null) return
 
-      setIsSubmitting(true)
-
-      // Perform the form action with the form data.
-      formAction(new FormData(formRef.current))
+        // Perform the form action with the form data.
+        formAction(new FormData(formRef.current))
+      })
     })(event)
   }
 
   useEffect(() => {
-    console.log(formState)
-
-    // If the form state message is not empty, set the submitting state to false
-    if (formState.success ?? false) {
-      setIsSubmitting(false)
-    }
-  }, [formState])
-
-  useEffect(() => {
     // If the form state message is not empty, set the submitting state to false
     if (formState.message.length > 0) {
-      setIsSubmitting(false)
-
       if (formState.success ?? false) {
         toast({
           title: 'Yay!',

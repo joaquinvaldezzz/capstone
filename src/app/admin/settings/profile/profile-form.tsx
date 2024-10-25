@@ -1,7 +1,6 @@
 'use client'
 
-import { useRef, useState, type FormEvent } from 'react'
-import { useFormState } from 'react-dom'
+import { startTransition, useActionState, useRef, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
@@ -29,8 +28,8 @@ import {
 
 export function ProfileForm() {
   const formRef = useRef<HTMLFormElement>(null)
-  const [formState, formAction] = useFormState(signUp, { message: '' })
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
+  const [, formAction, isSubmitting] = useActionState(signUp, { message: '' })
+
   const form = useForm<UpdateProfileFormSchema>({
     defaultValues: {
       age: '',
@@ -45,16 +44,14 @@ export function ProfileForm() {
     // Prevent the default form submission behavior.
     event.preventDefault()
 
-    console.log(form.getValues())
-
     void form.handleSubmit(() => {
-      // If the form reference is null, return early.
-      if (formRef.current == null) return
+      startTransition(() => {
+        // If the form reference is null, return early.
+        if (formRef.current == null) return
 
-      setIsSubmitting(true)
-
-      // Perform the form action with the form data.
-      formAction(new FormData(formRef.current))
+        // Perform the form action with the form data.
+        formAction(new FormData(formRef.current))
+      })
     })(event)
   }
 
