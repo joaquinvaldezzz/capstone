@@ -1,6 +1,6 @@
 'use client'
 
-import { Fragment, useState } from 'react'
+import { Fragment, useState, type JSX } from 'react'
 import Link from 'next/link'
 import {
   flexRender,
@@ -39,6 +39,7 @@ import { DataTableViewOptions } from './data-table-view-options'
 interface DataTableProps<TData, TValue> {
   columns: Array<ColumnDef<TData, TValue>>
   data: TData[]
+  formAction?: JSX.Element
   withFacetedFilters?: boolean
   withViewOptions?: boolean
   withPagination?: boolean
@@ -47,6 +48,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData extends User, TValue>({
   columns,
   data,
+  formAction,
   withFacetedFilters = false,
   withViewOptions = false,
   withPagination = false,
@@ -93,11 +95,10 @@ export function DataTable<TData extends User, TValue>({
           </div>
         )}
 
-        {withViewOptions && (
-          <div className="flex items-center gap-2">
-            <DataTableViewOptions table={table} />
-          </div>
-        )}
+        <div className="flex items-center gap-2">
+          {formAction != null && formAction}
+          {withViewOptions && <DataTableViewOptions table={table} />}
+        </div>
       </div>
 
       <div className="mt-4 rounded-md border">
