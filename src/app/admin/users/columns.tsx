@@ -3,19 +3,18 @@
 import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
-import { type User } from '@/lib/db-schema'
+import { type CustomUser } from '@/lib/dal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
 
-import { DataTableColumnHeader } from './data-table-column-header'
-
-export const columns: Array<ColumnDef<User>> = [
+export const columns: Array<ColumnDef<CustomUser>> = [
   {
     accessorKey: 'user_id',
     header: ({ column }) => <DataTableColumnHeader title="User ID" column={column} />,
     cell: (cell) => cell.row.original.user_id,
   },
   {
-    accessorKey: 'first_name',
+    accessorKey: 'name',
     header: ({ column }) => {
       return <DataTableColumnHeader title="Name" column={column} />
     },
@@ -28,9 +27,7 @@ export const columns: Array<ColumnDef<User>> = [
             {cell.row.original.last_name[0]}
           </AvatarFallback>
         </Avatar>
-        <span className="font-medium text-gray-900">
-          {cell.row.original.first_name} {cell.row.original.last_name}
-        </span>
+        <span className="font-medium text-gray-900">{cell.row.original.name}</span>
       </div>
     ),
   },
