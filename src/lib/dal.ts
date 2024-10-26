@@ -51,9 +51,9 @@ export interface CustomUser extends User {
 }
 
 /**
- * Retrieves all users with the specified role from the database.
+ * Retrieves all users from the database.
  *
- * @returns A promise that resolves to an array of users with the specified role, or null if an
+ * @returns A promise that resolves to an array of users if the query is successful, or null if an
  *   error occurs.
  * @throws Logs an error message to the console if the fetch operation fails.
  */
