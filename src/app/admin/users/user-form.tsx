@@ -3,11 +3,12 @@
 import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { format } from 'date-fns'
-import { Plus } from 'lucide-react'
+import { Loader2, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
 import { signUpFormSchema, type SignUpFormSchema } from '@/lib/form-schema'
+import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -36,11 +37,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-export function CreateUserForm() {
+export function UserForm() {
   const [open, setOpen] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
   const [formState, formAction, isSubmitting] = useActionState(signUp, { message: '' })
-
   const form = useForm<SignUpFormSchema>({
     defaultValues: {
       first_name: '',
@@ -54,6 +54,7 @@ export function CreateUserForm() {
     },
     resolver: zodResolver(signUpFormSchema),
   })
+  const { toast } = useToast()
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
@@ -79,7 +80,24 @@ export function CreateUserForm() {
       setOpen(false)
       form.reset()
     }
-  }, [form, formState.success])
+  }, [form, formState])
+
+  useEffect(() => {
+    if (formState.message.length > 0) {
+      if (formState.success ?? false) {
+        toast({
+          title: 'Yay!',
+          description: formState.message,
+        })
+      } else {
+        toast({
+          title: 'Oops!',
+          description: formState.message,
+          variant: 'destructive',
+        })
+      }
+    }
+  }, [formState, toast])
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -257,6 +275,7 @@ export function CreateUserForm() {
               </DialogClose>
 
               <Button type="submit">
+                {isSubmitting && <Loader2 className="size-4 animate-spin" />}
                 {isSubmitting ? 'Creating account...' : 'Create account'}
               </Button>
             </DialogFooter>
