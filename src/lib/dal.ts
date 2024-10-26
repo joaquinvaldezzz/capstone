@@ -1,7 +1,7 @@
 'use server'
 
 import { cache } from 'react'
-import { count, desc, eq, sql } from 'drizzle-orm'
+import { count, eq, sql } from 'drizzle-orm'
 
 import { db } from './db'
 import { results, users, type User } from './db-schema'
@@ -46,6 +46,10 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
   }
 })
 
+export interface CustomUser extends User {
+  name: string
+}
+
 /**
  * Retrieves all users with the specified role from the database.
  *
@@ -53,10 +57,15 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
  *   error occurs.
  * @throws Logs an error message to the console if the fetch operation fails.
  */
-export const getUsers = cache(async (): Promise<User[] | null> => {
+export const getUsers = cache(async (): Promise<CustomUser[] | null> => {
   try {
-    const data = await db.select().from(users)
-    return data
+    const { rows } = await db.execute(sql`
+      SELECT
+        CONCAT("first_name", ' ', "last_name") AS "name",
+        *
+      FROM
+        "users";`)
+    return rows as unknown as CustomUser[]
   } catch (error) {
     console.error('Failed to fetch users')
     return null
@@ -215,10 +224,19 @@ export const getTotalNumberOfHealthyPatients = cache(async () => {
  * @returns {Promise<User[] | null>} A promise that resolves to an array of users or null if an
  *   error occurs.
  */
-export const getRecentlyCreatedUsers = cache(async (): Promise<User[] | null> => {
+export const getRecentlyCreatedUsers = cache(async (): Promise<CustomUser[] | null> => {
   try {
-    const data = await db.select().from(users).limit(10).orderBy(desc(users.creation_date))
-    return data
+    const { rows } = await db.execute(sql`
+      SELECT
+        CONCAT("first_name", ' ', "last_name") AS "name",
+        *
+      FROM
+        "users"
+      ORDER BY
+        "users"."creation_date" DESC
+      LIMIT
+        10;`)
+    return rows as unknown as CustomUser[]
   } catch (error) {
     console.error('Failed to fetch users')
     return null
