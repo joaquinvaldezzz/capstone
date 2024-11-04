@@ -6,6 +6,8 @@ import { Toaster } from '@/components/ui/toaster'
 
 import '../styles/main.css'
 
+import { ProgressBarProvider } from './progress-bar-provider'
+
 export const metadata: Metadata = {
   openGraph: {
     locale: 'en_US',
@@ -46,7 +48,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={inter.variable} lang="en">
       <body className="min-w-80 bg-background text-foreground antialiased">
-        {children}
+        <ProgressBarProvider>{children}</ProgressBarProvider>
         <Toaster />
       </body>
     </html>
