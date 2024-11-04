@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/await-thenable */
 import { cookies } from 'next/headers'
 import { NextResponse, type MiddlewareConfig, type NextRequest } from 'next/server'
 
@@ -23,8 +22,7 @@ export default async function middleware(request: NextRequest) {
   const isPublicRoute = publicRoutes.includes(currentPath)
 
   // Decrypt the session from the cookie
-  const cookieStore = await cookies()
-  const cookie = cookieStore.get('session')?.value
+  const cookie = (await cookies()).get('session')?.value
   const session = (await decrypt(cookie)) as SessionPayload
 
   /** Redirect to the login page if the route is protected and the user is not authenticated. */
@@ -36,19 +34,11 @@ export default async function middleware(request: NextRequest) {
    * Redirect to their dashboard if they are trying to access a different dashboard while they are
    * already authenticated as a different user role.
    */
-  if (isProtectedRoute && session?.userRole === 'admin' && !currentPath.includes('/admin')) {
-    return NextResponse.redirect(new URL('/admin/users', request.nextUrl))
-  } else if (
-    isProtectedRoute &&
-    session?.userRole === 'doctor' &&
-    !currentPath.includes('/doctor')
-  ) {
-    return NextResponse.redirect(new URL('/doctor/results', request.nextUrl))
-  } else if (
-    isProtectedRoute &&
-    session?.userRole === 'patient' &&
-    !currentPath.includes('/patient')
-  ) {
+  if (session?.userRole === 'admin' && !currentPath.includes('/admin')) {
+    return NextResponse.redirect(new URL('/admin', request.nextUrl))
+  } else if (session?.userRole === 'doctor' && !currentPath.includes('/doctor')) {
+    return NextResponse.redirect(new URL('/doctor', request.nextUrl))
+  } else if (session?.userRole === 'patient' && !currentPath.includes('/patient')) {
     return NextResponse.redirect(new URL('/patient', request.nextUrl))
   }
 
