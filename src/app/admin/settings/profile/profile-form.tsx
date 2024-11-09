@@ -2,8 +2,10 @@
 
 import { startTransition, useActionState, useEffect, useRef, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { parseDate } from '@internationalized/date'
 import { format } from 'date-fns'
 import { Loader2 } from 'lucide-react'
+import { DateField, DateInput, DateSegment, Label } from 'react-aria-components'
 import { useForm } from 'react-hook-form'
 
 import { updateProfile } from '@/lib/actions'
@@ -19,7 +21,8 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+import { Input, inputVariants } from '@/components/ui/input'
+import { labelVariants } from '@/components/ui/label'
 import {
   Select,
   SelectContent,
@@ -101,22 +104,37 @@ export function ProfileForm({ data }: { data: UserInformation }) {
             <FormField
               name="birth_date"
               control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date of birth</FormLabel>
-                  <FormControl>
-                    <Input
-                      name={field.name}
-                      type="date"
-                      value={field.value != null ? format(field.value, 'yyyy-MM-dd') : ''}
-                      ref={field.ref}
-                      onBlur={field.onBlur}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+              render={({ field }) => {
+                const fieldDate = new Date(field.value)
+                const formattedFieldDate = format(fieldDate, 'yyyy-MM-dd')
+
+                return (
+                  <FormItem>
+                    <FormControl>
+                      <DateField
+                        className="space-y-2"
+                        name={field.name}
+                        defaultValue={parseDate(formattedFieldDate)}
+                        granularity="day"
+                        ref={field.ref}
+                        onBlur={field.onBlur}
+                        onChange={field.onChange}
+                      >
+                        <Label className={labelVariants()}>Date of birth</Label>
+                        <DateInput className={inputVariants()}>
+                          {(segment) => (
+                            <DateSegment
+                              className="inline rounded p-0.5 text-foreground caret-transparent outline outline-0 data-[disabled]:cursor-not-allowed data-[focused]:bg-accent data-[invalid]:data-[focused]:bg-destructive data-[type=literal]:px-0 data-[focused]:data-[placeholder]:text-foreground data-[focused]:text-foreground data-[invalid]:data-[focused]:data-[placeholder]:text-destructive-foreground data-[invalid]:data-[focused]:text-destructive-foreground data-[invalid]:data-[placeholder]:text-destructive data-[invalid]:text-destructive data-[placeholder]:text-muted-foreground/70 data-[type=literal]:text-muted-foreground/70 data-[disabled]:opacity-50"
+                              segment={segment}
+                            />
+                          )}
+                        </DateInput>
+                      </DateField>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )
+              }}
             />
           </div>
 
