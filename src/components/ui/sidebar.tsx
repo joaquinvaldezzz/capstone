@@ -11,6 +11,7 @@ import {
   type ComponentProps,
   type ElementRef,
 } from 'react'
+import { usePathname } from 'next/navigation'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { PanelLeft } from 'lucide-react'
@@ -20,7 +21,7 @@ import { useIsMobile } from '@/hooks/use-mobile'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { Sheet, SheetContent } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTitle } from '@/components/ui/sheet'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
@@ -72,8 +73,9 @@ const SidebarProvider = forwardRef<
     },
     ref,
   ) => {
-    const isMobile = useIsMobile()
     const [openMobile, setOpenMobile] = useState(false)
+    const pathname = usePathname()
+    const isMobile = useIsMobile()
 
     // This is the internal state of the sidebar.
     // We use openProp and setOpenProp for control from outside the component.
@@ -130,6 +132,10 @@ const SidebarProvider = forwardRef<
       }),
       [state, open, setOpen, isMobile, openMobile, setOpenMobile, toggleSidebar],
     )
+
+    useEffect(() => {
+      setOpenMobile(false)
+    }, [pathname, setOpenMobile])
 
     return (
       <SidebarContext.Provider value={contextValue}>
@@ -204,6 +210,7 @@ const Sidebar = forwardRef<
             }}
             side={side}
           >
+            <SheetTitle className="sr-only">Mobile navigation</SheetTitle>
             <div className="flex size-full flex-col">{children}</div>
           </SheetContent>
         </Sheet>
