@@ -1,7 +1,6 @@
 'use client'
 
 import { Fragment, useState, type JSX } from 'react'
-import Link from 'next/link'
 import {
   flexRender,
   getCoreRowModel,
@@ -77,7 +76,7 @@ export function DataTable<TData extends User, TValue>({
           <div className="flex flex-1 items-center gap-2">
             <Input
               className="max-w-64 shrink-0"
-              placeholder="Filter names..."
+              placeholder="Search by name"
               value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
               onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
             />
@@ -125,10 +124,6 @@ export function DataTable<TData extends User, TValue>({
                 <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
-                      <Link
-                        className="absolute inset-0"
-                        href={`/admin/users/${String(cell.row.original.user_id)}`}
-                      ></Link>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}
