@@ -78,7 +78,7 @@ export function AccountForm({ data }: { data: User }) {
         >
           <input name="id" type="text" value={data.user_id} hidden readOnly />
           <div className="flex flex-col gap-8">
-            <div className="grid grid-cols-2 gap-8">
+            <div className="grid gap-8 sm:grid-cols-2">
               <FormField
                 name="first_name"
                 control={form.control}
