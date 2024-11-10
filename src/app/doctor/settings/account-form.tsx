@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -132,7 +133,12 @@ export function AccountForm({ data }: { data: User }) {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Role</FormLabel>
-                  <Select name="role" defaultValue={field.value} onValueChange={field.onChange}>
+                  <Select
+                    name="role"
+                    defaultValue={field.value}
+                    disabled
+                    onValueChange={field.onChange}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select a role" />
@@ -144,7 +150,7 @@ export function AccountForm({ data }: { data: User }) {
                       <SelectItem value="patient">Patient</SelectItem>
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormDescription>Only an admin can change your role.</FormDescription>
                 </FormItem>
               )}
             />

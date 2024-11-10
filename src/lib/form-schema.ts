@@ -50,7 +50,8 @@ export const updateAccountFormSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }).trim(),
   role: z
     .enum(['admin', 'doctor', 'patient'], { message: 'Please select a role.' })
-    .or(z.string().min(1, { message: 'Please select a role.' })),
+    .or(z.string().min(1, { message: 'Please select a role.' }))
+    .optional(),
 })
 
 /** Represents the schema for updating an account form. */
