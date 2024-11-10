@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/await-thenable */
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { jwtVerify, SignJWT, type JWTPayload } from 'jose'
@@ -54,7 +53,6 @@ export async function decrypt(session: string | undefined = '') {
  * @returns A promise that resolves to void.
  */
 export async function createSession(userId: string, userRole: string) {
-  const cookieStore = await cookies()
   const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
 
   await db
@@ -68,7 +66,7 @@ export async function createSession(userId: string, userRole: string) {
 
   const session = await encrypt({ userId, userRole, expiresAt })
 
-  cookieStore.set('session', session, {
+  ;(await cookies()).set('session', session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
@@ -79,7 +77,7 @@ export async function createSession(userId: string, userRole: string) {
   if (userRole === 'admin') {
     redirect('/admin')
   } else if (userRole === 'doctor') {
-    redirect('/doctor/results')
+    redirect('/doctor')
   } else if (userRole === 'patient') {
     redirect('/patient')
   }
@@ -93,8 +91,7 @@ export async function createSession(userId: string, userRole: string) {
  * @returns An object with the session verification result, including isAuth and userId.
  */
 export async function verifySession() {
-  const cookieStore = await cookies()
-  const cookie = cookieStore.get('session')?.value
+  const cookie = (await cookies()).get('session')?.value
   const session = await decrypt(cookie)
 
   if (session?.userId == null) {
@@ -110,8 +107,7 @@ export async function verifySession() {
  * @returns A promise that resolves once the session cookie is updated.
  */
 export async function updateSession() {
-  const cookieStore = await cookies()
-  const session = cookieStore.get('session')?.value
+  const session = (await cookies()).get('session')?.value
   const payload = await decrypt(session)
 
   if (session == null || payload == null) {
@@ -120,7 +116,7 @@ export async function updateSession() {
 
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
-  cookieStore.set('session', session, {
+  ;(await cookies()).set('session', session, {
     httpOnly: true,
     secure: true,
     expires,
@@ -131,7 +127,6 @@ export async function updateSession() {
 
 /** Deletes the session by removing the 'session' cookie and redirecting to the home page. */
 export async function deleteSession() {
-  const cookieStore = await cookies()
-  cookieStore.delete('session')
+  ;(await cookies()).delete('session')
   redirect('/')
 }
