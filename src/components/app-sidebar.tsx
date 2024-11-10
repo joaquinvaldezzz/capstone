@@ -19,7 +19,7 @@ import { NavUser, type NavUserProps } from '@/components/nav-user'
 
 import HospitalLogo from '@/public/images/hospital-logo.jpg'
 
-interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavMainProps, NavUserProps {}
+interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavUserProps {}
 
 const links: NavMainProps = {
   items: [
@@ -36,7 +36,7 @@ const links: NavMainProps = {
   ],
 }
 
-export function AppSidebar({ items, user, ...props }: AppSidebarProps) {
+export function AppSidebar({ user, ...props }: AppSidebarProps) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
