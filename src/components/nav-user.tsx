@@ -26,6 +26,7 @@ export interface NavUserProps {
     avatar: string
     initials: string
     name: string
+    role: string
     email: string
   }
 }
@@ -77,7 +78,7 @@ export function NavUser({ user }: NavUserProps) {
 
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
-                <Link href="/admin/settings">
+                <Link href={user.role === 'admin' ? '/admin/settings' : '/doctor/settings'}>
                   <Settings />
                   Settings
                 </Link>

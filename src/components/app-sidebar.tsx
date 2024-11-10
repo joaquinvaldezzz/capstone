@@ -1,8 +1,9 @@
 'use client'
 
 import { type ComponentProps } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
-import { Command, LayoutDashboard, Users } from 'lucide-react'
+import { LayoutDashboard, Users } from 'lucide-react'
 
 import {
   Sidebar,
@@ -16,7 +17,9 @@ import {
 import { NavMain, type NavMainProps } from '@/components/nav-main'
 import { NavUser, type NavUserProps } from '@/components/nav-user'
 
-interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavUserProps {}
+import HospitalLogo from '@/public/images/hospital-logo.jpg'
+
+interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavMainProps, NavUserProps {}
 
 const links: NavMainProps = {
   items: [
@@ -33,7 +36,7 @@ const links: NavMainProps = {
   ],
 }
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
+export function AppSidebar({ items, user, ...props }: AppSidebarProps) {
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>
@@ -41,12 +44,12 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Command className="size-4" />
+                <div className="flex size-8 items-center justify-center overflow-hidden rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
+                  <Image src={HospitalLogo} alt="National Children's Hospital" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">Acme Inc</span>
-                  <span className="truncate text-xs">Enterprise</span>
+                  <span className="truncate font-semibold">National Children&apos;s Hospital</span>
+                  <span className="truncate text-xs capitalize">{user.role}</span>
                 </div>
               </Link>
             </SidebarMenuButton>
