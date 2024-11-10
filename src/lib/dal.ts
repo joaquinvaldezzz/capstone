@@ -8,6 +8,7 @@ import { results, users, type User } from './db-schema'
 import { verifySession } from './session'
 
 export interface Result {
+  name?: string
   result_id: number
   doctor_id: number
   user_id: number
@@ -111,6 +112,8 @@ export const getAllPatientResults = cache(async (): Promise<Result[] | null> => 
   }
 })
 
+// TODO: Rename this function
+
 /**
  * Retrieves the results for a specific patient from the database.
  *
@@ -119,11 +122,20 @@ export const getAllPatientResults = cache(async (): Promise<Result[] | null> => 
  *   `null` if an error occurs.
  * @throws Will log an error message to the console if the database query fails.
  */
-export const getPatientResults = cache(async (patientId: number): Promise<Result[] | null> => {
+export const getPatientResults = cache(async (): Promise<Result[] | null> => {
   try {
-    const { rows } = await db.execute(
-      sql`SELECT * FROM results t1 JOIN users t2 ON t1.user_id = t2.user_id;`,
-    )
+    const { rows } = await db.execute(sql`
+      SELECT
+        CONCAT("first_name", ' ', "last_name") AS "name",
+        *
+      FROM
+        "results"
+        JOIN "users" ON "results"."user_id" = "users"."user_id"
+      ORDER BY
+        "results"."created_at" DESC
+      LIMIT
+        10;
+    `)
     return rows as unknown as Result[]
   } catch (error) {
     console.error('Failed to fetch patient results')
