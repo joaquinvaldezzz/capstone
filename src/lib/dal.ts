@@ -48,6 +48,7 @@ export const getCurrentUser = cache(async (): Promise<User | null> => {
 })
 
 export interface CustomUser extends User {
+  profile_picture: string
   name: string
 }
 
@@ -65,7 +66,9 @@ export const getUsers = cache(async (): Promise<CustomUser[] | null> => {
         CONCAT("first_name", ' ', "last_name") AS "name",
         *
       FROM
-        "users";`)
+        "users"
+        INNER JOIN "user_information" ON "users"."user_id" = "user_information"."user_id";
+    `)
     return rows as unknown as CustomUser[]
   } catch (error) {
     console.error('Failed to fetch users')
