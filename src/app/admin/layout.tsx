@@ -38,8 +38,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
     },
   }
 
-  console.log(user)
-
   return (
     <SidebarProvider>
       <AppSidebar user={user.user} />
