@@ -18,16 +18,12 @@ export default async function Page() {
     return null
   }
 
-  const sortedUsers = users.sort((a, b) => {
-    return new Date(b.creation_date).getTime() - new Date(a.creation_date).getTime()
-  })
-
   return (
     <Fragment>
       <h2 className="mb-4 text-3xl font-bold tracking-tight">Users</h2>
       <DataTable
         columns={columns}
-        data={sortedUsers}
+        data={users}
         formAction={<UserForm />}
         withFacetedFilters
         withPagination

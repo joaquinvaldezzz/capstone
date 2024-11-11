@@ -67,7 +67,9 @@ export const getUsers = cache(async (): Promise<CustomUser[] | null> => {
         *
       FROM
         "users"
-        INNER JOIN "user_information" ON "users"."user_id" = "user_information"."user_id";
+        INNER JOIN "user_information" ON "users"."user_id" = "user_information"."user_id"
+      ORDER BY
+        "users"."creation_date" DESC;
     `)
     return rows as unknown as CustomUser[]
   } catch (error) {
