@@ -1,11 +1,32 @@
 import { type ReactNode } from 'react'
+import { type Metadata } from 'next'
 import localFont from 'next/font/local'
 
 import { Toaster } from '@/components/ui/toaster'
 
-import { NavigationEvents } from './navigation-events'
-
 import '../styles/main.css'
+
+import { ProgressBarProvider } from './progress-bar-provider'
+
+export const metadata: Metadata = {
+  openGraph: {
+    locale: 'en_US',
+    type: 'website',
+  },
+  robots: {
+    index: false,
+    follow: true,
+    nocache: true,
+    googleBot: {
+      index: true,
+      follow: false,
+      noimageindex: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+}
 
 const inter = localFont({
   src: [
@@ -26,8 +47,8 @@ const inter = localFont({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={inter.variable} lang="en">
-      <body className="min-w-80 bg-white text-gray-900 antialiased">
-        <NavigationEvents>{children}</NavigationEvents>
+      <body className="min-w-80 bg-background text-foreground antialiased">
+        <ProgressBarProvider>{children}</ProgressBarProvider>
         <Toaster />
       </body>
     </html>

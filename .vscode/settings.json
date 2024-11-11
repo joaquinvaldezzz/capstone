@@ -2,12 +2,15 @@
   "cSpell.words": [
     "argmax",
     "astype",
+    "callees",
     "classname",
     "clsx",
     "cmap",
+    "cmdk",
     "colorbar",
     "commitlint",
     "fullhuman",
+    "ghjk",
     "gkuguvp",
     "heroicons",
     "hookform",
@@ -16,6 +19,11 @@
     "lucide",
     "matshow",
     "ndenumerate",
+    "nocache",
+    "noimageindex",
+    "nprogress",
+    "nums",
+    "offcanvas",
     "packagejson",
     "PCOS",
     "purgecss",
@@ -31,5 +39,6 @@
     "ylabel",
     "yticklabels",
     "yticks"
-  ]
+  ],
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

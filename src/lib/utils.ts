@@ -8,13 +8,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function determineBadgeColor(tag: string): VariantProps<typeof badgeVariants>['color'] {
+export function determineBadgeColor(tag: string): VariantProps<typeof badgeVariants>['variant'] {
   switch (tag) {
     case 'Infected':
-      return 'error'
+      return 'destructive'
     case 'Healthy':
-      return 'success'
+      return 'default'
     default:
-      return 'gray'
+      return 'outline'
   }
 }

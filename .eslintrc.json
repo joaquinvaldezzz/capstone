@@ -96,5 +96,18 @@
         }
       }
     ]
+  },
+  "settings": {
+    "tailwindcss": {
+      "callees": ["clsx", "cva", "cn"],
+      "config": "tailwind.config.ts",
+      "cssFiles": ["!**/.*", "!**/build", "!**/dist", "!**/node_modules", "**/*.css"],
+      "cssFilesRefreshRate": 5000,
+      "removeDuplicates": true,
+      "skipClassAttribute": false,
+      "whitelist": [],
+      "tags": [],
+      "classRegex": "^class(Name)?$"
+    }
   }
 }

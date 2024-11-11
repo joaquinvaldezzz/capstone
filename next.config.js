@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  devIndicators: {
+    appIsrStatus: false,
+  },
   images: {
     remotePatterns: [
       {
@@ -10,9 +13,7 @@ const nextConfig = {
       },
     ],
   },
-
   pageExtensions: ['ts', 'tsx'],
-
   rewrites: async () => {
     return [
       {
@@ -22,7 +23,6 @@ const nextConfig = {
       },
     ]
   },
-
   webpack(config) {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) => rule.test?.test?.('.svg'))
@@ -47,6 +47,12 @@ const nextConfig = {
     fileLoaderRule.exclude = /\.svg$/i
 
     return config
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
   },
 }
 

@@ -66,7 +66,7 @@ export async function createSession(userId: string, userRole: string) {
 
   const session = await encrypt({ userId, userRole, expiresAt })
 
-  cookies().set('session', session, {
+  ;(await cookies()).set('session', session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
@@ -75,9 +75,9 @@ export async function createSession(userId: string, userRole: string) {
   })
 
   if (userRole === 'admin') {
-    redirect('/admin/users')
+    redirect('/admin')
   } else if (userRole === 'doctor') {
-    redirect('/doctor/results')
+    redirect('/doctor')
   } else if (userRole === 'patient') {
     redirect('/patient')
   }
@@ -91,7 +91,7 @@ export async function createSession(userId: string, userRole: string) {
  * @returns An object with the session verification result, including isAuth and userId.
  */
 export async function verifySession() {
-  const cookie = cookies().get('session')?.value
+  const cookie = (await cookies()).get('session')?.value
   const session = await decrypt(cookie)
 
   if (session?.userId == null) {
@@ -107,7 +107,7 @@ export async function verifySession() {
  * @returns A promise that resolves once the session cookie is updated.
  */
 export async function updateSession() {
-  const session = cookies().get('session')?.value
+  const session = (await cookies()).get('session')?.value
   const payload = await decrypt(session)
 
   if (session == null || payload == null) {
@@ -116,7 +116,7 @@ export async function updateSession() {
 
   const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
 
-  cookies().set('session', session, {
+  ;(await cookies()).set('session', session, {
     httpOnly: true,
     secure: true,
     expires,
@@ -126,7 +126,7 @@ export async function updateSession() {
 }
 
 /** Deletes the session by removing the 'session' cookie and redirecting to the home page. */
-export function deleteSession() {
-  cookies().delete('session')
+export async function deleteSession() {
+  ;(await cookies()).delete('session')
   redirect('/')
 }

@@ -15,10 +15,27 @@ export const users = pgTable('users', {
   password: text('password').notNull(),
   role: text('role').notNull(),
   creation_date: timestamp('creation_date').defaultNow().notNull(),
+  date_modified: timestamp('date_modified').defaultNow().notNull(),
 })
 
 /** Represents the inferred type of the `users` table. */
 export type User = InferSelectModel<typeof users>
+
+/** Represents the user information table in the database. */
+export const userInformation = pgTable('user_information', {
+  id: serial('id').primaryKey(),
+  user_id: integer('user_id')
+    .references(() => users.user_id)
+    .notNull(),
+  profile_picture: text('profile_picture'),
+  age: integer('age').notNull(),
+  birth_date: timestamp('birth_date', { mode: 'date' }).notNull(),
+  gender: text('gender').notNull(),
+  address: text('address').notNull(),
+})
+
+/** Represents the inferred type of the `user_information` table. */
+export type UserInformation = InferSelectModel<typeof userInformation>
 
 /**
  * Represents a database table for user sessions.
