@@ -9,8 +9,8 @@ import {
   getTotalNumberOfPatients,
 } from '@/lib/dal'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { DataTable } from '@/components/ui/data-table'
 
+import { DataTable } from './_components/data-table'
 import { columns } from './columns'
 
 export const metadata: Metadata = {
