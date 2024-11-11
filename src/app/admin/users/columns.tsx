@@ -2,20 +2,10 @@
 
 import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
-import { Ellipsis } from 'lucide-react'
 
 import { type CustomUser } from '@/lib/dal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 
 export const columns: Array<ColumnDef<CustomUser>> = [
   {
@@ -67,28 +57,5 @@ export const columns: Array<ColumnDef<CustomUser>> = [
     accessorKey: 'date_modified',
     header: ({ column }) => <DataTableColumnHeader title="Date modified" column={column} />,
     cell: (cell) => format(cell.row.original.date_modified, 'MMMM dd, yyyy h:mm a'),
-  },
-  {
-    id: 'actions',
-    cell: function Cell(row) {
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button className="flex size-8 p-0 data-[state=open]:bg-muted" variant="ghost">
-              <Ellipsis className="size-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-40" align="end">
-            <DropdownMenuItem>Edit</DropdownMenuItem>
-
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              Delete
-              <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
   },
 ]

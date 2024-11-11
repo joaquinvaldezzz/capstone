@@ -1,6 +1,7 @@
 'use client'
 
 import { Fragment, useState, type JSX } from 'react'
+import Link from 'next/link'
 import {
   flexRender,
   getCoreRowModel,
@@ -132,6 +133,10 @@ export function DataTable<TData extends User, TValue>({
                 <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
+                      <Link
+                        className="absolute inset-0"
+                        href={`/admin/users/${row.original.user_id}`}
+                      ></Link>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

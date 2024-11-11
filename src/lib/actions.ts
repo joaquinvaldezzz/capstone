@@ -367,14 +367,16 @@ export async function updateProfile(
 
   console.log(parsedData.data)
 
-  await put(
-    `profile-pictures/${String(parsedData.data.profile_picture?.name)}`,
-    parsedData.data.profile_picture,
-    {
-      access: 'public',
-      addRandomSuffix: false,
-    },
-  )
+  if (parsedData.data.profile_picture.name !== 'undefined') {
+    await put(
+      `profile-pictures/${String(parsedData.data.profile_picture?.name)}`,
+      parsedData.data.profile_picture,
+      {
+        access: 'public',
+        addRandomSuffix: false,
+      },
+    )
+  }
 
   // Revalidate the profile page
   revalidatePath('/admin/settings/profile')

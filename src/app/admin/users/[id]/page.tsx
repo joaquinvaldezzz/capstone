@@ -1,10 +1,13 @@
+/* eslint-disable @typescript-eslint/await-thenable */
 import { type Metadata } from 'next'
+import { sql } from 'drizzle-orm'
 
 import { getUserById } from '@/lib/dal'
 import { db } from '@/lib/db'
-import { users } from '@/lib/db-schema'
+import { users, type UserInformation } from '@/lib/db-schema'
 
-import { EditUserForm } from './form'
+import { ProfileForm } from './profile-form'
+import { UserForm } from './user-form'
 
 export async function generateStaticParams() {
   const id = await db.select().from(users)
@@ -15,7 +18,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { id: number } }): Promise<Metadata> {
-  const user = await getUserById(params.id)
+  const { id } = await params
+  const user = await getUserById(id)
 
   if (user == null) {
     return {
@@ -24,23 +28,41 @@ export async function generateMetadata({ params }: { params: { id: number } }): 
   }
 
   return {
-    title: `${user.first_name} ${user.last_name}`,
+    title: `Edit ${user.first_name} ${user.last_name}'s account`,
   }
 }
 
 export default async function Page({ params }: { params: { id: number } }) {
-  const user = await getUserById(params.id)
+  const { id } = await params
+  const user = await getUserById(id)
 
   if (user == null) {
     return <div>User not found</div>
   }
 
+  const information = await db.execute(sql`
+    SELECT
+      *
+    FROM
+      "users"
+      RIGHT JOIN "user_information" ON "users"."user_id" = "user_information"."user_id"
+    WHERE
+      "users"."user_id" = ${user.user_id};
+  `)
+  const profile = information.rows[0] as UserInformation
+
   return (
-    <div>
-      <h2 className="text-3xl font-bold tracking-tight">
-        {user.first_name} {user.last_name}
-      </h2>
-      <EditUserForm />
+    <div className="flex flex-col gap-8">
+      <div className="mx-auto w-full max-w-screen-sm">
+        <h2 className="text-3xl font-bold tracking-tight">
+          Edit {user.first_name} {user.last_name}&apos;s account
+        </h2>
+      </div>
+
+      <div className="mx-auto w-full max-w-screen-sm space-y-6">
+        <UserForm data={user} />
+        <ProfileForm data={profile} />
+      </div>
     </div>
   )
 }
