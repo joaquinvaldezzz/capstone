@@ -103,6 +103,7 @@ export function DataTable<TData extends Result, TValue>({
         )}
 
         <div className="flex items-center gap-2">
+          {formAction != null && formAction}
           {withViewOptions && <DataTableViewOptions table={table} />}
         </div>
       </div>
