@@ -29,8 +29,6 @@ export default async function Layout({ children }: { children: ReactNode }) {
       "user_id" = ${currentUser.user_id};
   `)
 
-  console.log(avatar.rows)
-
   const user: NavUserProps = {
     user: {
       avatar: avatar.rows[0].profile_picture as string,
