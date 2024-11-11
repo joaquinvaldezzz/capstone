@@ -26,9 +26,7 @@ export function DeleteButton({ userId }: { userId: number }) {
       formAction(new FormData(formRef.current))
     })
 
-    setInterval(() => {
-      router.push('/admin/users')
-    }, 1000)
+    router.push('/admin/users')
   }
 
   useEffect(() => {
