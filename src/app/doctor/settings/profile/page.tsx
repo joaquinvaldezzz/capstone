@@ -26,7 +26,7 @@ export default async function Page() {
       RIGHT JOIN "user_information" ON "users"."user_id" = "user_information"."user_id"
     WHERE
       "users"."user_id" = ${user.user_id};
-    `)
+  `)
 
   if (profileInformation == null) {
     throw new Error('Profile not found')
