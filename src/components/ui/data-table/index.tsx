@@ -12,6 +12,7 @@ import {
   type ColumnFiltersState,
   type SortingState,
 } from '@tanstack/react-table'
+import { Search } from 'lucide-react'
 
 import { type User } from '@/lib/db-schema'
 import { Button } from '@/components/ui/button'
@@ -74,12 +75,19 @@ export function DataTable<TData extends User, TValue>({
       <div className="flex items-center justify-between">
         {withFacetedFilters && (
           <div className="flex flex-1 items-center gap-2">
-            <Input
-              className="max-w-64 shrink-0"
-              placeholder="Search by name"
-              value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-              onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
-            />
+            <div className="relative w-full max-w-64 shrink-0">
+              <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+                <Search size={16} strokeWidth={2} />
+              </div>
+              <Input
+                className="peer ps-9"
+                type="search"
+                placeholder="Search by name..."
+                value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+                onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+              />
+            </div>
+
             {table.getColumn('role') != null && (
               <DataTableFacetedFilter
                 title="Role"
