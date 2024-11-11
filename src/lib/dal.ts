@@ -102,9 +102,16 @@ export const getUserById = cache(async (id: number): Promise<User | null> => {
  */
 export const getAllPatientResults = cache(async (): Promise<Result[] | null> => {
   try {
-    const { rows } = await db.execute(
-      sql`SELECT * FROM results JOIN users t2 ON results.user_id = t2.user_id;`,
-    )
+    const { rows } = await db.execute(sql`
+      SELECT
+        CONCAT("first_name", ' ', "last_name") AS "name",
+        *
+      FROM
+        "results"
+        JOIN "users" ON "results"."user_id" = "users"."user_id"
+      ORDER BY
+        "results"."created_at" DESC;
+    `)
     return rows as unknown as Result[]
   } catch (error) {
     console.error('Failed to fetch patient results')
@@ -132,9 +139,7 @@ export const getPatientResults = cache(async (): Promise<Result[] | null> => {
         "results"
         JOIN "users" ON "results"."user_id" = "users"."user_id"
       ORDER BY
-        "results"."created_at" DESC
-      LIMIT
-        10;
+        "results"."created_at" DESC;
     `)
     return rows as unknown as Result[]
   } catch (error) {
