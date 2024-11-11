@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
@@ -43,16 +44,14 @@ export const columns: Array<ColumnDef<Result>> = [
     header: ({ column }) => <DataTableColumnHeader title="Ultrasound" column={column} />,
     cell: (cell) => (
       <div className="flex items-center gap-2">
-        <Avatar>
-          <AvatarImage
-            src={`https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${cell.row.original.ultrasound_image}`}
-            alt={cell.row.original.ultrasound_image}
-          />
-          <AvatarFallback>
-            {cell.row.original.first_name[0]}
-            {cell.row.original.last_name[0]}
-          </AvatarFallback>
-        </Avatar>
+        <Image
+          className="size-10 shrink-0 rounded-full"
+          src={`https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${cell.row.original.ultrasound_image}`}
+          alt={cell.row.original.ultrasound_image}
+          height={40}
+          width={40}
+        />
+
         <span>{cell.row.original.ultrasound_image}</span>
       </div>
     ),
