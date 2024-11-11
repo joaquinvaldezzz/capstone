@@ -1,10 +1,10 @@
 'use client'
 
-import { startTransition, useActionState, useEffect, useRef, type FormEvent } from 'react'
+import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { parseDate } from '@internationalized/date'
 import { format } from 'date-fns'
-import { Loader2 } from 'lucide-react'
+import { Loader2, User } from 'lucide-react'
 import { DateField, DateInput, DateSegment, Label } from 'react-aria-components'
 import { useForm } from 'react-hook-form'
 
@@ -12,6 +12,7 @@ import { updateProfile } from '@/lib/actions'
 import { type UserInformation } from '@/lib/db-schema'
 import { updateProfileFormSchema, type UpdateProfileFormSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -33,9 +34,12 @@ import {
 
 export function ProfileForm({ data }: { data: UserInformation }) {
   const formRef = useRef<HTMLFormElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [formState, formAction, isSubmitting] = useActionState(updateProfile, { message: '' })
   const form = useForm<UpdateProfileFormSchema>({
     defaultValues: {
+      // profile_picture: data.profile_picture ?? '',
       age: data.age.toString(),
       birth_date: data.birth_date,
       address: data.address,
@@ -44,6 +48,10 @@ export function ProfileForm({ data }: { data: UserInformation }) {
     resolver: zodResolver(updateProfileFormSchema),
   })
   const { toast } = useToast()
+
+  const handleAvatarClick = () => {
+    fileInputRef.current?.click()
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
@@ -87,6 +95,45 @@ export function ProfileForm({ data }: { data: UserInformation }) {
       >
         <input name="id" type="text" value={data.user_id} hidden readOnly />
         <div className="flex flex-col gap-8">
+          <FormField
+            name="profile_picture"
+            control={form.control}
+            render={({ field: { onChange, value, ...field } }) => (
+              <FormItem>
+                <FormLabel>Profile picture</FormLabel>
+                <Avatar className="size-32 cursor-pointer" onClick={handleAvatarClick}>
+                  <AvatarImage
+                    src={
+                      avatarPreview ??
+                      `https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/profile-pictures/${String(data.profile_picture)}`
+                    }
+                    alt="Avatar preview"
+                  />
+                  <AvatarFallback>
+                    <User className="size-16 text-gray-400" />
+                  </AvatarFallback>
+                </Avatar>
+                <FormControl>
+                  <Input
+                    {...field}
+                    className="w-auto"
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={(event) => {
+                      const file = event.target.files?.[0]
+                      if (file != null) {
+                        onChange(file)
+                        setAvatarPreview(URL.createObjectURL(file))
+                      }
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <div className="grid grid-cols-2 gap-4">
             <FormField
               name="age"

@@ -350,6 +350,7 @@ export async function updateProfile(
     .update(userInformation)
     .set({
       ...parsedData.data,
+      profile_picture: parsedData.data.profile_picture?.name,
       age: Number(parsedData.data.age),
     })
     .where(eq(userInformation.user_id, Number(formData.get('id'))))
@@ -363,6 +364,17 @@ export async function updateProfile(
     })
     .where(eq(users.user_id, Number(formData.get('id'))))
     .execute()
+
+  console.log(parsedData.data)
+
+  await put(
+    `profile-pictures/${String(parsedData.data.profile_picture?.name)}`,
+    parsedData.data.profile_picture,
+    {
+      access: 'public',
+      addRandomSuffix: false,
+    },
+  )
 
   // Revalidate the profile page
   revalidatePath('/admin/settings/profile')

@@ -27,6 +27,7 @@ export const userInformation = pgTable('user_information', {
   user_id: integer('user_id')
     .references(() => users.user_id)
     .notNull(),
+  profile_picture: text('profile_picture'),
   age: integer('age').notNull(),
   birth_date: timestamp('birth_date', { mode: 'date' }).notNull(),
   gender: text('gender').notNull(),

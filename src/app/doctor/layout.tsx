@@ -1,7 +1,9 @@
 import { type ReactNode } from 'react'
 import { type Metadata } from 'next'
+import { sql } from 'drizzle-orm'
 
 import { getCurrentUser } from '@/lib/dal'
+import { db } from '@/lib/db'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { type NavUserProps } from '@/components/nav-user'
 
@@ -18,9 +20,20 @@ export default async function Layout({ children }: { children: ReactNode }) {
     return null
   }
 
+  const avatar = await db.execute(sql`
+    SELECT
+      "profile_picture"
+    FROM
+      "user_information"
+    WHERE
+      "user_id" = ${currentUser.user_id};
+  `)
+
+  console.log(avatar.rows)
+
   const user: NavUserProps = {
     user: {
-      avatar: '',
+      avatar: avatar.rows[0].profile_picture as string,
       initials: currentUser.first_name.charAt(0).concat(currentUser.last_name.charAt(0)),
       name: currentUser.first_name.concat(' ', currentUser.last_name),
       role: currentUser.role,

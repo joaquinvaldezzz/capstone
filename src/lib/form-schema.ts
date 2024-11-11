@@ -58,6 +58,7 @@ export const updateAccountFormSchema = z.object({
 export type UpdateAccountFormSchema = z.infer<typeof updateAccountFormSchema>
 
 export const updateProfileFormSchema = z.object({
+  profile_picture: z.any(),
   age: z.string().min(1, { message: 'Age cannot be blank.' }),
   birth_date: z.coerce.date({ message: 'Birth date cannot be blank.' }),
   gender: z
