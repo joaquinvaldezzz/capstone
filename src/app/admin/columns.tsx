@@ -22,7 +22,7 @@ export const columns: Array<ColumnDef<CustomUser>> = [
       <div className="flex items-center gap-2">
         <Avatar>
           <AvatarImage
-            src={`https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${cell.row.original.profile_picture}`}
+            src={`https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/profile-pictures/${cell.row.original.profile_picture}`}
             alt={cell.row.original.name}
           />
           <AvatarFallback>

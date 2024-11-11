@@ -31,7 +31,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   const user: NavUserProps = {
     user: {
-      avatar: avatar.rows[0].profile_picture as string,
+      avatar: (avatar.rows[0].profile_picture as string) ?? '',
       initials: currentUser.first_name.charAt(0).concat(currentUser.last_name.charAt(0)),
       name: currentUser.first_name.concat(' ', currentUser.last_name),
       role: currentUser.role,

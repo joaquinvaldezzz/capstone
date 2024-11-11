@@ -8,7 +8,8 @@ import { results, users, type User } from './db-schema'
 import { verifySession } from './session'
 
 export interface Result {
-  name?: string
+  profile_picture: string
+  name: string
   result_id: number
   doctor_id: number
   user_id: number
@@ -138,11 +139,14 @@ export const getPatientResults = cache(async (): Promise<Result[] | null> => {
   try {
     const { rows } = await db.execute(sql`
       SELECT
-        CONCAT("first_name", ' ', "last_name") AS "name",
-        *
+        CONCAT("users"."first_name", ' ', "users"."last_name") AS "name",
+        "results".*,
+        "users".*,
+        "profile".*
       FROM
         "results"
         JOIN "users" ON "results"."user_id" = "users"."user_id"
+        LEFT JOIN "user_information" AS "profile" ON "users"."user_id" = "profile"."user_id"
       ORDER BY
         "results"."created_at" DESC;
     `)
