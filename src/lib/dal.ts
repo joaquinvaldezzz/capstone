@@ -153,6 +153,21 @@ export const getPatientResults = cache(async (): Promise<Result[] | null> => {
   }
 })
 
+export interface PatientResult {
+  result_id: number
+  doctor_id: number
+  user_id: number
+  created_at: string
+  ultrasound_image: string
+  percentage: string
+  diagnosis: string
+  user_first_name: string
+  user_last_name: string
+  doctor_profile_picture: string
+  doctor_first_name: string
+  doctor_last_name: string
+}
+
 /**
  * Fetches patient results from the database, joining the results with user information.
  *
@@ -160,12 +175,23 @@ export const getPatientResults = cache(async (): Promise<Result[] | null> => {
  *   `null` if an error occurs.
  * @throws Will log an error message to the console if the database query fails.
  */
-export const getPatientResult = cache(async (): Promise<Result[] | null> => {
+export const getPatientResult = cache(async (): Promise<PatientResult[] | null> => {
   try {
-    const { rows } = await db.execute(
-      sql`SELECT * FROM results JOIN users ON results.user_id = users.user_id;`,
-    )
-    return rows as unknown as Result[]
+    const { rows } = await db.execute(sql`
+      SELECT
+        "results".*,
+        "users"."first_name" AS "user_first_name",
+        "users"."last_name" AS "user_last_name",
+        "doctor"."first_name" AS "doctor_first_name",
+        "doctor"."last_name" AS "doctor_last_name",
+        "profile"."profile_picture" AS "doctor_profile_picture"
+      FROM
+        "results"
+        JOIN "users" ON "results"."user_id" = "users"."user_id"
+        JOIN "users" AS "doctor" ON "results"."doctor_id" = "doctor"."user_id"
+        LEFT JOIN "user_information" AS "profile" ON "doctor"."user_id" = "profile"."user_id";
+    `)
+    return rows as unknown as PatientResult[]
   } catch (error) {
     console.error('Failed to fetch patient result')
     return null
