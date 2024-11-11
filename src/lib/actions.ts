@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache'
 import { put } from '@vercel/blob'
 import bcrypt from 'bcrypt'
 import { format } from 'date-fns'
-import { eq } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 
 import { getCurrentUser } from './dal'
 import { db } from './db'
@@ -555,11 +555,21 @@ export async function deleteUser(
 ): Promise<Message> {
   const userId = formData.get('user-id')
 
+  console.log(userId)
+
   // Delete the user from the database
-  await db
-    .delete(users)
-    .where(eq(users.user_id, parseInt(String(userId))))
-    .execute()
+
+  await db.execute(sql`
+    DELETE FROM "user_information"
+    WHERE
+      "user_id" = ${userId};
+  `)
+
+  await db.execute(sql`
+    DELETE FROM "users"
+    WHERE
+      "user_id" = ${userId};
+  `)
 
   // Revalidate the dashboard page
   revalidatePath('/admin/users')
@@ -567,6 +577,28 @@ export async function deleteUser(
   // Return a success message
   return {
     message: 'User deleted successfully.',
+    success: true,
+  }
+}
+
+export async function deleteResult(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const userId = formData.get('result-id')
+
+  // Delete the user from the database
+  await db
+    .delete(results)
+    .where(eq(results.result_id, parseInt(String(userId))))
+    .execute()
+
+  // Revalidate the dashboard page
+  revalidatePath('/doctor/results')
+
+  // Return a success message
+  return {
+    message: 'Result deleted successfully.',
     success: true,
   }
 }

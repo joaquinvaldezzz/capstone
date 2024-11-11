@@ -6,8 +6,8 @@ import { getUserById } from '@/lib/dal'
 import { db } from '@/lib/db'
 import { users, type UserInformation } from '@/lib/db-schema'
 
-import { ProfileForm } from './profile-form'
-import { UserForm } from './user-form'
+import { DeleteButton } from './delete-button'
+import { Forms } from './forms'
 
 export async function generateStaticParams() {
   const id = await db.select().from(users)
@@ -53,16 +53,22 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="mx-auto w-full max-w-screen-sm">
-        <h2 className="text-3xl font-bold tracking-tight">
-          Edit {user.first_name} {user.last_name}&apos;s account
-        </h2>
+      <div className="mx-auto flex w-full max-w-screen-sm justify-between">
+        <div>
+          <h2 className="text-xl font-semibold">
+            {user.first_name} {user.last_name}
+          </h2>
+          <div className="mt-1 flex gap-4">
+            <span className="capitalize text-gray-600">{user.role}</span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-4 print:hidden">
+          <DeleteButton userId={user.user_id} />
+        </div>
       </div>
 
-      <div className="mx-auto w-full max-w-screen-sm space-y-6">
-        <UserForm data={user} />
-        <ProfileForm data={profile} />
-      </div>
+      <Forms profile={profile} user={user} />
     </div>
   )
 }

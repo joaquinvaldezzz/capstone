@@ -7,6 +7,7 @@ import { format } from 'date-fns'
 import { getPatientResults } from '@/lib/dal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
+import { DeleteButton } from './delete-button'
 import { PrintButton } from './print-button'
 
 export async function generateStaticParams() {
@@ -64,6 +65,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </div>
 
           <div className="flex items-center gap-4 print:hidden">
+            <DeleteButton resultId={result.result_id} />
             <PrintButton />
           </div>
         </div>

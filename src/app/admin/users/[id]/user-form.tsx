@@ -30,7 +30,6 @@ import {
 export function UserForm({ data }: { data: User }) {
   const formRef = useRef<HTMLFormElement>(null)
   const [formState, formAction, isSubmitting] = useActionState(updateAccount, { message: '' })
-
   const form = useForm<UpdateAccountFormSchema>({
     defaultValues: {
       first_name: data.first_name,
