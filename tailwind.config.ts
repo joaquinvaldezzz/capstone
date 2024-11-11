@@ -71,6 +71,7 @@ const config: Config = {
       data: {
         'focus-within': 'focus-within="true"',
         disabled: 'disabled="true"',
+        active: 'active="true"',
       },
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
