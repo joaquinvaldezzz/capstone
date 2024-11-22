@@ -19,5 +19,5 @@ export function CalendlyEmbed({ url }: { url: string }) {
     head.appendChild(script)
   }, [])
 
-  return <div className="calendly-inline-widget h-full" data-url={url}></div>
+  return <div className="calendly-inline-widget size-full max-w-screen-md" data-url={url}></div>
 }
