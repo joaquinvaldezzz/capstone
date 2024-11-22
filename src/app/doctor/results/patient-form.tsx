@@ -103,8 +103,8 @@ export function PatientForm({ patients }: { patients: CustomUser[] }) {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create a new account</DialogTitle>
-          <DialogDescription>Fill out the form below to create a new account.</DialogDescription>
+          <DialogTitle>Analyze an image</DialogTitle>
+          <DialogDescription>Fill out the form below to analyze an image.</DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
