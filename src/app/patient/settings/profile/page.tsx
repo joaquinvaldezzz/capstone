@@ -38,7 +38,7 @@ export default async function Page() {
     <div className="flex flex-col gap-6">
       <div>
         <h3 className="text-2xl font-semibold tracking-tight">Profile</h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Manage your profile settings such as your age, date of birth, address, and gender.
         </p>
       </div>

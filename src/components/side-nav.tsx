@@ -14,7 +14,7 @@ export function SideNav({ links }: { links: NavItem[] }) {
         {links.map((link, index) => (
           <li key={index}>
             <Link
-              className="group flex items-center justify-between rounded-md px-3 py-2 hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-gray-400/15 data-active:bg-gray-50"
+              className="group flex items-center justify-between rounded-md px-3 py-2 hover:bg-gray-50 focus:ring-4 focus:ring-gray-400/15 focus:outline-hidden data-active:bg-gray-50"
               data-state={pathname === link.href ? 'active' : 'inactive'}
               href={link.href}
             >

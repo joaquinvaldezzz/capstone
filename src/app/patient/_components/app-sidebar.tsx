@@ -52,20 +52,20 @@ export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
 
   return (
     <Sidebar
-      className="overflow-hidden [&>[data-sidebar=sidebar]]:flex-row"
+      className="overflow-hidden *:data-[sidebar=sidebar]:flex-row"
       collapsible="icon"
       {...props}
     >
       {/* This is the first sidebar */}
       {/* We disable collapsible and adjust width to icon. */}
       {/* This will make the sidebar appear as icons. */}
-      <Sidebar className="!w-[calc(var(--sidebar-width-icon)_+_1px)] border-r" collapsible="none">
+      <Sidebar className="w-[calc(var(--sidebar-width-icon)+1px)]! border-r" collapsible="none">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton className="md:h-8 md:p-0" size="lg" asChild>
                 <Link href="">
-                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                  <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                     <Image src={HospitalLogo} alt="National Children's Hospital" />
                   </div>
                   {/* <div className="grid flex-1 text-left text-sm leading-tight">
@@ -118,7 +118,7 @@ export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
       <Sidebar className="hidden flex-1 md:flex" collapsible="none">
         <SidebarHeader className="min-h-[3.8125rem] gap-3.5 border-b p-4">
           <div className="flex size-full items-center justify-between">
-            <div className="text-base font-medium text-foreground">{activeItem.title}</div>
+            <div className="text-foreground text-base font-medium">{activeItem.title}</div>
           </div>
         </SidebarHeader>
 
@@ -127,7 +127,7 @@ export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
             <SidebarGroupContent>
               {messages.map((message) => (
                 <Link
-                  className="flex flex-col items-start gap-2 whitespace-nowrap border-b p-4 text-sm leading-tight last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
+                  className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground flex flex-col items-start gap-2 border-b p-4 text-sm leading-tight whitespace-nowrap last:border-b-0"
                   data-active={pathname === `/patient/result/${message.result_id}`}
                   href={`/patient/result/${message.result_id}`}
                   key={message.result_id}
@@ -143,7 +143,7 @@ export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
                     </span>
                   </div>
                   <div className="font-medium">Your ultrasound result is here!</div>
-                  <div className="line-clamp-2 whitespace-break-spaces text-xs">
+                  <div className="line-clamp-2 text-xs whitespace-break-spaces">
                     Based on the ultrasound image, the diagnosis is{' '}
                     {message.diagnosis.toLowerCase()}.
                   </div>

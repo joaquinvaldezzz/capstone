@@ -20,7 +20,7 @@ export default async function Page() {
     <div className="flex flex-col gap-6">
       <div>
         <h3 className="text-2xl font-semibold tracking-tight">Account</h3>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Manage your account settings here including your email, password, and role.
         </p>
       </div>
