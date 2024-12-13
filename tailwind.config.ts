@@ -1,8 +1,9 @@
-import { type Config } from 'tailwindcss'
+// import { type Config } from 'tailwindcss'
 import animate from 'tailwindcss-animate'
-import { fontFamily } from 'tailwindcss/defaultTheme'
 
-const config: Config = {
+// import { fontFamily } from 'tailwindcss/defaultTheme'
+
+const config = {
   content: ['./src/app/**/*.{ts,tsx}', './src/components/**/*.{ts,tsx}'],
   darkMode: ['class'],
   theme: {
@@ -74,7 +75,7 @@ const config: Config = {
         active: 'active="true"',
       },
       fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
+        sans: ['var(--font-sans)'],
       },
       keyframes: {
         'accordion-down': {

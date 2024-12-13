@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: { id: string } }) {
 
   return (
     <Fragment>
-      <div className="mx-auto flex max-w-screen-md flex-col gap-5">
+      <div className="mx-auto flex max-w-(--breakpoint-md) flex-col gap-5">
         <div className="flex justify-between gap-4">
           <div>
             <h2 className="font-semibold">Result #{result.result_id}</h2>
@@ -71,11 +71,11 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </div>
 
-      <div className="mx-auto mt-8 w-full max-w-screen-md">
+      <div className="mx-auto mt-8 w-full max-w-(--breakpoint-md)">
         <div className="border-t border-gray-100">
           <dl className="divide-y divide-gray-100">
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">Patient</dt>
+              <dt className="text-sm leading-6 font-medium">Patient</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 <div className="flex items-center gap-2">
                   <Avatar className="print:hidden">
@@ -96,47 +96,47 @@ export default async function Page({ params }: { params: { id: string } }) {
             </div>
 
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">Birth date</dt>
+              <dt className="text-sm leading-6 font-medium">Birth date</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {format(result.birth_date, 'MMMM dd, yyyy')}
               </dd>
             </div>
 
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">Age</dt>
+              <dt className="text-sm leading-6 font-medium">Age</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {result.age} years old
               </dd>
             </div>
 
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">Address</dt>
+              <dt className="text-sm leading-6 font-medium">Address</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {result.address}
               </dd>
             </div>
 
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">Email address</dt>
+              <dt className="text-sm leading-6 font-medium">Email address</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {result.email}
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">Diagnosis</dt>
+              <dt className="text-sm leading-6 font-medium">Diagnosis</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {result.diagnosis}
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">Percentage</dt>
+              <dt className="text-sm leading-6 font-medium">Percentage</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {result.percentage}
               </dd>
             </div>
 
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm font-medium leading-6">Attachment</dt>
+              <dt className="text-sm leading-6 font-medium">Attachment</dt>
               <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
                 <Image
                   className="w-64 rounded-lg object-cover"

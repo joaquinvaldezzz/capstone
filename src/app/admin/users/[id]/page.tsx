@@ -53,13 +53,13 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   return (
     <div className="flex flex-col gap-8">
-      <div className="mx-auto flex w-full max-w-screen-sm justify-between">
+      <div className="mx-auto flex w-full max-w-(--breakpoint-sm) justify-between">
         <div>
           <h2 className="text-xl font-semibold">
             {user.first_name} {user.last_name}
           </h2>
           <div className="mt-1 flex gap-4">
-            <span className="capitalize text-gray-600">{user.role}</span>
+            <span className="text-gray-600 capitalize">{user.role}</span>
           </div>
         </div>
 

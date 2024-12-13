@@ -58,7 +58,7 @@ export default async function Page({ params }: { params: Params }) {
           <p className="font-medium">
             {result.doctor_first_name} {result.doctor_last_name}
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             {formatDistanceToNow(new Date(result.created_at), {
               addSuffix: true,
             })}
@@ -66,7 +66,7 @@ export default async function Page({ params }: { params: Params }) {
         </div>
       </div>
 
-      <div className="max-w-screen-md">
+      <div className="max-w-(--breakpoint-md)">
         <p>Hi, {result.user_first_name}</p>
 
         <p className="mt-4">Your test results are in.</p>
