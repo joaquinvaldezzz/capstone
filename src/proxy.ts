@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server'
 
 import { decrypt } from '@/lib/session'
 
-import type { SessionPayload } from '@/lib/session'
 import type { NextRequest, ProxyConfig } from 'next/server'
+import type { SessionPayload } from '@/lib/session'
 
 /**
  * Middleware function that handles route protection and session management.
@@ -39,9 +39,11 @@ export default async function proxy(request: NextRequest) {
    */
   if (session?.userRole === 'admin' && !currentPath.includes('/admin')) {
     return NextResponse.redirect(new URL('/admin', request.nextUrl))
-  } else if (session?.userRole === 'doctor' && !currentPath.includes('/doctor')) {
+  }
+  if (session?.userRole === 'doctor' && !currentPath.includes('/doctor')) {
     return NextResponse.redirect(new URL('/doctor', request.nextUrl))
-  } else if (session?.userRole === 'patient' && !currentPath.includes('/patient')) {
+  }
+  if (session?.userRole === 'patient' && !currentPath.includes('/patient')) {
     return NextResponse.redirect(new URL('/patient', request.nextUrl))
   }
 
@@ -52,9 +54,11 @@ export default async function proxy(request: NextRequest) {
   if (isPublicRoute && session?.userId != null) {
     if (session?.userRole === 'admin') {
       return NextResponse.redirect(new URL('/admin', request.nextUrl))
-    } else if (session?.userRole === 'doctor') {
+    }
+    if (session?.userRole === 'doctor') {
       return NextResponse.redirect(new URL('/doctor', request.nextUrl))
-    } else if (session?.userRole === 'patient') {
+    }
+    if (session?.userRole === 'patient') {
       return NextResponse.redirect(new URL('/patient', request.nextUrl))
     }
   }

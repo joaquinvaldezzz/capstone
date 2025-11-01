@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { type Metadata } from 'next'
 
 import { Activity, ShieldAlert, Users } from 'lucide-react'
 
@@ -11,6 +10,7 @@ import {
 } from '@/lib/dal'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
+import type { Metadata } from 'next'
 import type { Result } from '@/lib/dal'
 
 import { DataTable } from './_components/data-table'

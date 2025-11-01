@@ -2,13 +2,13 @@
 
 import { createContext, forwardRef, useContext, useId } from 'react'
 
-import { type Root } from '@radix-ui/react-label'
 import { Slot } from '@radix-ui/react-slot'
 import { Controller, FormProvider, useFormContext } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
 import { Label } from '@/components/ui/label'
 
+import type { Root } from '@radix-ui/react-label'
 import type { ComponentPropsWithoutRef, ElementRef, HTMLAttributes } from 'react'
 import type { ControllerProps, FieldPath, FieldValues } from 'react-hook-form'
 
@@ -28,13 +28,11 @@ const FormField = <
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({
   ...props
-}: ControllerProps<TFieldValues, TName>) => {
-  return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
-      <Controller {...props} />
-    </FormFieldContext.Provider>
-  )
-}
+}: ControllerProps<TFieldValues, TName>) => (
+  <FormFieldContext.Provider value={{ name: props.name }}>
+    <Controller {...props} />
+  </FormFieldContext.Provider>
+)
 
 const useFormField = () => {
   const fieldContext = useContext(FormFieldContext)
@@ -102,7 +100,7 @@ const FormControl = forwardRef<ElementRef<typeof Slot>, ComponentPropsWithoutRef
       <Slot
         id={formItemId}
         aria-describedby={
-          error == null ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`
+          error == null ? formDescriptionId : `${formDescriptionId} ${formMessageId}`
         }
         aria-invalid={!(error == null)}
         ref={ref}

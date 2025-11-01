@@ -7,7 +7,6 @@ import { Loader2, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { addPatient } from '@/lib/actions'
-import { type CustomUser } from '@/lib/dal'
 import { resultSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
@@ -38,10 +37,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import type { ResultSchema } from '@/lib/form-schema'
 import type { FormEvent } from 'react'
+import type { CustomUser } from '@/lib/dal'
+import type { ResultSchema } from '@/lib/form-schema'
 
-export function PatientForm({ patients }: { patients: CustomUser[] }) {
+export const PatientForm = ({ patients }: { patients: CustomUser[] }) => {
   const [open, setOpen] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
   const [formState, formAction, isSubmitting] = useActionState(addPatient, { message: '' })
@@ -169,7 +169,7 @@ export function PatientForm({ patients }: { patients: CustomUser[] }) {
               </DialogClose>
 
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+                {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
                 {isSubmitting ? 'Analyzing image...' : 'Analyze'}
               </Button>
             </DialogFooter>

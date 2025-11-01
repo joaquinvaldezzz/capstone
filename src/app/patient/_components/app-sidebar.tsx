@@ -8,7 +8,6 @@ import { usePathname } from 'next/navigation'
 import { formatDistanceToNow } from 'date-fns'
 import { Inbox } from 'lucide-react'
 
-import { type PatientResult } from '@/lib/dal'
 import {
   Sidebar,
   SidebarContent,
@@ -21,11 +20,12 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
-import { type NavUserProps } from '@/components/nav-user'
 
 import type { ComponentProps } from 'react'
+import type { NavUserProps } from '@/components/nav-user'
+import type { PatientResult } from '@/lib/dal'
 
-import { NavUser } from '../_components/nav-user'
+import { NavUser } from './nav-user'
 
 import HospitalLogo from '@/public/images/hospital-logo.jpg'
 
@@ -45,7 +45,7 @@ interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavUserProps {
   messages: PatientResult[]
 }
 
-export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
+export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
   const [activeItem, setActiveItem] = useState(data.navMain[0])

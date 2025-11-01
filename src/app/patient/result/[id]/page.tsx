@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/await-thenable */
 import { Fragment } from 'react'
-import { type Metadata } from 'next'
 
 import { formatDistanceToNow } from 'date-fns'
 
 import { getPatientResult } from '@/lib/dal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
+import type { Metadata } from 'next'
 
 interface Params {
   id: string
@@ -74,21 +75,21 @@ export default async function Page({ params }: { params: Params }) {
 
         <p className="mt-4">
           {result?.diagnosis === 'Infected' ? (
-            <>
+            <React.Fragment>
               Your test results are available. We have determined a{' '}
               <span className="font-semibold text-gray-900">{result.percentage}</span> chance of
               infection based on the ultrasound image provided. You have been diagnosed with an{' '}
               <span className="font-semibold text-gray-900">infection</span>. Please consult with
               your doctor for further information.
-            </>
+            </React.Fragment>
           ) : (
-            <>
+            <React.Fragment>
               Based on the ultrasound image provided, we have determined that you have a{' '}
               <span className="font-semibold text-gray-900">{result.percentage}</span> chance of
               being healthy. You have been diagnosed with{' '}
               <span className="font-semibold text-gray-900">{result.diagnosis.toLowerCase()}</span>.
               Please consult with your doctor for further information.
-            </>
+            </React.Fragment>
           )}
         </p>
 

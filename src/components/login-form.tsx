@@ -22,10 +22,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import type { LogInFormSchema } from '@/lib/form-schema'
 import type { FormEvent } from 'react'
+import type { LogInFormSchema } from '@/lib/form-schema'
 
-export function LoginForm() {
+const LoginForm = () => {
   const formRef = useRef<HTMLFormElement>(null)
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const [formState, formAction, isSubmitting] = useActionState(login, { message: '' })
@@ -49,7 +49,7 @@ export function LoginForm() {
     // Prevent the default form submission behavior
     event.preventDefault()
 
-    void form.handleSubmit(() => {
+    form.handleSubmit(() => {
       startTransition(() => {
         // If the form reference is null, return early
         if (formRef.current == null) return
@@ -129,7 +129,7 @@ export function LoginForm() {
             />
 
             <Button type="submit">
-              {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+              {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
               {isSubmitting ? 'Logging in...' : 'Log in'}
             </Button>
           </form>
@@ -144,3 +144,5 @@ export function LoginForm() {
     </Card>
   )
 }
+
+export default LoginForm

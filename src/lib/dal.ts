@@ -67,7 +67,7 @@ export const getUsers = cache(async (): Promise<CustomUser[] | null> => {
   try {
     const { rows } = await db.execute(sql`
       SELECT
-        CONCAT("first_name", ' ', "last_name") AS "name",
+        CONCAT ("first_name", ' ', "last_name") AS "name",
         *
       FROM
         "users"
@@ -113,7 +113,7 @@ export const getAllPatientResults = cache(async (): Promise<Result[] | null> => 
   try {
     const { rows } = await db.execute(sql`
       SELECT
-        CONCAT("first_name", ' ', "last_name") AS "name",
+        CONCAT ("first_name", ' ', "last_name") AS "name",
         *
       FROM
         "results"
@@ -142,7 +142,7 @@ export const getPatientResults = cache(async (): Promise<Result[] | null> => {
   try {
     const { rows } = await db.execute(sql`
       SELECT
-        CONCAT("users"."first_name", ' ', "users"."last_name") AS "name",
+        CONCAT ("users"."first_name", ' ', "users"."last_name") AS "name",
         "results".*,
         "users".*,
         "profile".*
@@ -283,14 +283,15 @@ export const getRecentlyCreatedUsers = cache(async (): Promise<CustomUser[] | nu
   try {
     const { rows } = await db.execute(sql`
       SELECT
-        CONCAT("first_name", ' ', "last_name") AS "name",
+        CONCAT ("first_name", ' ', "last_name") AS "name",
         *
       FROM
         "users"
       ORDER BY
         "users"."creation_date" DESC
       LIMIT
-        10;`)
+        10;
+    `)
     return rows as unknown as CustomUser[]
   } catch (error) {
     console.error('Failed to fetch users')

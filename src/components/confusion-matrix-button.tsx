@@ -2,7 +2,7 @@
 
 import { Button } from './ui/button'
 
-export function ConfusionMatrixButton() {
+export const ConfusionMatrixButton = () => {
   function openImageInNewTab() {
     const imagePath = '/images/confusion_matrix.png' // Replace with the actual path to your image
     const errorImagePath = 'path/to/error/image.png' // Replace with the actual path to your error image

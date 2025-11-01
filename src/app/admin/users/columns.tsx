@@ -1,13 +1,14 @@
 'use client'
 
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
-import { type CustomUser } from '@/lib/dal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
 
-export const columns: Array<ColumnDef<CustomUser>> = [
+import type { ColumnDef } from '@tanstack/react-table'
+import type { CustomUser } from '@/lib/dal'
+
+export const columns: ColumnDef<CustomUser>[] = [
   {
     accessorKey: 'user_id',
     header: ({ column }) => <DataTableColumnHeader title="User ID" column={column} />,
@@ -15,9 +16,7 @@ export const columns: Array<ColumnDef<CustomUser>> = [
   },
   {
     accessorKey: 'name',
-    header: ({ column }) => {
-      return <DataTableColumnHeader title="Name" column={column} />
-    },
+    header: ({ column }) => <DataTableColumnHeader title="Name" column={column} />,
     cell: (cell) => (
       <div className="flex items-center gap-2">
         <Avatar>

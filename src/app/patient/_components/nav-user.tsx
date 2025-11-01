@@ -21,9 +21,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar'
-import { type NavUserProps } from '@/components/nav-user'
 
-export function NavUser({ user }: NavUserProps) {
+import type { NavUserProps } from '@/components/nav-user'
+
+export const NavUser = ({ user }: NavUserProps) => {
   const { isMobile } = useSidebar()
 
   return (

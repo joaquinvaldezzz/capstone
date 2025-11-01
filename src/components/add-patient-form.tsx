@@ -8,11 +8,11 @@ import { useForm } from 'react-hook-form'
 
 import { addPatient } from '@/lib/actions'
 import { getUsers } from '@/lib/dal'
-import { type User } from '@/lib/db-schema'
 import { resultSchema } from '@/lib/form-schema'
 
-import type { ResultSchema } from '@/lib/form-schema'
 import type { FormEvent } from 'react'
+import type { User } from '@/lib/db-schema'
+import type { ResultSchema } from '@/lib/form-schema'
 
 import { Button } from './ui/button'
 import {
@@ -29,7 +29,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from './ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 
-export function AddPatientForm() {
+export const AddPatientForm = () => {
   const formRef = useRef<HTMLFormElement>(null)
   const [patients, setPatients] = useState<User[]>([])
   const [open, setOpen] = useState<boolean>(false)

@@ -321,109 +321,95 @@ const SidebarRail = forwardRef<HTMLButtonElement, ComponentProps<'button'>>(
 SidebarRail.displayName = 'SidebarRail'
 
 const SidebarInset = forwardRef<HTMLDivElement, ComponentProps<'main'>>(
-  ({ className, ...props }, ref) => {
-    return (
-      <main
-        className={cn(
-          'relative flex min-h-svh flex-1 flex-col bg-background',
-          'peer-data-[variant=inset]:min-h-[calc(100svh-calc(var(--spacing)*4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
-          className,
-        )}
-        ref={ref}
-        {...props}
-      />
-    )
-  },
+  ({ className, ...props }, ref) => (
+    <main
+      className={cn(
+        'relative flex min-h-svh flex-1 flex-col bg-background',
+        'peer-data-[variant=inset]:min-h-[calc(100svh-calc(var(--spacing)*4))] md:peer-data-[variant=inset]:m-2 md:peer-data-[variant=inset]:ml-0 md:peer-data-[variant=inset]:rounded-xl md:peer-data-[variant=inset]:shadow-sm md:peer-data-[variant=inset]:peer-data-[state=collapsed]:ml-2',
+        className,
+      )}
+      ref={ref}
+      {...props}
+    />
+  ),
 )
 SidebarInset.displayName = 'SidebarInset'
 
 const SidebarInput = forwardRef<ElementRef<typeof Input>, ComponentProps<typeof Input>>(
-  ({ className, ...props }, ref) => {
-    return (
-      <Input
-        className={cn(
-          'h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
-          className,
-        )}
-        data-sidebar="input"
-        ref={ref}
-        {...props}
-      />
-    )
-  },
+  ({ className, ...props }, ref) => (
+    <Input
+      className={cn(
+        'h-8 w-full bg-background shadow-none focus-visible:ring-2 focus-visible:ring-sidebar-ring',
+        className,
+      )}
+      data-sidebar="input"
+      ref={ref}
+      {...props}
+    />
+  ),
 )
 SidebarInput.displayName = 'SidebarInput'
 
 const SidebarHeader = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        className={cn('flex flex-col gap-2 p-2', className)}
-        data-sidebar="header"
-        ref={ref}
-        {...props}
-      />
-    )
-  },
+  ({ className, ...props }, ref) => (
+    <div
+      className={cn('flex flex-col gap-2 p-2', className)}
+      data-sidebar="header"
+      ref={ref}
+      {...props}
+    />
+  ),
 )
 SidebarHeader.displayName = 'SidebarHeader'
 
 const SidebarFooter = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        className={cn('flex flex-col gap-2 p-2', className)}
-        data-sidebar="footer"
-        ref={ref}
-        {...props}
-      />
-    )
-  },
+  ({ className, ...props }, ref) => (
+    <div
+      className={cn('flex flex-col gap-2 p-2', className)}
+      data-sidebar="footer"
+      ref={ref}
+      {...props}
+    />
+  ),
 )
 SidebarFooter.displayName = 'SidebarFooter'
 
 const SidebarSeparator = forwardRef<ElementRef<typeof Separator>, ComponentProps<typeof Separator>>(
-  ({ className, ...props }, ref) => {
-    return (
-      <Separator
-        className={cn('mx-2 w-auto bg-sidebar-border', className)}
-        data-sidebar="separator"
-        ref={ref}
-        {...props}
-      />
-    )
-  },
+  ({ className, ...props }, ref) => (
+    <Separator
+      className={cn('mx-2 w-auto bg-sidebar-border', className)}
+      data-sidebar="separator"
+      ref={ref}
+      {...props}
+    />
+  ),
 )
 SidebarSeparator.displayName = 'SidebarSeparator'
 
 const SidebarContent = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        className={cn(
-          'flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
-          className,
-        )}
-        data-sidebar="content"
-        ref={ref}
-        {...props}
-      />
-    )
-  },
+  ({ className, ...props }, ref) => (
+    <div
+      className={cn(
+        'flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden',
+        className,
+      )}
+      data-sidebar="content"
+      ref={ref}
+      {...props}
+    />
+  ),
 )
 SidebarContent.displayName = 'SidebarContent'
 
 const SidebarGroup = forwardRef<HTMLDivElement, ComponentProps<'div'>>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        className={cn('relative flex w-full min-w-0 flex-col p-2', className)}
-        data-sidebar="group"
-        ref={ref}
-        {...props}
-      />
-    )
-  },
+  ({ className, ...props }, ref) => (
+    <div
+      className={cn('relative flex w-full min-w-0 flex-col p-2', className)}
+      data-sidebar="group"
+      ref={ref}
+      {...props}
+    />
+  ),
 )
 SidebarGroup.displayName = 'SidebarGroup'
 
@@ -645,9 +631,7 @@ const SidebarMenuSkeleton = forwardRef<
   }
 >(({ className, showIcon = false, ...props }, ref) => {
   // Random width between 50 to 90%.
-  const width = useMemo(() => {
-    return `${Math.floor(Math.random() * 40) + 50}%`
-  }, [])
+  const width = useMemo(() => `${Math.floor(Math.random() * 40) + 50}%`, [])
 
   return (
     <div
@@ -656,7 +640,9 @@ const SidebarMenuSkeleton = forwardRef<
       ref={ref}
       {...props}
     >
-      {showIcon && <Skeleton className="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />}
+      {showIcon ? (
+        <Skeleton className="size-4 rounded-md" data-sidebar="menu-skeleton-icon" />
+      ) : null}
       <Skeleton
         className="h-4 max-w-(--skeleton-width) flex-1"
         data-sidebar="menu-skeleton-text"

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/await-thenable */
 import { Fragment } from 'react'
-import { type Metadata } from 'next'
 import Image from 'next/image'
 
 import { format } from 'date-fns'
 
 import { getPatientResults } from '@/lib/dal'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+
+import type { Metadata } from 'next'
 
 import { DeleteButton } from './delete-button'
 import { PrintButton } from './print-button'

@@ -10,7 +10,6 @@ import { DateField, DateInput, DateSegment, Label } from 'react-aria-components'
 import { useForm } from 'react-hook-form'
 
 import { updateProfile } from '@/lib/actions'
-import { type UserInformation } from '@/lib/db-schema'
 import { updateProfileFormSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -33,10 +32,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import type { UpdateProfileFormSchema } from '@/lib/form-schema'
 import type { FormEvent } from 'react'
+import type { UserInformation } from '@/lib/db-schema'
+import type { UpdateProfileFormSchema } from '@/lib/form-schema'
 
-export function ProfileForm({ data }: { data: UserInformation }) {
+export const ProfileForm = ({ data }: { data: UserInformation }) => {
   const formRef = useRef<HTMLFormElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
@@ -228,7 +228,7 @@ export function ProfileForm({ data }: { data: UserInformation }) {
 
         <div className="flex justify-end">
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+            {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
             {isSubmitting ? 'Updating profile...' : 'Update profile'}
           </Button>
         </div>

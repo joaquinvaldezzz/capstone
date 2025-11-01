@@ -7,13 +7,13 @@ import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-  items: Array<{
+  items: {
     href: string
     title: string
-  }>
+  }[]
 }
 
-export function Nav({ className, items, ...props }: SidebarNavProps) {
+export const Nav = ({ className, items, ...props }: SidebarNavProps) => {
   const pathname = usePathname()
 
   return (

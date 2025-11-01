@@ -1,3 +1,3 @@
-export default function Loading() {
-  return <div>Loading data...</div>
-}
+const Loading = () => <div>Loading data...</div>
+
+export default Loading

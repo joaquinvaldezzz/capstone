@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-export function CalendlyEmbed({ url }: { url: string }) {
+export const CalendlyEmbed = ({ url }: { url: string }) => {
   useEffect(() => {
     const head = document.querySelector('head')
     const link = document.createElement('link')
@@ -19,7 +19,5 @@ export function CalendlyEmbed({ url }: { url: string }) {
     head.appendChild(script)
   }, [])
 
-  return (
-    <div className="calendly-inline-widget size-full max-w-(--breakpoint-md)" data-url={url}></div>
-  )
+  return <div className="calendly-inline-widget size-full max-w-(--breakpoint-md)" data-url={url} />
 }
