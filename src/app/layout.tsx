@@ -47,7 +47,7 @@ const inter = localFont({
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html className={inter.variable} lang="en">
-      <body className="bg-background text-foreground min-w-80 antialiased">
+      <body className="min-w-80 bg-background text-foreground antialiased">
         <ProgressBarProvider>{children}</ProgressBarProvider>
         <Toaster />
       </body>

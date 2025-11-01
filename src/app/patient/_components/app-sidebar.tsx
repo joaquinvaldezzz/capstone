@@ -65,7 +65,7 @@ export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
             <SidebarMenuItem>
               <SidebarMenuButton className="md:h-8 md:p-0" size="lg" asChild>
                 <Link href="">
-                  <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                     <Image src={HospitalLogo} alt="National Children's Hospital" />
                   </div>
                   {/* <div className="grid flex-1 text-left text-sm leading-tight">
@@ -116,9 +116,9 @@ export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
       {/* This is the second sidebar */}
       {/* We disable collapsible and let it fill remaining space */}
       <Sidebar className="hidden flex-1 md:flex" collapsible="none">
-        <SidebarHeader className="min-h-[3.8125rem] gap-3.5 border-b p-4">
+        <SidebarHeader className="min-h-15.25 gap-3.5 border-b p-4">
           <div className="flex size-full items-center justify-between">
-            <div className="text-foreground text-base font-medium">{activeItem.title}</div>
+            <div className="text-base font-medium text-foreground">{activeItem.title}</div>
           </div>
         </SidebarHeader>
 
@@ -127,7 +127,7 @@ export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
             <SidebarGroupContent>
               {messages.map((message) => (
                 <Link
-                  className="hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground flex flex-col items-start gap-2 border-b p-4 text-sm leading-tight whitespace-nowrap last:border-b-0"
+                  className="flex flex-col items-start gap-2 border-b p-4 text-sm leading-tight whitespace-nowrap last:border-b-0 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground data-active:bg-sidebar-accent data-active:text-sidebar-accent-foreground"
                   data-active={pathname === `/patient/result/${message.result_id}`}
                   href={`/patient/result/${message.result_id}`}
                   key={message.result_id}
