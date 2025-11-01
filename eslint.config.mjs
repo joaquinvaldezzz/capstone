@@ -35,6 +35,7 @@ const jsConfig = [
     rules: {
       // Disable Import X order rules to avoid conflicts with @ianvs/prettier-plugin-sort-imports
       'import-x/order': 'off',
+      'import-x/prefer-default-export': ['warn', { target: 'single' }],
     },
   },
 ]
