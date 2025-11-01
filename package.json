@@ -8,7 +8,7 @@
     "drizzle:push": "drizzle-kit push",
     "drizzle:studio": "drizzle-kit studio",
     "format": "prettier --write .",
-    "lint": "eslint .",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint --fix .",
     "next:dev": "next dev --turbo",
     "preview": "npm run build && npm run start",
