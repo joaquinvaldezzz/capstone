@@ -8,8 +8,8 @@
     "drizzle:push": "drizzle-kit push",
     "drizzle:studio": "drizzle-kit studio",
     "format": "prettier --write .",
-    "lint": "next lint",
-    "lint:fix": "next lint --fix .",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix . .",
     "next:dev": "next dev --turbo",
     "preview": "npm run build && npm run start",
     "start": "next start"
@@ -71,13 +71,13 @@
     "jose": "^5.6.3",
     "jotai": "^2.9.3",
     "lucide-react": "^0.427.0",
-    "next": "15.0.1",
+    "next": "16.0.1",
     "next-nprogress-bar": "^2.3.14",
     "next-safe-action": "^7.7.1",
-    "react": "19.0.0-rc-69d4b800-20241021",
+    "react": "19.2.0",
     "react-aria-components": "^1.4.1",
     "react-day-picker": "^8.10.1",
-    "react-dom": "19.0.0-rc-69d4b800-20241021",
+    "react-dom": "19.2.0",
     "react-hook-form": "^7.53.1",
     "tailwind-merge": "^2.4.0",
     "tailwindcss": "^4.1.16",
@@ -87,19 +87,19 @@
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^6.0.0",
     "@ianvs/prettier-plugin-sort-imports": "^4.3.1",
-    "@next/env": "15.0.1",
+    "@next/env": "16.0.1",
     "@prettier/plugin-xml": "^3.4.1",
     "@svgr/webpack": "^8.1.0",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^20",
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
     "@typescript-eslint/eslint-plugin": "^5.52.0",
     "concurrently": "^9.0.0",
     "drizzle-kit": "^0.24.0",
-    "eslint": "^8",
+    "eslint": "^9",
     "eslint-config-airbnb-typescript": "^17.1.0",
-    "eslint-config-next": "15.0.1",
+    "eslint-config-next": "16.0.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-config-standard-with-typescript": "^37.0.0",
     "eslint-plugin-import": "^2.25.2",
@@ -121,7 +121,7 @@
     "typescript": "^5.5.4"
   },
   "overrides": {
-    "@types/react": "npm:types-react@19.0.0-rc.1",
-    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2"
   }
 }
