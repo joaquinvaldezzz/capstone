@@ -1,7 +1,10 @@
 import { cookies } from 'next/headers'
-import { NextResponse, type NextRequest, type ProxyConfig } from 'next/server'
+import { NextResponse } from 'next/server'
 
-import { decrypt, type SessionPayload } from '@/lib/session'
+import { decrypt } from '@/lib/session'
+
+import type { SessionPayload } from '@/lib/session'
+import type { NextRequest, ProxyConfig } from 'next/server'
 
 /**
  * Middleware function that handles route protection and session management.

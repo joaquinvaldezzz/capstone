@@ -1,9 +1,12 @@
 'use client'
 
-import { forwardRef, type ComponentPropsWithoutRef, type ComponentRef } from 'react'
+import { forwardRef } from 'react'
+
 import * as SwitchPrimitives from '@radix-ui/react-switch'
 
 import { cn } from '@/lib/utils'
+
+import type { ComponentPropsWithoutRef, ComponentRef } from 'react'
 
 const Switch = forwardRef<
   ComponentRef<typeof SwitchPrimitives.Root>,

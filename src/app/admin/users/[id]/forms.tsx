@@ -1,6 +1,7 @@
 'use client'
 
-import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
+import { startTransition, useActionState, useEffect, useRef, useState } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { parseDate } from '@internationalized/date'
 import { format } from 'date-fns'
@@ -10,12 +11,7 @@ import { useForm } from 'react-hook-form'
 
 import { updateAccount, updateProfile } from '@/lib/actions'
 import { type User, type UserInformation } from '@/lib/db-schema'
-import {
-  updateAccountFormSchema,
-  updateProfileFormSchema,
-  type UpdateAccountFormSchema,
-  type UpdateProfileFormSchema,
-} from '@/lib/form-schema'
+import { updateAccountFormSchema, updateProfileFormSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
@@ -36,6 +32,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+
+import type { UpdateAccountFormSchema, UpdateProfileFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from 'react'
 
 export function Forms({ user, profile }: { user: User; profile: UserInformation }) {
   const accountFormRef = useRef<HTMLFormElement>(null)

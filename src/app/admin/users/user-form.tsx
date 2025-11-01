@@ -1,6 +1,7 @@
 'use client'
 
-import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
+import { startTransition, useActionState, useEffect, useRef, useState } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { parseDate } from '@internationalized/date'
 import { format } from 'date-fns'
@@ -9,7 +10,7 @@ import { DateField, DateInput, DateSegment, Label } from 'react-aria-components'
 import { useForm } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
-import { signUpFormSchema, type SignUpFormSchema } from '@/lib/form-schema'
+import { signUpFormSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import {
@@ -39,6 +40,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+
+import type { SignUpFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from 'react'
 
 export function UserForm() {
   const [open, setOpen] = useState<boolean>(false)

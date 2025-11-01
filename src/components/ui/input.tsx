@@ -1,7 +1,10 @@
-import { forwardRef, type InputHTMLAttributes } from 'react'
+import { forwardRef } from 'react'
+
 import { cva } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
+
+import type { InputHTMLAttributes } from 'react'
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
 

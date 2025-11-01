@@ -1,7 +1,9 @@
-import { Fragment, type ReactNode } from 'react'
+import { Fragment } from 'react'
 import { type Metadata } from 'next'
 
 import { Separator } from '@/components/ui/separator'
+
+import type { ReactNode } from 'react'
 
 import { Nav } from './nav'
 

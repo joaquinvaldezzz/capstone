@@ -1,13 +1,14 @@
 'use client'
 
-import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
+import { startTransition, useActionState, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { CircleAlert, CircleCheck, Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { forgotPassword } from '@/lib/actions'
-import { forgotPasswordFormSchema, type ForgotPasswordFormSchema } from '@/lib/form-schema'
+import { forgotPasswordFormSchema } from '@/lib/form-schema'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -20,6 +21,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+
+import type { ForgotPasswordFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from 'react'
 
 export function ForgotPasswordForm() {
   const formRef = useRef<HTMLFormElement>(null)

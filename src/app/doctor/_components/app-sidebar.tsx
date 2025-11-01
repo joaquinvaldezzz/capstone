@@ -3,6 +3,7 @@
 import { type ComponentProps } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+
 import { FileText, LayoutDashboard } from 'lucide-react'
 
 import {
@@ -15,8 +16,11 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
 
-import { NavMain, type NavMainProps } from './nav-main'
-import { NavUser, type NavUserProps } from './nav-user'
+import type { NavMainProps } from './nav-main'
+import type { NavUserProps } from './nav-user'
+
+import { NavMain } from './nav-main'
+import { NavUser } from './nav-user'
 
 import HospitalLogo from '@/public/images/hospital-logo.jpg'
 

@@ -1,14 +1,18 @@
 'use client'
 
-import { useEffect, useRef, useState, type FormEvent } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useFormState } from 'react-dom'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 
 import { addPatient } from '@/lib/actions'
 import { getUsers } from '@/lib/dal'
 import { type User } from '@/lib/db-schema'
-import { resultSchema, type ResultSchema } from '@/lib/form-schema'
+import { resultSchema } from '@/lib/form-schema'
+
+import type { ResultSchema } from '@/lib/form-schema'
+import type { FormEvent } from 'react'
 
 import { Button } from './ui/button'
 import {

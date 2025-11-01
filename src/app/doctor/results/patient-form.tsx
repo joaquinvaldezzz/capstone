@@ -1,13 +1,14 @@
 'use client'
 
-import { startTransition, useActionState, useEffect, useRef, useState, type FormEvent } from 'react'
+import { startTransition, useActionState, useEffect, useRef, useState } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2, Plus } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { addPatient } from '@/lib/actions'
 import { type CustomUser } from '@/lib/dal'
-import { resultSchema, type ResultSchema } from '@/lib/form-schema'
+import { resultSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import {
@@ -36,6 +37,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+
+import type { ResultSchema } from '@/lib/form-schema'
+import type { FormEvent } from 'react'
 
 export function PatientForm({ patients }: { patients: CustomUser[] }) {
   const [open, setOpen] = useState<boolean>(false)

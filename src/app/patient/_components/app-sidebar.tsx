@@ -1,9 +1,10 @@
 'use client'
 
-import { useState, type ComponentProps } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+
 import { formatDistanceToNow } from 'date-fns'
 import { Inbox } from 'lucide-react'
 
@@ -21,6 +22,8 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar'
 import { type NavUserProps } from '@/components/nav-user'
+
+import type { ComponentProps } from 'react'
 
 import { NavUser } from '../_components/nav-user'
 

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/await-thenable */
 import { Fragment } from 'react'
 import { type Metadata } from 'next'
+
 import { formatDistanceToNow } from 'date-fns'
 
 import { getPatientResult } from '@/lib/dal'

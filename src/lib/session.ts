@@ -1,6 +1,9 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
-import { jwtVerify, SignJWT, type JWTPayload } from 'jose'
+
+import { jwtVerify, SignJWT } from 'jose'
+
+import type { JWTPayload } from 'jose'
 
 import { db } from './db'
 import { sessions } from './db-schema'

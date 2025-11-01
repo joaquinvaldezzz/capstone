@@ -1,4 +1,5 @@
 import { type ReactNode } from 'react'
+
 import { sql } from 'drizzle-orm'
 
 import { getCurrentUser, getPatientResult } from '@/lib/dal'

@@ -11,6 +11,14 @@ const config = {
     'prettier-plugin-sh',
     'prettier-plugin-tailwindcss',
   ],
+  overrides: [
+    {
+      files: '**/*-instructions.md',
+      options: {
+        parser: 'markdown',
+      },
+    },
+  ],
   importOrder: [
     '<BUILTIN_MODULES>',
     '^react(/.*)?$',

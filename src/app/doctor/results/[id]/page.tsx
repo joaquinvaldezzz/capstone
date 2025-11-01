@@ -2,6 +2,7 @@
 import { Fragment } from 'react'
 import { type Metadata } from 'next'
 import Image from 'next/image'
+
 import { format } from 'date-fns'
 
 import { getPatientResults } from '@/lib/dal'

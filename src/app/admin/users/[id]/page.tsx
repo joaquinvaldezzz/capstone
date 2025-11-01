@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/await-thenable */
 import { type Metadata } from 'next'
+
 import { sql } from 'drizzle-orm'
 
 import { getUserById } from '@/lib/dal'
 import { db } from '@/lib/db'
-import { users, type UserInformation } from '@/lib/db-schema'
+import { users } from '@/lib/db-schema'
+
+import type { UserInformation } from '@/lib/db-schema'
 
 import { DeleteButton } from './delete-button'
 import { Forms } from './forms'

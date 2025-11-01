@@ -1,12 +1,15 @@
 'use client'
 
-import { startTransition, useActionState, useEffect, useRef, type FormEvent } from 'react'
+import { startTransition, useActionState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+
 import { Loader2 } from 'lucide-react'
 
 import { deleteResult } from '@/lib/actions'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
+
+import type { FormEvent } from 'react'
 
 export function DeleteButton({ resultId }: { resultId: number }) {
   const formRef = useRef<HTMLFormElement>(null)

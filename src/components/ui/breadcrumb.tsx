@@ -1,15 +1,13 @@
 'use client'
 
-import {
-  forwardRef,
-  type ComponentProps,
-  type ComponentPropsWithoutRef,
-  type ReactNode,
-} from 'react'
+import { forwardRef } from 'react'
+
 import { Slot } from '@radix-ui/react-slot'
 import { ChevronRight, MoreHorizontal } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+
+import type { ComponentProps, ComponentPropsWithoutRef, ReactNode } from 'react'
 
 const Breadcrumb = forwardRef<
   HTMLElement,

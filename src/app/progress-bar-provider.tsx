@@ -1,13 +1,16 @@
 'use client'
 
-import { Fragment, type ReactNode } from 'react'
+import { Fragment } from 'react'
+
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
 
-export const ProgressBarProvider = ({ children }: { children: ReactNode }) => {
-  return (
-    <Fragment>
-      {children}
-      <ProgressBar color="hsl(var(--primary))" height="2px" options={{ showSpinner: false }} />
-    </Fragment>
-  )
-}
+import type { ReactNode } from 'react'
+
+const ProgressBarProvider = ({ children }: { children: ReactNode }) => (
+  <Fragment>
+    {children}
+    <ProgressBar color="hsl(var(--primary))" height="2px" options={{ showSpinner: false }} />
+  </Fragment>
+)
+
+export default ProgressBarProvider

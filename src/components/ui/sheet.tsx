@@ -1,16 +1,15 @@
 'use client'
 
-import {
-  forwardRef,
-  type ComponentPropsWithoutRef,
-  type ElementRef,
-  type HTMLAttributes,
-} from 'react'
+import { forwardRef } from 'react'
+
 import * as SheetPrimitive from '@radix-ui/react-dialog'
-import { cva, type VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
 import { X } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+
+import type { VariantProps } from 'class-variance-authority'
+import type { ComponentPropsWithoutRef, ElementRef, HTMLAttributes } from 'react'
 
 const Sheet = SheetPrimitive.Root
 

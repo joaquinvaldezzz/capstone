@@ -1,12 +1,13 @@
-import { type ReactNode } from 'react'
-import { type Metadata } from 'next'
 import localFont from 'next/font/local'
 
 import { Toaster } from '@/components/ui/toaster'
 
-import '../styles/main.css'
+import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
 
-import { ProgressBarProvider } from './progress-bar-provider'
+import ProgressBarProvider from './progress-bar-provider'
+
+import '../styles/main.css'
 
 export const metadata: Metadata = {
   openGraph: {
@@ -44,13 +45,13 @@ const inter = localFont({
   variable: '--font-sans',
 })
 
-export default function RootLayout({ children }: { children: ReactNode }) {
-  return (
-    <html className={inter.variable} lang="en">
-      <body className="min-w-80 bg-background text-foreground antialiased">
-        <ProgressBarProvider>{children}</ProgressBarProvider>
-        <Toaster />
-      </body>
-    </html>
-  )
-}
+const RootLayout = ({ children }: { children: ReactNode }) => (
+  <html className={inter.variable} lang="en">
+    <body className="min-w-80 bg-background text-foreground antialiased">
+      <ProgressBarProvider>{children}</ProgressBarProvider>
+      <Toaster />
+    </body>
+  </html>
+)
+
+export default RootLayout

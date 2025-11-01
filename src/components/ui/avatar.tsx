@@ -1,9 +1,12 @@
 'use client'
 
-import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from 'react'
+import { forwardRef } from 'react'
+
 import * as AvatarPrimitive from '@radix-ui/react-avatar'
 
 import { cn } from '@/lib/utils'
+
+import type { ComponentPropsWithoutRef, ElementRef } from 'react'
 
 const Avatar = forwardRef<
   ElementRef<typeof AvatarPrimitive.Root>,

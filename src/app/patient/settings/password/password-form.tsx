@@ -1,13 +1,14 @@
 'use client'
 
-import { startTransition, useActionState, useEffect, useRef, type FormEvent } from 'react'
+import { startTransition, useActionState, useEffect, useRef } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { updatePassword } from '@/lib/actions'
 import { type User } from '@/lib/db-schema'
-import { updatePasswordFormSchema, type UpdatePasswordFormSchema } from '@/lib/form-schema'
+import { updatePasswordFormSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,6 +20,9 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+
+import type { UpdatePasswordFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from 'react'
 
 export function PasswordForm({ data }: { data: User }) {
   const formRef = useRef<HTMLFormElement>(null)

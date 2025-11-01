@@ -1,10 +1,13 @@
 'use server'
 
 import { cache } from 'react'
+
 import { count, eq, sql } from 'drizzle-orm'
 
+import type { User } from './db-schema'
+
 import { db } from './db'
-import { results, users, type User } from './db-schema'
+import { results, users } from './db-schema'
 import { verifySession } from './session'
 
 export interface Result {

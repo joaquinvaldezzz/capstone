@@ -1,6 +1,7 @@
 'use client'
 
-import { Fragment, type ComponentType } from 'react'
+import { Fragment } from 'react'
+
 import { CheckIcon, PlusCircledIcon } from '@radix-ui/react-icons'
 import { type Column } from '@tanstack/react-table'
 
@@ -18,6 +19,8 @@ import {
 } from '@/components/ui/command'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
+
+import type { ComponentType } from 'react'
 
 interface DataTableFacetedFilterProps<TData, TValue> {
   title?: string

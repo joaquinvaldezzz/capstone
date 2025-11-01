@@ -1,8 +1,10 @@
 import { type VariantProps } from 'class-variance-authority'
-import { clsx, type ClassValue } from 'clsx'
+import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
 import { type badgeVariants } from '@/components/ui/badge'
+
+import type { ClassValue } from 'clsx'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))

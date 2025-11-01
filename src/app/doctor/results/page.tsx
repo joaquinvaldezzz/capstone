@@ -1,9 +1,12 @@
 import { Fragment } from 'react'
 import { type Metadata } from 'next'
+
 import { sql } from 'drizzle-orm'
 
-import { getPatientResults, type CustomUser } from '@/lib/dal'
+import { getPatientResults } from '@/lib/dal'
 import { db } from '@/lib/db'
+
+import type { CustomUser } from '@/lib/dal'
 
 import { DataTable } from '../_components/data-table'
 import { columns } from '../columns'

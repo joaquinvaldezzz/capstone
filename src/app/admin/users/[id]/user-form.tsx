@@ -1,13 +1,14 @@
 'use client'
 
-import { Fragment, startTransition, useActionState, useEffect, useRef, type FormEvent } from 'react'
+import { Fragment, startTransition, useActionState, useEffect, useRef } from 'react'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { updateAccount } from '@/lib/actions'
 import { type User } from '@/lib/db-schema'
-import { updateAccountFormSchema, type UpdateAccountFormSchema } from '@/lib/form-schema'
+import { updateAccountFormSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
 import {
@@ -26,6 +27,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+
+import type { UpdateAccountFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from 'react'
 
 export function UserForm({ data }: { data: User }) {
   const formRef = useRef<HTMLFormElement>(null)

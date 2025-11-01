@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+
 import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 

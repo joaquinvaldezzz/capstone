@@ -1,6 +1,8 @@
-import { forwardRef, type TextareaHTMLAttributes } from 'react'
+import { forwardRef } from 'react'
 
 import { cn } from '@/lib/utils'
+
+import type { TextareaHTMLAttributes } from 'react'
 
 import { inputVariants } from './input'
 

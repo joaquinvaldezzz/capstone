@@ -1,6 +1,6 @@
-import { type Metadata } from 'next'
-
 import { LoginForm } from '@/components/login-form'
+
+import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
   title: 'Log in',
@@ -11,10 +11,10 @@ export const metadata: Metadata = {
   },
 }
 
-export default function Page() {
-  return (
-    <div className="flex h-screen w-full items-center justify-center px-4">
-      <LoginForm />
-    </div>
-  )
-}
+const Page = () => (
+  <div className="flex h-screen w-full items-center justify-center px-4">
+    <LoginForm />
+  </div>
+)
+
+export default Page

@@ -1,7 +1,8 @@
 'use client'
 
-import { Fragment, useState, type JSX } from 'react'
+import { Fragment, useState } from 'react'
 import Link from 'next/link'
+
 import {
   flexRender,
   getCoreRowModel,
@@ -9,9 +10,6 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-  type ColumnDef,
-  type ColumnFiltersState,
-  type SortingState,
 } from '@tanstack/react-table'
 import { Search } from 'lucide-react'
 
@@ -33,6 +31,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+
+import type { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/react-table'
+import type { JSX } from 'react'
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { DataTableViewOptions } from './data-table-view-options'
