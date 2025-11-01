@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <div
-      className={cn('bg-card text-card-foreground rounded-lg border shadow-xs', className)}
+      className={cn('rounded-lg border bg-card text-card-foreground shadow-xs', className)}
       ref={ref}
       {...props}
     />
@@ -33,7 +33,7 @@ CardTitle.displayName = 'CardTitle'
 
 const CardDescription = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLParagraphElement>>(
   ({ className, ...props }, ref) => (
-    <p className={cn('text-muted-foreground text-sm', className)} ref={ref} {...props} />
+    <p className={cn('text-sm text-muted-foreground', className)} ref={ref} {...props} />
   ),
 )
 CardDescription.displayName = 'CardDescription'

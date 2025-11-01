@@ -51,7 +51,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
     >
       <AppSidebar messages={results} user={user.user} />
       <SidebarInset>
-        <header className="bg-background sticky top-0 flex shrink-0 items-center gap-2 border-b p-4">
+        <header className="sticky top-0 flex shrink-0 items-center gap-2 border-b bg-background p-4">
           <SidebarTrigger className="-ml-1" />
         </header>
 

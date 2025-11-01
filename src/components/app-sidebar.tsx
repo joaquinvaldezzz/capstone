@@ -44,7 +44,7 @@ export function AppSidebar({ user, ...props }: AppSidebarProps) {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="">
-                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex size-8 items-center justify-center overflow-hidden rounded-full">
+                <div className="flex size-8 items-center justify-center overflow-hidden rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
                   <Image src={HospitalLogo} alt="National Children's Hospital" />
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">

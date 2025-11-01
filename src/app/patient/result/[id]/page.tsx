@@ -58,7 +58,7 @@ export default async function Page({ params }: { params: Params }) {
           <p className="font-medium">
             {result.doctor_first_name} {result.doctor_last_name}
           </p>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-sm text-muted-foreground">
             {formatDistanceToNow(new Date(result.created_at), {
               addSuffix: true,
             })}

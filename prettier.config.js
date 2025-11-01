@@ -1,4 +1,4 @@
-/** @type {import('prettier').Config} */
+/** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
 const config = {
   printWidth: 100,
   semi: false,
@@ -32,6 +32,7 @@ const config = {
     '',
     '^@/public/(.*)$',
   ],
+  tailwindStylesheet: './src/styles/main.css',
   tailwindAttributes: ['classNames'],
   tailwindFunctions: ['cva', 'cn'],
 }
