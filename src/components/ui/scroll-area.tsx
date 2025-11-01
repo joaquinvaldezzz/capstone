@@ -1,7 +1,7 @@
 'use client'
 
 import { forwardRef, type ComponentPropsWithoutRef, type ElementRef } from 'react'
-import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
+import { ScrollArea as ScrollAreaPrimitive } from 'radix-ui'
 
 import { cn } from '@/lib/utils'
 

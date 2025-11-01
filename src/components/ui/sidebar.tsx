@@ -12,9 +12,9 @@ import {
   type ElementRef,
 } from 'react'
 import { usePathname } from 'next/navigation'
-import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { PanelLeft } from 'lucide-react'
+import { Slot as SlotPrimitive } from 'radix-ui'
 
 import { cn } from '@/lib/utils'
 import { useIsMobile } from '@/hooks/use-mobile'
@@ -427,7 +427,7 @@ SidebarGroup.displayName = 'SidebarGroup'
 
 const SidebarGroupLabel = forwardRef<HTMLDivElement, ComponentProps<'div'> & { asChild?: boolean }>(
   ({ className, asChild = false, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'div'
+    const Comp = asChild ? SlotPrimitive.Slot : 'div'
 
     return (
       <Comp
@@ -449,7 +449,7 @@ const SidebarGroupAction = forwardRef<
   HTMLButtonElement,
   ComponentProps<'button'> & { asChild?: boolean }
 >(({ className, asChild = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'button'
+  const Comp = asChild ? SlotPrimitive.Slot : 'button'
 
   return (
     <Comp
@@ -546,7 +546,7 @@ const SidebarMenuButton = forwardRef<
     },
     ref,
   ) => {
-    const Comp = asChild ? Slot : 'button'
+    const Comp = asChild ? SlotPrimitive.Slot : 'button'
     const { isMobile, state } = useSidebar()
 
     const button = (
@@ -592,7 +592,7 @@ const SidebarMenuAction = forwardRef<
     showOnHover?: boolean
   }
 >(({ className, asChild = false, showOnHover = false, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'button'
+  const Comp = asChild ? SlotPrimitive.Slot : 'button'
 
   return (
     <Comp
@@ -696,7 +696,7 @@ const SidebarMenuSubButton = forwardRef<
     isActive?: boolean
   }
 >(({ asChild = false, size = 'md', isActive, className, ...props }, ref) => {
-  const Comp = asChild ? Slot : 'a'
+  const Comp = asChild ? SlotPrimitive.Slot : 'a'
 
   return (
     <Comp

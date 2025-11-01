@@ -6,8 +6,8 @@ import {
   type ComponentPropsWithoutRef,
   type ReactNode,
 } from 'react'
-import { Slot } from '@radix-ui/react-slot'
 import { ChevronRight, MoreHorizontal } from 'lucide-react'
+import { Slot as SlotPrimitive } from 'radix-ui'
 
 import { cn } from '@/lib/utils'
 
@@ -46,7 +46,7 @@ const BreadcrumbLink = forwardRef<
     asChild?: boolean
   }
 >(({ asChild, className, ...props }, ref) => {
-  const Comp = (asChild ?? false) ? Slot : 'a'
+  const Comp = (asChild ?? false) ? SlotPrimitive.Slot : 'a'
 
   return (
     <Comp
