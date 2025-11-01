@@ -1,151 +1,112 @@
+/**
+ * THIS FILE WAS AUTO-GENERATED.
+ *
+ * PLEASE DO NOT EDIT IT MANUALLY.
+ *
+ * IF YOU'RE COPYING THIS INTO AN ESLINT CONFIG, REMOVE THIS COMMENT BLOCK.
+ */
+
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import { FlatCompat } from '@eslint/eslintrc'
+import { includeIgnoreFile } from '@eslint/compat'
 import js from '@eslint/js'
-import nextCoreWebVitals from 'eslint-config-next/core-web-vitals'
-import perfectionist from 'eslint-plugin-perfectionist'
-import react from 'eslint-plugin-react'
-import { defineConfig, globalIgnores } from 'eslint/config'
-import globals from 'globals'
+import { configs, plugins, rules } from 'eslint-config-airbnb-extended'
+import { rules as prettierConfigRules } from 'eslint-config-prettier'
+import prettierPlugin from 'eslint-plugin-prettier'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
+const gitignorePath = path.resolve('.', '.gitignore')
 
-export default defineConfig([
-  globalIgnores(['src/_app']),
+/** @type {import('eslint').Linter.Config[]} */
+const jsConfig = [
+  // ESLint Recommended Rules
   {
-    extends: [
-      ...nextCoreWebVitals,
-      ...compat.extends('plugin:react/recommended'),
-      ...compat.extends('airbnb-typescript'),
-      ...compat.extends('standard-with-typescript'),
-      ...compat.extends('plugin:tailwindcss/recommended'),
-      ...compat.extends('plugin:prettier/recommended'),
-    ],
-
-    plugins: {
-      react,
-      perfectionist,
-    },
-
-    languageOptions: {
-      globals: {
-        ...globals.browser,
-      },
-
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-
-      parserOptions: {
-        project: true,
-      },
-    },
-
-    settings: {
-      tailwindcss: {
-        callees: ['clsx', 'cva', 'cn'],
-        config: 'tailwind.config.ts',
-        cssFiles: ['!**/.*', '!**/build', '!**/dist', '!**/node_modules', '**/*.css'],
-        cssFilesRefreshRate: 5000,
-        removeDuplicates: true,
-        skipClassAttribute: false,
-        whitelist: [],
-        tags: [],
-        classRegex: '^class(Name)?$',
-      },
-    },
-
+    name: 'js/config',
+    ...js.configs.recommended,
+  },
+  // Stylistic Plugin
+  plugins.stylistic,
+  // Import X Plugin
+  plugins.importX,
+  // Airbnb Base Recommended Config
+  ...configs.base.recommended,
+  // Strict Import Config
+  rules.base.importsStrict,
+  {
     rules: {
-      'react/react-in-jsx-scope': 'off',
-
-      'react/jsx-curly-brace-presence': [
-        'error',
-        {
-          props: 'never',
-          children: 'never',
-        },
-      ],
-
-      'import/no-extraneous-dependencies': [
-        'error',
-        {
-          devDependencies: ['*.config.js', '*.config.mjs', '*.config.ts'],
-        },
-      ],
-
-      '@typescript-eslint/consistent-type-imports': [
-        'error',
-        {
-          fixStyle: 'inline-type-imports',
-        },
-      ],
-
-      '@typescript-eslint/explicit-function-return-type': 'off',
-
-      'tailwindcss/no-custom-classname': [
-        'warn',
-        {
-          whitelist: ['calendly-inline-widget'],
-        },
-      ],
-
-      'perfectionist/sort-jsx-props': [
-        'error',
-        {
-          type: 'natural',
-          order: 'asc',
-          ignoreCase: true,
-          ignorePattern: [],
-
-          groups: [
-            'className',
-            'id',
-            'name',
-            'data',
-            'src',
-            'for',
-            'type',
-            'placeholder',
-            'href',
-            'value',
-            'title',
-            'alt',
-            'role',
-            'aria',
-            'tabIndex',
-            'style',
-            'unknown',
-            'shorthand',
-            'multiline',
-            'callback',
-          ],
-
-          customGroups: {
-            className: 'className',
-            id: 'id',
-            name: 'name',
-            data: 'data-*',
-            src: 'src',
-            for: 'for',
-            type: 'type',
-            placeholder: 'placeholder',
-            href: 'href',
-            value: 'value',
-            title: 'title',
-            alt: 'alt',
-            role: 'role',
-            aria: 'aria-*',
-            tabIndex: 'tabIndex',
-            style: 'style',
-            callback: 'on*',
-          },
-        },
-      ],
+      // Disable Import X order rules to avoid conflicts with @ianvs/prettier-plugin-sort-imports
+      'import-x/order': 'off',
     },
   },
-])
+]
+
+const nextConfig = [
+  // React Plugin
+  plugins.react,
+  // React Hooks Plugin
+  plugins.reactHooks,
+  // React JSX A11y Plugin
+  plugins.reactA11y,
+  // Next Plugin
+  plugins.next,
+  // Airbnb Next Recommended Config
+  ...configs.next.recommended,
+  // Strict React Config
+  rules.react.strict,
+  {
+    rules: {
+      'react/jsx-sort-props': 'off',
+    },
+  },
+]
+
+/** @type {import('eslint').Linter.Config[]} */
+const typescriptConfig = [
+  // TypeScript ESLint Plugin
+  plugins.typescriptEslint,
+  // Airbnb Base TypeScript Config
+  ...configs.base.typescript,
+  // Strict TypeScript Config
+  rules.typescript.typescriptEslintStrict,
+  // Airbnb Next TypeScript Config
+  ...configs.next.typescript,
+]
+
+/** @type {import('eslint').Linter.Config[]} */
+const prettierConfig = [
+  // Prettier Plugin
+  {
+    name: 'prettier/plugin/config',
+    plugins: {
+      prettier: prettierPlugin,
+    },
+  },
+  // Prettier Config
+  {
+    name: 'prettier/config',
+    rules: {
+      ...prettierConfigRules,
+      'prettier/prettier': 'error',
+    },
+  },
+]
+
+/** @type {import('eslint').Linter.Config[]} */
+export default [
+  // Ignore .gitignore files/folder in eslint
+  includeIgnoreFile(gitignorePath),
+  // Javascript Config
+  ...jsConfig,
+  // Next Config
+  ...nextConfig,
+  // TypeScript Config
+  ...typescriptConfig,
+  // Prettier Config
+  ...prettierConfig,
+  // Custom rule overrides
+  {
+    name: 'custom/overrides',
+    rules: {
+      // Disable problematic rule that causes crashes
+      '@typescript-eslint/unified-signatures': 'off',
+    },
+  },
+]
