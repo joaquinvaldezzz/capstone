@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button'
 
 import type { FormEvent } from 'react'
 
-export function DeleteButton({ resultId }: { resultId: number }) {
+export const DeleteButton = ({ resultId }: { resultId: number }) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [formState, formAction, isSubmitting] = useActionState(deleteResult, { message: '' })
   const router = useRouter()
@@ -53,7 +53,7 @@ export function DeleteButton({ resultId }: { resultId: number }) {
     <form action={formAction} ref={formRef} onSubmit={handleSubmit}>
       <input name="result-id" type="text" value={resultId} hidden readOnly />
       <Button type="submit" disabled={isSubmitting} variant="destructive">
-        {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+        {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
         {isSubmitting ? 'Deleting...' : 'Delete'}
       </Button>
     </form>

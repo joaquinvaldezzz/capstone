@@ -7,7 +7,6 @@ import { Loader2 } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 
 import { updatePassword } from '@/lib/actions'
-import { type User } from '@/lib/db-schema'
 import { updatePasswordFormSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Button } from '@/components/ui/button'
@@ -21,10 +20,11 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import type { UpdatePasswordFormSchema } from '@/lib/form-schema'
 import type { FormEvent } from 'react'
+import type { User } from '@/lib/db-schema'
+import type { UpdatePasswordFormSchema } from '@/lib/form-schema'
 
-export function PasswordForm({ data }: { data: User }) {
+export const PasswordForm = ({ data }: { data: User }) => {
   const formRef = useRef<HTMLFormElement>(null)
   const [formState, formAction, isSubmitting] = useActionState(updatePassword, { message: '' })
   const form = useForm<UpdatePasswordFormSchema>({
@@ -125,7 +125,7 @@ export function PasswordForm({ data }: { data: User }) {
 
         <div>
           <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+            {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
             {isSubmitting ? 'Updating password...' : 'Update password'}
           </Button>
         </div>

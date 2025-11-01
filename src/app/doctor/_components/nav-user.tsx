@@ -32,7 +32,7 @@ export interface NavUserProps {
   }
 }
 
-export function NavUser({ user }: NavUserProps) {
+export const NavUser = ({ user }: NavUserProps) => {
   const { isMobile } = useSidebar()
 
   return (

@@ -1,7 +1,7 @@
 import { mails } from '@/_app/(dashboards)/patient/data'
 import { atom, useAtom } from 'jotai'
 
-import { type Result } from '@/lib/dal'
+import type { Result } from '@/lib/dal'
 
 interface Config {
   selected: Result['result_id'] | null

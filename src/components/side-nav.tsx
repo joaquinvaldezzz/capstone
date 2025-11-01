@@ -3,9 +3,9 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
-import { type NavItem } from '@/types/nav'
+import type { NavItem } from '@/types/nav'
 
-export function SideNav({ links }: { links: NavItem[] }) {
+export const SideNav = ({ links }: { links: NavItem[] }) => {
   const pathname = usePathname()
 
   return (

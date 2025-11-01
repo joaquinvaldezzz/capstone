@@ -21,19 +21,19 @@ import {
 import type { LucideIcon } from 'lucide-react'
 
 export interface NavMainProps {
-  items: Array<{
+  items: {
     icon: LucideIcon
     url: string
     title: string
     isActive?: boolean
-    items?: Array<{
+    items?: {
       url: string
       title: string
-    }>
-  }>
+    }[]
+  }[]
 }
 
-export function NavMain({ items }: NavMainProps) {
+export const NavMain = ({ items }: NavMainProps) => {
   const pathname = usePathname()
 
   return (

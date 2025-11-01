@@ -135,8 +135,8 @@ export async function addPatient(
   }
 
   // Initialize the percentage and diagnosis variables
-  let percentage: string = ''
-  let diagnosis: string = ''
+  let percentage = ''
+  let diagnosis = ''
 
   try {
     // Fetch the prediction from the Flask API

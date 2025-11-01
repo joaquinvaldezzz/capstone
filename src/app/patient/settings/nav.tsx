@@ -1,20 +1,21 @@
 'use client'
 
-import { type HTMLAttributes } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { cn } from '@/lib/utils'
 import { buttonVariants } from '@/components/ui/button'
 
+import type { HTMLAttributes } from 'react'
+
 interface SidebarNavProps extends HTMLAttributes<HTMLElement> {
-  items: Array<{
+  items: {
     href: string
     title: string
-  }>
+  }[]
 }
 
-export function Nav({ className, items, ...props }: SidebarNavProps) {
+export const Nav = ({ className, items, ...props }: SidebarNavProps) => {
   const pathname = usePathname()
 
   return (

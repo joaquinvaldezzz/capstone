@@ -24,7 +24,7 @@ export interface SessionPayload extends JWTPayload {
  * @returns A promise that resolves to the encrypted token.
  */
 export async function encrypt(payload: SessionPayload) {
-  return await new SignJWT(payload)
+  return new SignJWT(payload)
     .setExpirationTime('1hour')
     .setIssuedAt()
     .setProtectedHeader({ alg: 'HS256' })

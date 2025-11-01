@@ -1,9 +1,6 @@
 'use client'
 
-import { type HTMLAttributes } from 'react'
-
 import { ArrowDownIcon, ArrowUpIcon, CaretSortIcon, EyeNoneIcon } from '@radix-ui/react-icons'
-import { type Column } from '@tanstack/react-table'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -15,16 +12,19 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
+import type { Column } from '@tanstack/react-table'
+import type { HTMLAttributes } from 'react'
+
 interface DataTableColumnHeaderProps<TData, TValue> extends HTMLAttributes<HTMLDivElement> {
   title: string
   column: Column<TData, TValue>
 }
 
-export function DataTableColumnHeader<TData, TValue>({
+export const DataTableColumnHeader = <TData, TValue>({
   column,
   title,
   className,
-}: DataTableColumnHeaderProps<TData, TValue>) {
+}: DataTableColumnHeaderProps<TData, TValue>) => {
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>
   }

@@ -1,7 +1,8 @@
 import { Fragment } from 'react'
-import { type Metadata } from 'next'
 
 import { getUsers } from '@/lib/dal'
+
+import type { Metadata } from 'next'
 
 import { DataTable } from '../_components/data-table'
 import { columns } from './columns'

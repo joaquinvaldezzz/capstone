@@ -1,5 +1,4 @@
 import { Fragment } from 'react'
-import { type Metadata } from 'next'
 
 import { Activity, ShieldAlert, Users } from 'lucide-react'
 
@@ -10,6 +9,8 @@ import {
   getTotalNumberOfPatients,
 } from '@/lib/dal'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
+import type { Metadata } from 'next'
 
 import { DataTable } from './_components/data-table'
 import { columns } from './columns'
@@ -23,7 +24,7 @@ export const metadata: Metadata = {
   },
 }
 
-export default async function Page() {
+const Page = async () => {
   const totalNumberOfPatients = await getTotalNumberOfPatients()
   const totalNumberOfInfectedPatients = await getTotalNumberOfInfectedPatients()
   const totalNumberOfHealthyPatients = await getTotalNumberOfHealthyPatients()
@@ -90,3 +91,5 @@ export default async function Page() {
     </Fragment>
   )
 }
+
+export default Page

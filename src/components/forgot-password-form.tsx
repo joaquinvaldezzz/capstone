@@ -22,10 +22,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 
-import type { ForgotPasswordFormSchema } from '@/lib/form-schema'
 import type { FormEvent } from 'react'
+import type { ForgotPasswordFormSchema } from '@/lib/form-schema'
 
-export function ForgotPasswordForm() {
+const ForgotPasswordForm = () => {
   const formRef = useRef<HTMLFormElement>(null)
   const [showPassword, setShowPassword] = useState<boolean>(false)
 
@@ -51,7 +51,7 @@ export function ForgotPasswordForm() {
     // Prevent the default form submission behavior
     event.preventDefault()
 
-    void form.handleSubmit(() => {
+    form.handleSubmit(() => {
       startTransition(() => {
         // If the form reference is null, return early
         if (formRef.current == null) return
@@ -178,7 +178,7 @@ export function ForgotPasswordForm() {
             />
 
             <Button type="submit">
-              {isSubmitting && <Loader2 className="animate-spin" />}
+              {isSubmitting ? <Loader2 className="animate-spin" /> : null}
               {isSubmitting ? 'Resetting password...' : 'Reset password'}
             </Button>
           </form>
@@ -193,3 +193,5 @@ export function ForgotPasswordForm() {
     </Card>
   )
 }
+
+export default ForgotPasswordForm

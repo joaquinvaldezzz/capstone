@@ -41,10 +41,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import type { SignUpFormSchema } from '@/lib/form-schema'
 import type { FormEvent } from 'react'
+import type { SignUpFormSchema } from '@/lib/form-schema'
 
-export function UserForm() {
+export const UserForm = () => {
   const [open, setOpen] = useState<boolean>(false)
   const formRef = useRef<HTMLFormElement>(null)
   const [formState, formAction, isSubmitting] = useActionState(signUp, { message: '' })
@@ -297,7 +297,7 @@ export function UserForm() {
               </DialogClose>
 
               <Button type="submit">
-                {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+                {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
                 {isSubmitting ? 'Creating account...' : 'Create account'}
               </Button>
             </DialogFooter>

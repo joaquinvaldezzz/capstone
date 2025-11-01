@@ -1,10 +1,10 @@
-import { type Metadata } from 'next'
-
 import { sql } from 'drizzle-orm'
 
 import { getCurrentUser } from '@/lib/dal'
 import { db } from '@/lib/db'
-import { type UserInformation } from '@/lib/db-schema'
+
+import type { Metadata } from 'next'
+import type { UserInformation } from '@/lib/db-schema'
 
 import { ProfileForm } from './profile-form'
 

@@ -10,7 +10,6 @@ import { DateField, DateInput, DateSegment, Label } from 'react-aria-components'
 import { useForm } from 'react-hook-form'
 
 import { updateAccount, updateProfile } from '@/lib/actions'
-import { type User, type UserInformation } from '@/lib/db-schema'
 import { updateAccountFormSchema, updateProfileFormSchema } from '@/lib/form-schema'
 import { useToast } from '@/hooks/use-toast'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
@@ -33,10 +32,11 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-import type { UpdateAccountFormSchema, UpdateProfileFormSchema } from '@/lib/form-schema'
 import type { FormEvent } from 'react'
+import type { User, UserInformation } from '@/lib/db-schema'
+import type { UpdateAccountFormSchema, UpdateProfileFormSchema } from '@/lib/form-schema'
 
-export function Forms({ user, profile }: { user: User; profile: UserInformation }) {
+export const Forms = ({ user, profile }: { user: User; profile: UserInformation }) => {
   const accountFormRef = useRef<HTMLFormElement>(null)
   const accountButtonRef = useRef<HTMLButtonElement>(null)
   const [accountFormState, accountFormAction, isSubmittingAccount] = useActionState(updateAccount, {
@@ -211,7 +211,7 @@ export function Forms({ user, profile }: { user: User; profile: UserInformation 
 
           <div className="hidden">
             <Button type="submit" disabled={isSubmittingAccount} ref={accountButtonRef}>
-              {isSubmittingAccount && <Loader2 className="size-4 animate-spin" />}
+              {isSubmittingAccount ? <Loader2 className="size-4 animate-spin" /> : null}
               {isSubmittingAccount ? 'Updating account...' : 'Update account'}
             </Button>
           </div>
@@ -357,7 +357,7 @@ export function Forms({ user, profile }: { user: User; profile: UserInformation 
 
           <div className="hidden">
             <Button type="submit" disabled={isSubmittingProfile} ref={profileButtonRef}>
-              {isSubmittingProfile && <Loader2 className="size-4 animate-spin" />}
+              {isSubmittingProfile ? <Loader2 className="size-4 animate-spin" /> : null}
               {isSubmittingProfile ? 'Updating profile...' : 'Update profile'}
             </Button>
           </div>
@@ -370,9 +370,9 @@ export function Forms({ user, profile }: { user: User; profile: UserInformation 
           disabled={isSubmittingAccount || isSubmittingProfile}
           onClick={handleSave}
         >
-          {isSubmittingAccount && isSubmittingProfile && (
+          {isSubmittingAccount && isSubmittingProfile ? (
             <Loader2 className="size-4 animate-spin" />
-          )}
+          ) : null}
           {isSubmittingAccount || isSubmittingProfile ? 'Saving changes...' : 'Save changes'}
         </Button>
       </div>

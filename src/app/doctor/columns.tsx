@@ -2,16 +2,17 @@
 
 import Image from 'next/image'
 
-import { type ColumnDef } from '@tanstack/react-table'
 import { format } from 'date-fns'
 
-import { type Result } from '@/lib/dal'
 import { determineBadgeColor } from '@/lib/utils'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
 
-export const columns: Array<ColumnDef<Result>> = [
+import type { ColumnDef } from '@tanstack/react-table'
+import type { Result } from '@/lib/dal'
+
+export const columns: ColumnDef<Result>[] = [
   {
     accessorKey: 'result_id',
     header: ({ column }) => <DataTableColumnHeader title="Result" column={column} />,
@@ -24,9 +25,7 @@ export const columns: Array<ColumnDef<Result>> = [
   },
   {
     accessorKey: 'name',
-    header: ({ column }) => {
-      return <DataTableColumnHeader title="Name" column={column} />
-    },
+    header: ({ column }) => <DataTableColumnHeader title="Name" column={column} />,
     cell: (cell) => (
       <div className="flex items-center gap-2">
         <Avatar>

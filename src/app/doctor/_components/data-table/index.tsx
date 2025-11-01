@@ -13,7 +13,6 @@ import {
 } from '@tanstack/react-table'
 import { Search } from 'lucide-react'
 
-import { type Result } from '@/lib/dal'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -34,12 +33,13 @@ import {
 
 import type { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/react-table'
 import type { JSX } from 'react'
+import type { Result } from '@/lib/dal'
 
 import { DataTableFacetedFilter } from './data-table-faceted-filter'
 import { DataTableViewOptions } from './data-table-view-options'
 
 interface DataTableProps<TData, TValue> {
-  columns: Array<ColumnDef<TData, TValue>>
+  columns: ColumnDef<TData, TValue>[]
   data: TData[]
   formAction?: JSX.Element
   withFacetedFilters?: boolean
@@ -48,14 +48,14 @@ interface DataTableProps<TData, TValue> {
 }
 // Dependencies: pnpm install lucide-react
 
-export function DataTable<TData extends Result, TValue>({
+export const DataTable = <TData extends Result, TValue>({
   columns,
   data,
   formAction,
   withFacetedFilters = false,
   withViewOptions = false,
   withPagination = false,
-}: DataTableProps<TData, TValue>) {
+}: DataTableProps<TData, TValue>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
   const table = useReactTable({
@@ -76,7 +76,7 @@ export function DataTable<TData extends Result, TValue>({
   return (
     <Fragment>
       <div className="flex items-center justify-between">
-        {withFacetedFilters && (
+        {withFacetedFilters ? (
           <div className="flex flex-1 items-center gap-2">
             <div className="relative w-full max-w-64 shrink-0">
               <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
@@ -102,11 +102,11 @@ export function DataTable<TData extends Result, TValue>({
               />
             )}
           </div>
-        )}
+        ) : null}
 
         <div className="flex items-center gap-2">
           {formAction != null && formAction}
-          {withViewOptions && <DataTableViewOptions table={table} />}
+          {withViewOptions ? <DataTableViewOptions table={table} /> : null}
         </div>
       </div>
 
@@ -115,15 +115,13 @@ export function DataTable<TData extends Result, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(header.column.columnDef.header, header.getContext())}
-                    </TableHead>
-                  )
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -154,7 +152,7 @@ export function DataTable<TData extends Result, TValue>({
         </Table>
       </div>
 
-      {withPagination && (
+      {withPagination ? (
         <div className="flex items-center justify-end gap-8 bg-white py-4">
           <div className="flex items-center space-x-2">
             <p className="text-sm font-medium">Rows per page</p>
@@ -204,7 +202,7 @@ export function DataTable<TData extends Result, TValue>({
             </Button>
           </div>
         </div>
-      )}
+      ) : null}
     </Fragment>
   )
 }

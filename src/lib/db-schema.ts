@@ -1,5 +1,6 @@
-import { type InferSelectModel } from 'drizzle-orm'
 import { integer, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core'
+
+import type { InferSelectModel } from 'drizzle-orm'
 
 /**
  * Represents the database table for users.

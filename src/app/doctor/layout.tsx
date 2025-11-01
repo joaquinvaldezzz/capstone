@@ -1,12 +1,12 @@
-import { type ReactNode } from 'react'
-import { type Metadata } from 'next'
-
 import { sql } from 'drizzle-orm'
 
 import { getCurrentUser } from '@/lib/dal'
 import { db } from '@/lib/db'
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { type NavUserProps } from '@/components/nav-user'
+
+import type { Metadata } from 'next'
+import type { ReactNode } from 'react'
+import type { NavUserProps } from '@/components/nav-user'
 
 import { AppSidebar } from './_components/app-sidebar'
 

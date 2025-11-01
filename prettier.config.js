@@ -4,11 +4,13 @@ const config = {
   semi: false,
   singleQuote: true,
   plugins: [
-    '@prettier/plugin-xml',
     '@ianvs/prettier-plugin-sort-imports',
+    '@prettier/plugin-xml',
+    'prettier-plugin-embed',
     'prettier-plugin-jsdoc',
     'prettier-plugin-packagejson',
     'prettier-plugin-sh',
+    'prettier-plugin-sql',
     'prettier-plugin-tailwindcss',
   ],
   overrides: [
@@ -39,6 +41,8 @@ const config = {
     '<TYPES>^node:',
     '<TYPES>',
     '<TYPES>^@/types',
+    '<TYPES>^@/',
+    '',
     '<TYPES>^\\.',
     '',
     '^\\.',
@@ -48,6 +52,10 @@ const config = {
   tailwindStylesheet: './src/styles/main.css',
   tailwindAttributes: ['classNames'],
   tailwindFunctions: ['cva', 'cn'],
+  keywordCase: 'upper',
+  dataTypeCase: 'upper',
+  functionCase: 'upper',
+  expressionWidth: 100,
 }
 
 export default config

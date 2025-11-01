@@ -1,6 +1,6 @@
-import { type Metadata } from 'next'
-
 import { getCurrentUser } from '@/lib/dal'
+
+import type { Metadata } from 'next'
 
 import { PasswordForm } from './password-form'
 

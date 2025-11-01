@@ -21,15 +21,15 @@ import {
 
 import type { LucideIcon } from 'lucide-react'
 
-export function NavProjects({
+export const NavProjects = ({
   projects,
 }: {
-  projects: Array<{
+  projects: {
     name: string
     url: string
     icon: LucideIcon
-  }>
-}) {
+  }[]
+}) => {
   const { isMobile } = useSidebar()
 
   return (

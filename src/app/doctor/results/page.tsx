@@ -1,11 +1,11 @@
 import { Fragment } from 'react'
-import { type Metadata } from 'next'
 
 import { sql } from 'drizzle-orm'
 
 import { getPatientResults } from '@/lib/dal'
 import { db } from '@/lib/db'
 
+import type { Metadata } from 'next'
 import type { CustomUser } from '@/lib/dal'
 
 import { DataTable } from '../_components/data-table'
@@ -20,7 +20,7 @@ export default async function Page() {
   const results = await getPatientResults()
   const patients = (await db.execute(sql`
     SELECT
-      CONCAT("first_name", ' ', "last_name") AS "name",
+      CONCAT ("first_name", ' ', "last_name") AS "name",
       *
     FROM
       "users"

@@ -1,6 +1,5 @@
 'use client'
 
-import { type ComponentProps } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -18,6 +17,7 @@ import {
 import { NavMain } from '@/components/nav-main'
 import { NavUser } from '@/components/nav-user'
 
+import type { ComponentProps } from 'react'
 import type { NavMainProps } from '@/components/nav-main'
 import type { NavUserProps } from '@/components/nav-user'
 
@@ -40,34 +40,32 @@ const links: NavMainProps = {
   ],
 }
 
-export function AppSidebar({ user, ...props }: AppSidebarProps) {
-  return (
-    <Sidebar variant="inset" {...props}>
-      <SidebarHeader>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild>
-              <Link href="">
-                <div className="flex size-8 items-center justify-center overflow-hidden rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
-                  <Image src={HospitalLogo} alt="National Children's Hospital" />
-                </div>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">National Children&apos;s Hospital</span>
-                  <span className="truncate text-xs capitalize">{user.role}</span>
-                </div>
-              </Link>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
-      </SidebarHeader>
+export const AppSidebar = ({ user, ...props }: AppSidebarProps) => (
+  <Sidebar variant="inset" {...props}>
+    <SidebarHeader>
+      <SidebarMenu>
+        <SidebarMenuItem>
+          <SidebarMenuButton size="lg" asChild>
+            <Link href="">
+              <div className="flex size-8 items-center justify-center overflow-hidden rounded-full bg-sidebar-primary text-sidebar-primary-foreground">
+                <Image src={HospitalLogo} alt="National Children's Hospital" />
+              </div>
+              <div className="grid flex-1 text-left text-sm leading-tight">
+                <span className="truncate font-semibold">National Children&apos;s Hospital</span>
+                <span className="truncate text-xs capitalize">{user.role}</span>
+              </div>
+            </Link>
+          </SidebarMenuButton>
+        </SidebarMenuItem>
+      </SidebarMenu>
+    </SidebarHeader>
 
-      <SidebarContent>
-        <NavMain items={links.items} />
-      </SidebarContent>
+    <SidebarContent>
+      <NavMain items={links.items} />
+    </SidebarContent>
 
-      <SidebarFooter>
-        <NavUser user={user} />
-      </SidebarFooter>
-    </Sidebar>
-  )
-}
+    <SidebarFooter>
+      <NavUser user={user} />
+    </SidebarFooter>
+  </Sidebar>
+)
