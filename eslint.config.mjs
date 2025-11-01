@@ -54,6 +54,7 @@ const nextConfig = [
   {
     rules: {
       'react/jsx-sort-props': 'off',
+      'react/require-default-props': ['error', { functions: 'defaultArguments' }],
     },
   },
 ]
@@ -68,6 +69,11 @@ const typescriptConfig = [
   rules.typescript.typescriptEslintStrict,
   // Airbnb Next TypeScript Config
   ...configs.next.typescript,
+  {
+    rules: {
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+    },
+  },
 ]
 
 /** @type {import('eslint').Linter.Config[]} */
