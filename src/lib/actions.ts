@@ -366,8 +366,6 @@ export async function updateProfile(
     .where(eq(users.user_id, Number(formData.get('id'))))
     .execute()
 
-  console.log(parsedData.data)
-
   if (parsedData.data.profile_picture.name !== 'undefined') {
     await put(
       `profile-pictures/${String(parsedData.data.profile_picture?.name)}`,
@@ -530,7 +528,7 @@ export async function deleteAccount(
   // Delete the user from the database
   await db
     .delete(users)
-    .where(eq(users.user_id, parseInt(String(id))))
+    .where(eq(users.user_id, parseInt(String(id), 10)))
     .execute()
 
   // Revalidate the dashboard page
@@ -556,10 +554,7 @@ export async function deleteUser(
 ): Promise<Message> {
   const userId = formData.get('user-id')
 
-  console.log(userId)
-
   // Delete the user from the database
-
   await db.execute(sql`
     DELETE FROM "user_information"
     WHERE
@@ -591,7 +586,7 @@ export async function deleteResult(
   // Delete the user from the database
   await db
     .delete(results)
-    .where(eq(results.result_id, parseInt(String(userId))))
+    .where(eq(results.result_id, parseInt(String(userId), 10)))
     .execute()
 
   // Revalidate the dashboard page
