@@ -33,7 +33,7 @@ const jsConfig = [
   rules.base.importsStrict,
   {
     rules: {
-      // Disable Import X order rules to avoid conflicts with @ianvs/prettier-plugin-sort-imports
+      // Disable Import X order rules to avoid conflicts with `@ianvs/prettier-plugin-sort-imports`
       'import-x/order': 'off',
       'import-x/prefer-default-export': ['warn', { target: 'single' }],
     },
@@ -55,8 +55,11 @@ const nextConfig = [
   rules.react.strict,
   {
     rules: {
+      'react/function-component-definition': ['error', { namedComponents: 'function-declaration' }],
+      // Disable jsx-sort-props to avoid conflicts with `eslint-plugin-perfectionist`
       'react/jsx-sort-props': 'off',
       'react/require-default-props': ['error', { functions: 'defaultArguments' }],
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
     },
   },
 ]
