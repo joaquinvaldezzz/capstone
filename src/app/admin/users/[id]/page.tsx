@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/await-thenable */
 import { sql } from 'drizzle-orm'
 
 import { getUserById } from '@/lib/dal'
@@ -15,11 +14,15 @@ export async function generateStaticParams() {
   const id = await db.select().from(users)
 
   return id.map((item) => ({
-    param: item.user_id,
+    id: String(item.user_id),
   }))
 }
 
-export async function generateMetadata({ params }: { params: { id: number } }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: number }>
+}): Promise<Metadata> {
   const { id } = await params
   const user = await getUserById(id)
 
@@ -34,7 +37,7 @@ export async function generateMetadata({ params }: { params: { id: number } }): 
   }
 }
 
-export default async function Page({ params }: { params: { id: number } }) {
+export default async function Page({ params }: { params: Promise<{ id: number }> }) {
   const { id } = await params
   const user = await getUserById(id)
 
