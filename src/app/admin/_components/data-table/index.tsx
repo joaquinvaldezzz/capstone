@@ -47,14 +47,14 @@ interface DataTableProps<TData, TValue> {
   withPagination?: boolean
 }
 
-export const DataTable = <TData extends User, TValue>({
+export function DataTable<TData extends User, TValue>({
   columns,
   data,
-  formAction,
+  formAction = undefined,
   withFacetedFilters = false,
   withViewOptions = false,
   withPagination = false,
-}: DataTableProps<TData, TValue>) => {
+}: DataTableProps<TData, TValue>) {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
   const [sorting, setSorting] = useState<SortingState>([])
   const table = useReactTable({
@@ -129,7 +129,10 @@ export const DataTable = <TData extends User, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length !== 0 ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
+                <TableRow
+                  data-state={row.getIsSelected() && 'selected'}
+                  key={String(row.original.user_id)}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       <Link
@@ -206,3 +209,5 @@ export const DataTable = <TData extends User, TValue>({
     </Fragment>
   )
 }
+
+export default DataTable
