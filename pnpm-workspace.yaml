@@ -1,6 +1,0 @@
-onlyBuiltDependencies:
-  - bcrypt
-  - bufferutil
-  - esbuild
-  - sharp
-  - unrs-resolver
