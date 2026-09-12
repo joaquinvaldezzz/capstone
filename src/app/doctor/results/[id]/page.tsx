@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/await-thenable */
 import { Fragment } from "react";
 import Image from "next/image";
 
 import { format } from "date-fns";
 
-import { getPatientResults } from "@/lib/dal";
+import { getPatientResults, getResultById } from "@/lib/dal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import type { Metadata } from "next";
@@ -24,11 +23,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const user = await getPatientResults().then((data) =>
-    data?.find((item) => item.result_id === Number(id)),
-  );
+  const user = await getResultById(Number(id));
 
   if (user == null) {
     return {
@@ -41,17 +38,13 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   };
 }
 
-export default async function Page({ params }: { params: { id: string } }) {
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const result = await getPatientResults().then((data) =>
-    data?.find((item) => item.result_id === Number(id)),
-  );
+  const result = await getResultById(Number(id));
 
   if (result == null) {
     return <div>Failed to fetch data</div>;
   }
-
-  console.log(result);
 
   return (
     <Fragment>

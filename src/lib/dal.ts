@@ -23,7 +23,6 @@ export interface Result {
   first_name: string;
   last_name: string;
   email: string;
-  password: string;
   role: string;
 }
 
@@ -67,8 +66,20 @@ export const getUsers = cache(async (): Promise<CustomUser[] | null> => {
   try {
     const { rows } = await db.execute(sql`
       SELECT
-        CONCAT ("first_name", ' ', "last_name") AS "name",
-        *
+        CONCAT ("users"."first_name", ' ', "users"."last_name") AS "name",
+        "users"."user_id",
+        "users"."first_name",
+        "users"."last_name",
+        "users"."email",
+        "users"."role",
+        "users"."creation_date",
+        "users"."date_modified",
+        "user_information"."id",
+        "user_information"."profile_picture",
+        "user_information"."age",
+        "user_information"."birth_date",
+        "user_information"."gender",
+        "user_information"."address"
       FROM
         "users"
         INNER JOIN "user_information" ON "users"."user_id" = "user_information"."user_id"
@@ -113,8 +124,14 @@ export const getAllPatientResults = cache(async (): Promise<Result[] | null> => 
   try {
     const { rows } = await db.execute(sql`
       SELECT
-        CONCAT ("first_name", ' ', "last_name") AS "name",
-        *
+        CONCAT ("users"."first_name", ' ', "users"."last_name") AS "name",
+        "results".*,
+        "users"."first_name",
+        "users"."last_name",
+        "users"."email",
+        "users"."role",
+        "users"."creation_date",
+        "users"."date_modified"
       FROM
         "results"
         JOIN "users" ON "results"."user_id" = "users"."user_id"
@@ -144,8 +161,18 @@ export const getPatientResults = cache(async (): Promise<Result[] | null> => {
       SELECT
         CONCAT ("users"."first_name", ' ', "users"."last_name") AS "name",
         "results".*,
-        "users".*,
-        "profile".*
+        "users"."first_name",
+        "users"."last_name",
+        "users"."email",
+        "users"."role",
+        "users"."creation_date",
+        "users"."date_modified",
+        "profile"."id" AS "profile_id",
+        "profile"."profile_picture",
+        "profile"."age",
+        "profile"."birth_date",
+        "profile"."gender",
+        "profile"."address"
       FROM
         "results"
         JOIN "users" ON "results"."user_id" = "users"."user_id"
@@ -173,7 +200,75 @@ export interface PatientResult {
   doctor_profile_picture: string;
   doctor_first_name: string;
   doctor_last_name: string;
+  first_name: string;
+  last_name: string;
+  name: string;
+  email: string;
+  profile_picture: string;
 }
+
+export const getResultsByPatientId = cache(
+  async (userId: number): Promise<PatientResult[] | null> => {
+    try {
+      const { rows } = await db.execute(sql`
+        SELECT
+          "results".*,
+          "users"."first_name" AS "user_first_name",
+          "users"."last_name" AS "user_last_name",
+          "doctor"."first_name" AS "doctor_first_name",
+          "doctor"."last_name" AS "doctor_last_name",
+          "profile"."profile_picture" AS "doctor_profile_picture"
+        FROM
+          "results"
+          JOIN "users" ON "results"."user_id" = "users"."user_id"
+          JOIN "users" AS "doctor" ON "results"."doctor_id" = "doctor"."user_id"
+          LEFT JOIN "user_information" AS "profile" ON "doctor"."user_id" = "profile"."user_id"
+        WHERE
+          "results"."user_id" = ${userId}
+        ORDER BY
+          "results"."created_at" DESC;
+      `);
+      return rows as unknown as PatientResult[];
+    } catch (error) {
+      console.error("Failed to fetch patient results");
+      return null;
+    }
+  },
+);
+
+export const getResultById = cache(
+  async (resultId: number): Promise<PatientResult | null> => {
+    try {
+      const { rows } = await db.execute(sql`
+        SELECT
+          "results".*,
+          "users"."first_name" AS "user_first_name",
+          "users"."last_name" AS "user_last_name",
+          "users"."first_name" AS "first_name",
+          "users"."last_name" AS "last_name",
+          CONCAT ("users"."first_name", ' ', "users"."last_name") AS "name",
+          "users"."email" AS "email",
+          "patient_profile"."profile_picture" AS "profile_picture",
+          "doctor"."first_name" AS "doctor_first_name",
+          "doctor"."last_name" AS "doctor_last_name",
+          "doctor_profile"."profile_picture" AS "doctor_profile_picture"
+        FROM
+          "results"
+          JOIN "users" ON "results"."user_id" = "users"."user_id"
+          LEFT JOIN "user_information" AS "patient_profile" ON "users"."user_id" = "patient_profile"."user_id"
+          JOIN "users" AS "doctor" ON "results"."doctor_id" = "doctor"."user_id"
+          LEFT JOIN "user_information" AS "doctor_profile" ON "doctor"."user_id" = "doctor_profile"."user_id"
+        WHERE
+          "results"."result_id" = ${resultId}
+        LIMIT 1;
+      `);
+      return (rows[0] as unknown as PatientResult) ?? null;
+    } catch (error) {
+      console.error("Failed to fetch result by id");
+      return null;
+    }
+  },
+);
 
 /**
  * Fetches patient results from the database, joining the results with user information.

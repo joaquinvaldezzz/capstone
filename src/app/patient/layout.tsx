@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 
 import { sql } from "drizzle-orm";
 
-import { getCurrentUser, getPatientResult } from "@/lib/dal";
+import { getCurrentUser, getResultsByPatientId } from "@/lib/dal";
 import { db } from "@/lib/db";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
@@ -18,9 +18,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
     redirect("/");
   }
 
-  const results = await getPatientResult().then((data) =>
-    data?.filter((item) => item.user_id === currentUser.user_id),
-  );
+  const results = await getResultsByPatientId(currentUser.user_id);
 
   if (results == null) {
     return null;
@@ -37,7 +35,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   const user: NavUserProps = {
     user: {
-      avatar: avatar.rows[0].profile_picture as string,
+      avatar: avatar.rows?.[0]?.profile_picture ? String(avatar.rows[0].profile_picture) : "",
       initials: currentUser.first_name.charAt(0).concat(currentUser.last_name.charAt(0)),
       name: currentUser.first_name.concat(" ", currentUser.last_name),
       role: currentUser.role,

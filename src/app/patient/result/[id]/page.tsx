@@ -1,9 +1,9 @@
-/* eslint-disable @typescript-eslint/await-thenable */
 import { Fragment } from "react";
+import { redirect } from "next/navigation";
 
 import { formatDistanceToNow } from "date-fns";
 
-import { getPatientResult } from "@/lib/dal";
+import { getCurrentUser, getResultById } from "@/lib/dal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import type { Metadata } from "next";
@@ -12,19 +12,7 @@ interface Params {
   id: string;
 }
 
-export async function generateStaticParams() {
-  const id = await getPatientResult();
-
-  if (id == null) {
-    return [];
-  }
-
-  return id.map((item) => ({
-    id: String(item.result_id),
-  }));
-}
-
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { id } = await params;
 
   return {
@@ -32,14 +20,13 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
   };
 }
 
-export default async function Page({ params }: { params: Params }) {
+export default async function Page({ params }: { params: Promise<Params> }) {
   const { id } = await params;
-  const result = await getPatientResult().then((data) =>
-    data?.find((item) => String(item.result_id) === id),
-  );
+  const currentUser = await getCurrentUser();
+  const result = await getResultById(Number(id));
 
-  if (result == null) {
-    return <div>Result not found</div>;
+  if (!result || result.user_id !== currentUser?.user_id) {
+    redirect("/patient");
   }
 
   return (
