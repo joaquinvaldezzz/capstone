@@ -157,10 +157,10 @@ In `src/lib/actions.ts`:
 
 ## Done criteria
 
-- [ ] `forgotPassword` no longer accepts `newPassword` or directly mutates `users.password`
-- [ ] Reset tokens are cryptographically generated and single-use
-- [ ] `bun run lint && bun x tsc --noEmit && bun run build` all exit 0
-- [ ] `plans/README.md` status updated to DONE
+- [x] `forgotPassword` no longer accepts `newPassword` or directly mutates `users.password`
+- [x] Reset tokens are cryptographically generated and single-use
+- [x] `bun run lint && bun x tsc --noEmit && bun run build` all exit 0
+- [x] `plans/README.md` status updated to DONE
 
 ## STOP conditions
 
