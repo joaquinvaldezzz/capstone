@@ -78,9 +78,7 @@ export const results = pgTable("results", {
 /** Represents the inferred type of the `results` table. */
 export type Result = InferSelectModel<typeof results>;
 
-/**
- * Represents a database table for storing password reset tokens.
- */
+/** Represents a database table for storing password reset tokens. */
 export const passwordResetTokens = pgTable("password_reset_tokens", {
   id: serial("id").primaryKey(),
   user_id: integer("user_id")

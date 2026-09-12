@@ -1,9 +1,11 @@
-/** @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions} */
+/** @type {import("prettier").Config & import("prettier-plugin-tailwindcss").PluginOptions} */
 const config = {
   printWidth: 100,
   plugins: [
     "@ianvs/prettier-plugin-sort-imports",
     "@prettier/plugin-xml",
+    "prettier-plugin-embed",
+    "prettier-plugin-jsdoc",
     "prettier-plugin-packagejson",
     "prettier-plugin-sh",
     "prettier-plugin-sql",

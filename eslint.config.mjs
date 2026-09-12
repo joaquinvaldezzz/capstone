@@ -16,7 +16,7 @@ import prettierPlugin from "eslint-plugin-prettier";
 
 const gitignorePath = path.resolve(".", ".gitignore");
 
-/** @type {import('eslint').Linter.Config[]} */
+/** @type {import("eslint").Linter.Config[]} */
 const jsConfig = [
   // ESLint Recommended Rules
   {
@@ -64,7 +64,7 @@ const nextConfig = [
   },
 ];
 
-/** @type {import('eslint').Linter.Config[]} */
+/** @type {import("eslint").Linter.Config[]} */
 const typescriptConfig = [
   // TypeScript ESLint Plugin
   plugins.typescriptEslint,
@@ -81,7 +81,7 @@ const typescriptConfig = [
   },
 ];
 
-/** @type {import('eslint').Linter.Config[]} */
+/** @type {import("eslint").Linter.Config[]} */
 const prettierConfig = [
   // Prettier Plugin
   {
@@ -100,7 +100,7 @@ const prettierConfig = [
   },
 ];
 
-/** @type {import('eslint').Linter.Config[]} */
+/** @type {import("eslint").Linter.Config[]} */
 export default [
   // Ignore .gitignore files/folder in eslint
   includeIgnoreFile(gitignorePath),
