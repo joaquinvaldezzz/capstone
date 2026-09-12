@@ -6,8 +6,6 @@ const config = {
   plugins: [
     '@ianvs/prettier-plugin-sort-imports',
     '@prettier/plugin-xml',
-    'prettier-plugin-embed',
-    'prettier-plugin-jsdoc',
     'prettier-plugin-packagejson',
     'prettier-plugin-sh',
     'prettier-plugin-sql',

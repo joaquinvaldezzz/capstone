@@ -45,7 +45,7 @@ export async function signUp(_previousState: PreviousState, formData: FormData):
   if (!parsedData.success) {
     return {
       message: 'Invalid form data.',
-      fields: parsedData.data,
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 
@@ -120,7 +120,7 @@ export async function addPatient(
     return {
       message: 'Invalid form data.',
       success: false,
-      fields: parsedData.data,
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 
@@ -202,7 +202,7 @@ export async function login(_previousState: PreviousState, formData: FormData): 
   if (!parsedData.success) {
     return {
       message: 'Invalid form data.',
-      fields: parsedData.data,
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 
@@ -262,7 +262,7 @@ export async function updateUser(
   if (!parsedData.success) {
     return {
       message: 'Invalid form data.',
-      fields: parsedData.data,
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 
@@ -301,7 +301,7 @@ export async function updateAccount(
   if (!parsedData.success) {
     return {
       message: 'Invalid form data.',
-      fields: parsedData.data,
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 
@@ -342,7 +342,7 @@ export async function updateProfile(
   if (!parsedData.success) {
     return {
       message: 'Invalid form data.',
-      fields: parsedData.data,
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 
@@ -404,7 +404,7 @@ export async function updatePassword(
   if (!parsedData.success) {
     return {
       message: 'Invalid form data.',
-      fields: parsedData.data,
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 
@@ -477,7 +477,7 @@ export async function forgotPassword(
   if (!parsedData.success) {
     return {
       message: 'Invalid form data.',
-      fields: parsedData.data,
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 

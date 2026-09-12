@@ -15,7 +15,7 @@ export const ConfusionMatrixButton = () => {
   }
 
   return (
-    <Button hierarchy="secondary-gray" size="md" onClick={openImageInNewTab}>
+    <Button variant="secondary" onClick={openImageInNewTab}>
       Confusion Matrix
     </Button>
   )

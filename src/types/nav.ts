@@ -1,5 +1,7 @@
+import type React from 'react'
+
 export interface NavItem {
   href: string
-  icon?: JSX.Element
+  icon?: React.JSX.Element
   text: string
 }

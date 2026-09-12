@@ -75,21 +75,21 @@ export default async function Page({ params }: { params: Params }) {
 
         <p className="mt-4">
           {result?.diagnosis === 'Infected' ? (
-            <React.Fragment>
+            <Fragment>
               Your test results are available. We have determined a{' '}
               <span className="font-semibold text-gray-900">{result.percentage}</span> chance of
               infection based on the ultrasound image provided. You have been diagnosed with an{' '}
               <span className="font-semibold text-gray-900">infection</span>. Please consult with
               your doctor for further information.
-            </React.Fragment>
+            </Fragment>
           ) : (
-            <React.Fragment>
+            <Fragment>
               Based on the ultrasound image provided, we have determined that you have a{' '}
               <span className="font-semibold text-gray-900">{result.percentage}</span> chance of
               being healthy. You have been diagnosed with{' '}
               <span className="font-semibold text-gray-900">{result.diagnosis.toLowerCase()}</span>.
               Please consult with your doctor for further information.
-            </React.Fragment>
+            </Fragment>
           )}
         </p>
 

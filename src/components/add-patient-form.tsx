@@ -69,7 +69,8 @@ export const AddPatientForm = () => {
      * @returns A promise that resolves when the users are fetched and set in the state.
      */
     async function fetchPatients() {
-      const patientUsers = await getUsers('patient')
+      const allUsers = await getUsers()
+      const patientUsers = allUsers?.filter((user) => user.role === 'patient')
       if (patientUsers != null) setPatients(patientUsers)
     }
 
@@ -87,7 +88,7 @@ export const AddPatientForm = () => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="md">Add patient</Button>
+        <Button>Add patient</Button>
       </DialogTrigger>
 
       <DialogContent>
@@ -142,7 +143,7 @@ export const AddPatientForm = () => {
                     <FormItem>
                       <FormLabel>Ultrasound image</FormLabel>
                       <FormControl>
-                        <Input type="file" accept="image/*" padding="md" {...field} />
+                        <Input type="file" accept="image/*" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -153,7 +154,7 @@ export const AddPatientForm = () => {
 
             <DialogFooter className="-mx-4 lg:-mx-6">
               <DialogClose asChild>
-                <Button hierarchy="secondary-gray" size="lg">
+                <Button variant="secondary" size="lg">
                   Cancel
                 </Button>
               </DialogClose>

@@ -8,8 +8,7 @@ import { Button } from '@/components/ui/button'
 export const LogOutButton = () => (
   <Button
     type="button"
-    hierarchy="tertiary-gray"
-    icon="sm"
+    variant="ghost"
     size="sm"
     onClick={() => {
       void logout()
