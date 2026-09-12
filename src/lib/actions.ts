@@ -158,6 +158,18 @@ export async function addPatient(
     console.error(error);
   }
 
+  // Upload the ultrasound image to the server
+  const blob = await put(
+    `ultrasound-images/${parsedData.data.ultrasound_image.name}`,
+    parsedData.data.ultrasound_image,
+    {
+      access: "public",
+      addRandomSuffix: true,
+    },
+  );
+
+  const ultrasoundImage = blob.pathname.replace(/^ultrasound-images\//, "");
+
   // If the current user is found, insert the patient into the database
   await db
     .insert(results)
@@ -165,20 +177,10 @@ export async function addPatient(
       doctor_id: currentDoctor.user_id,
       user_id: Number(parsedData.data.patient_name),
       percentage,
-      ultrasound_image: parsedData.data.ultrasound_image?.name,
+      ultrasound_image: ultrasoundImage,
       diagnosis,
     })
     .execute();
-
-  // Upload the ultrasound image to the server
-  await put(
-    `ultrasound-images/${String(parsedData.data.ultrasound_image.name)}`,
-    parsedData.data.ultrasound_image,
-    {
-      access: "public",
-      addRandomSuffix: false,
-    },
-  );
 
   // Revalidate the results page
   revalidatePath("/doctor/results");

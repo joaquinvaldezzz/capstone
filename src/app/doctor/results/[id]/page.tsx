@@ -121,7 +121,11 @@ export default async function Page({ params }: { params: { id: string } }) {
               <dd className="mt-2 text-sm sm:col-span-2 sm:mt-0">
                 <Image
                   className="w-64 rounded-lg object-cover"
-                  src={`https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${result.ultrasound_image}`}
+                  src={
+                    result.ultrasound_image.startsWith("http")
+                      ? result.ultrasound_image
+                      : `https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${result.ultrasound_image}`
+                  }
                   alt={result.ultrasound_image}
                   height={256}
                   width={256}

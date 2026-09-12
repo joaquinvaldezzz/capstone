@@ -45,19 +45,26 @@ export const columns: ColumnDef<Result>[] = [
   {
     accessorKey: "ultrasound_image",
     header: ({ column }) => <DataTableColumnHeader title="Ultrasound" column={column} />,
-    cell: (cell) => (
-      <div className="flex items-center gap-2">
-        <Image
-          className="size-10 shrink-0 rounded-full"
-          src={`https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${cell.row.original.ultrasound_image}`}
-          alt={cell.row.original.ultrasound_image}
-          height={40}
-          width={40}
-        />
+    cell: (cell) => {
+      const image = cell.row.original.ultrasound_image;
+      return (
+        <div className="flex items-center gap-2">
+          <Image
+            className="size-10 shrink-0 rounded-full"
+            src={
+              image.startsWith("http")
+                ? image
+                : `https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${image}`
+            }
+            alt={image}
+            height={40}
+            width={40}
+          />
 
-        <span>{cell.row.original.ultrasound_image}</span>
-      </div>
-    ),
+          <span>{image}</span>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "percentage",

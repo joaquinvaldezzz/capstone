@@ -1,5 +1,4 @@
 import os
-import random
 
 import cv2
 import matplotlib.pyplot as plt
@@ -8,7 +7,6 @@ import tensorflow as tf
 from PIL import Image
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
-from keras.models import load_model
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.image import load_img, img_to_array
 from werkzeug.utils import secure_filename
@@ -17,16 +15,14 @@ app = Flask(__name__)
 cors = CORS(app)
 
 model = load_model('MobileNetModelPCOS.h5')
+last_conv_layer = model.get_layer('out_relu')
+grad_model = tf.keras.models.Model(
+    inputs=model.inputs,
+    outputs=[last_conv_layer.output, model.output if not isinstance(model.output, list) else model.output[0]],
+)
 print('Model loaded. Check http://127.0.0.1:5000/')
 
 labels = {0: 'Healthy', 1: 'Infected'}
-
-
-def get_randomized_true_label(predicted_label, odds=0.90):
-    if random.random() < odds:
-        return predicted_label
-    else:
-        return "Healthy" if predicted_label == "Infected" else "Infected"
 
 
 def load_confusion_matrix(file_path):
@@ -128,77 +124,68 @@ def index():
 @app.route('/api/predict', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
+        if 'ultrasound_image' not in request.files:
+            return {'error': 'No file provided'}, 400
         f = request.files['ultrasound_image']
 
+        if not f or not f.filename:
+            return {'error': 'No file provided'}, 400
+
         base_path = os.path.dirname(__file__)
-        file_path = os.path.join(
-            base_path, 'uploads', secure_filename(f.filename))
+        uploads_dir = os.path.join(base_path, 'uploads')
+        os.makedirs(uploads_dir, exist_ok=True)
+        file_path = os.path.join(uploads_dir, secure_filename(f.filename))
         f.save(file_path)
 
-        image = cv2.imread(file_path)
+        try:
+            image = cv2.imread(file_path)
 
-        if is_grayscale(image):
-            img = Image.open(file_path)
-            img = img.convert('RGB')
-            img = img.resize((224, 224))
-            img_array = np.array(img) / 255.0
-            img_array = np.expand_dims(img_array, axis=0)
+            if is_grayscale(image):
+                with Image.open(file_path) as img:
+                    img = img.convert('RGB')
+                    img = img.resize((224, 224))
+                    img_array = np.array(img) / 255.0
+                    img_array = np.expand_dims(img_array, axis=0)
 
-            model = load_model('MobileNetModelPCOS.h5')
+                predictions = model.predict(img_array)
+                predicted_class = np.argmax(predictions)
+                predicted_label = labels[predicted_class]
+                confidence = np.max(predictions)
+                label = f'{confidence * 100:.2f}%'
 
-            predictions = model.predict(img_array)
-            predicted_class = np.argmax(predictions)
-            class_names = ['Healthy', 'Infected']
-            predicted_class_name = class_names[predicted_class]
-            confidence_level = np.max(predictions)
+                # Grad-CAM integration
+                with tf.GradientTape() as tape:
+                    last_conv_layer_output, preds = grad_model(img_array)
+                    top_pred_index = tf.argmax(preds[0])
+                    top_class_channel = preds[:, top_pred_index]
 
-            predictions = get_result(file_path)
-            predicted_label = labels[np.argmax(predictions)]
-            confidence = np.max(predictions)
-            label = f'{confidence * 100:.2f}%'
+                grads = tape.gradient(top_class_channel, last_conv_layer_output)
+                pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+                last_conv_layer_output = last_conv_layer_output[0]
+                heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
+                heatmap = tf.squeeze(heatmap)
+                heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
+                heatmap = tf.expand_dims(heatmap, -1)
+                heatmap = tf.image.resize(heatmap, (224, 224))
+                heatmap = tf.squeeze(heatmap)
+                heatmap = np.uint8(255 * heatmap.numpy())
+                jet = plt.get_cmap('jet')
+                heatmap_jet = jet(heatmap)[:, :, :3]
+                superimposed_img = heatmap_jet * 0.4 + img_array[0]
+                superimposed_img = np.clip(superimposed_img, 0, 1)
 
-            # Grad-CAM integration
-            last_conv_layer = model.get_layer('out_relu')
-            grad_model = tf.keras.models.Model(inputs=model.inputs, outputs=[last_conv_layer.output, model.output if not isinstance(model.output, list) else model.output[0]])
+                # Save the superimposed image
+                plt.imsave(file_path, superimposed_img)
 
-            with tf.GradientTape() as tape:
-                last_conv_layer_output, preds = grad_model(img_array)
-                top_pred_index = tf.argmax(preds[0])
-                top_class_channel = preds[:, top_pred_index]
-
-            grads = tape.gradient(top_class_channel, last_conv_layer_output)
-            pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
-            last_conv_layer_output = last_conv_layer_output[0]
-            heatmap = last_conv_layer_output @ pooled_grads[..., tf.newaxis]
-            heatmap = tf.squeeze(heatmap)
-            heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
-            heatmap = tf.expand_dims(heatmap, -1)
-            heatmap = tf.image.resize(heatmap, (224, 224))
-            heatmap = tf.squeeze(heatmap)
-            heatmap = np.uint8(255 * heatmap.numpy())
-            jet = plt.get_cmap('jet')
-            heatmap_jet = jet(heatmap)[:, :, :3]
-            superimposed_img = heatmap_jet * 0.4 + img_array[0]
-            superimposed_img = np.clip(superimposed_img, 0, 1)
-
-            # Save the superimposed image
-            plt.imsave(file_path, superimposed_img)
-
-            # Get the true label from a randomizer
-            true_label = get_randomized_true_label(predicted_label)
-
-            # Path to save the confusion matrix (npy for data, png for image)
-            confusion_matrix_file_path = os.path.join('public/images', 'confusion_matrix.npy')
-
-            # Update and save the confusion matrix
-            update_confusion_matrix(predicted_label, true_label, confusion_matrix_file_path)
-
-            return {'percentage': label, 'result': predicted_label}
-        else:
-            return {'percentage': '0%', 'result': 'Invalid'}
+                return {'percentage': label, 'result': predicted_label}
+            else:
+                return {'percentage': '0%', 'result': 'Invalid'}
+        finally:
+            if os.path.exists(file_path):
+                os.remove(file_path)
 
     return None
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=os.getenv('FLASK_DEBUG', 'False').lower() == 'true')
