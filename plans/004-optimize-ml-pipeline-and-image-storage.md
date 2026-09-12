@@ -146,11 +146,11 @@ remotePatterns: [
 
 ## Done criteria
 
-- [ ] `index.py` loads `MobileNetModelPCOS.h5` exactly once at module startup
-- [ ] No multiple inference passes per request in Flask
-- [ ] `addRandomSuffix: true` enabled on Vercel Blob uploads
-- [ ] `next.config.js` allows all blob image paths
-- [ ] `plans/README.md` status updated to DONE
+- [x] `index.py` loads `MobileNetModelPCOS.h5` exactly once at module startup
+- [x] No multiple inference passes per request in Flask
+- [x] `addRandomSuffix: true` enabled on Vercel Blob uploads
+- [x] `next.config.js` allows all blob image paths
+- [x] `plans/README.md` status updated to DONE
 
 ## STOP conditions
 
