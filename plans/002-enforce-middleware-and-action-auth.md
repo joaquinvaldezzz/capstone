@@ -153,11 +153,11 @@ In `src/lib/actions.ts`:
 
 ## Done criteria
 
-- [ ] `src/middleware.ts` exists and `src/proxy.ts` is deleted
-- [ ] Nested subpaths under `/admin`, `/doctor`, and `/patient` require authentication
-- [ ] Mutating server actions verify `currentUser` and role before writing to the database
-- [ ] `bun run lint && bun x tsc --noEmit` exits 0
-- [ ] `plans/README.md` status updated to DONE
+- [x] `src/middleware.ts` exists and `src/proxy.ts` is deleted
+- [x] Nested subpaths under `/admin`, `/doctor`, and `/patient` require authentication
+- [x] Mutating server actions verify `currentUser` and role before writing to the database
+- [x] `bun run lint && bun x tsc --noEmit` exits 0
+- [x] `plans/README.md` status updated to DONE
 
 ## STOP conditions
 
