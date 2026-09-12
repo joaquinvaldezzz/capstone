@@ -1,22 +1,22 @@
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
-import { getUsers } from '@/lib/dal'
+import { getUsers } from "@/lib/dal";
 
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
-import { DataTable } from '../_components/data-table'
-import { columns } from './columns'
-import { UserForm } from './user-form'
+import { DataTable } from "../_components/data-table";
+import { columns } from "./columns";
+import { UserForm } from "./user-form";
 
 export const metadata: Metadata = {
-  title: 'Users',
-}
+  title: "Users",
+};
 
 export default async function Page() {
-  const users = await getUsers()
+  const users = await getUsers();
 
   if (users == null) {
-    return null
+    return null;
   }
 
   return (
@@ -31,5 +31,5 @@ export default async function Page() {
         withViewOptions
       />
     </Fragment>
-  )
+  );
 }

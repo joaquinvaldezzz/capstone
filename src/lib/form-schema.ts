@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import { z } from "zod";
 
 /**
  * Signup schema for user registration.
@@ -9,60 +9,60 @@ export const signUpFormSchema = z.object({
   first_name: z
     .string()
     .min(1, {
-      error: 'First name cannot be blank.',
+      error: "First name cannot be blank.",
     })
     .max(64, {
-      error: 'First name must not exceed 64 characters.',
+      error: "First name must not exceed 64 characters.",
     })
     .trim(),
   last_name: z
     .string()
     .min(1, {
-      error: 'Last name cannot be blank.',
+      error: "Last name cannot be blank.",
     })
     .max(64, {
-      error: 'Last name must not exceed 64 characters.',
+      error: "Last name must not exceed 64 characters.",
     })
     .trim(),
   age: z.string().min(1, {
-    error: 'Age cannot be blank.',
+    error: "Age cannot be blank.",
   }),
   birth_date: z.coerce.date({
-    error: 'Birth date cannot be blank.',
+    error: "Birth date cannot be blank.",
   }),
   gender: z
-    .enum(['female', 'male'], {
-      error: 'Please select a gender.',
+    .enum(["female", "male"], {
+      error: "Please select a gender.",
     })
     .or(
       z.string().min(1, {
-        error: 'Please select a gender.',
+        error: "Please select a gender.",
       }),
     ),
   address: z
     .string()
     .min(1, {
-      error: 'Address cannot be blank.',
+      error: "Address cannot be blank.",
     })
     .trim(),
   email: z
     .email({
-      error: 'Please enter a valid email address.',
+      error: "Please enter a valid email address.",
     })
     .trim(),
   role: z
-    .enum(['admin', 'doctor', 'patient'], {
-      error: 'Please select a role.',
+    .enum(["admin", "doctor", "patient"], {
+      error: "Please select a role.",
     })
     .or(
       z.string().min(1, {
-        error: 'Please select a role.',
+        error: "Please select a role.",
       }),
     ),
-})
+});
 
 /** Represents the inferred type of the `signupSchema`. */
-export type SignUpFormSchema = z.infer<typeof signUpFormSchema>
+export type SignUpFormSchema = z.infer<typeof signUpFormSchema>;
 
 /**
  * Schema for validating the update account form.
@@ -73,106 +73,106 @@ export const updateAccountFormSchema = z.object({
   first_name: z
     .string()
     .min(1, {
-      error: 'First name cannot be blank.',
+      error: "First name cannot be blank.",
     })
     .max(64, {
-      error: 'First name must not exceed 64 characters.',
+      error: "First name must not exceed 64 characters.",
     })
     .trim(),
   last_name: z
     .string()
     .min(1, {
-      error: 'Last name cannot be blank.',
+      error: "Last name cannot be blank.",
     })
     .max(64, {
-      error: 'Last name must not exceed 64 characters.',
+      error: "Last name must not exceed 64 characters.",
     })
     .trim(),
   email: z
     .email({
-      error: 'Please enter a valid email address.',
+      error: "Please enter a valid email address.",
     })
     .trim(),
   role: z
-    .enum(['admin', 'doctor', 'patient'], {
-      error: 'Please select a role.',
+    .enum(["admin", "doctor", "patient"], {
+      error: "Please select a role.",
     })
     .or(
       z.string().min(1, {
-        error: 'Please select a role.',
+        error: "Please select a role.",
       }),
     )
     .optional(),
-})
+});
 
 /** Represents the schema for updating an account form. */
-export type UpdateAccountFormSchema = z.infer<typeof updateAccountFormSchema>
+export type UpdateAccountFormSchema = z.infer<typeof updateAccountFormSchema>;
 
 export const updateProfileFormSchema = z.object({
   profile_picture: z.any(),
   age: z.string().min(1, {
-    error: 'Age cannot be blank.',
+    error: "Age cannot be blank.",
   }),
   birth_date: z.coerce.date({
-    error: 'Birth date cannot be blank.',
+    error: "Birth date cannot be blank.",
   }),
   gender: z
-    .enum(['female', 'male'], {
-      error: 'Please select a gender.',
+    .enum(["female", "male"], {
+      error: "Please select a gender.",
     })
     .or(
       z.string().min(1, {
-        error: 'Please select a gender.',
+        error: "Please select a gender.",
       }),
     ),
   address: z
     .string()
     .min(1, {
-      error: 'Address cannot be blank.',
+      error: "Address cannot be blank.",
     })
     .trim(),
-})
+});
 
 /** Represents the inferred type of the `updateProfileFormSchema`. */
-export type UpdateProfileFormSchema = z.infer<typeof updateProfileFormSchema>
+export type UpdateProfileFormSchema = z.infer<typeof updateProfileFormSchema>;
 
 export const updatePasswordFormSchema = z
   .object({
     oldPassword: z
       .string()
       .min(8, {
-        error: 'Please enter your old password.',
+        error: "Please enter your old password.",
       })
       .trim(),
     newPassword: z
       .string()
       .min(8, {
-        error: 'Your new password must be at least 8 characters.',
+        error: "Your new password must be at least 8 characters.",
       })
       .regex(/[a-zA-Z]/, {
-        error: 'Password must contain at least one letter.',
+        error: "Password must contain at least one letter.",
       })
       .regex(/[0-9]/, {
-        error: 'Password must contain at least one number.',
+        error: "Password must contain at least one number.",
       })
       .regex(/[^a-zA-Z0-9]/, {
-        error: 'Password must contain at least one special character.',
+        error: "Password must contain at least one special character.",
       })
       .trim(),
     confirmPassword: z
       .string()
       .min(8, {
-        error: 'Re-type your new password.',
+        error: "Re-type your new password.",
       })
       .trim(),
   })
   .refine((values) => values.newPassword === values.confirmPassword, {
-    path: ['confirmPassword'],
-    error: 'Passwords do not match.',
-  })
+    path: ["confirmPassword"],
+    error: "Passwords do not match.",
+  });
 
 /** Represents the inferred type of the `updateProfileFormSchema`. */
-export type UpdatePasswordFormSchema = z.infer<typeof updatePasswordFormSchema>
+export type UpdatePasswordFormSchema = z.infer<typeof updatePasswordFormSchema>;
 
 /**
  * Represents the login schema for user authentication.
@@ -182,19 +182,19 @@ export type UpdatePasswordFormSchema = z.infer<typeof updatePasswordFormSchema>
 export const logInFormSchema = z.object({
   email: z
     .email({
-      error: 'Please enter your email address.',
+      error: "Please enter your email address.",
     })
     .trim(),
   password: z
     .string()
     .min(8, {
-      error: 'Your password must be at least 8 characters.',
+      error: "Your password must be at least 8 characters.",
     })
     .trim(),
-})
+});
 
 /** Represents the inferred type of the `loginSchema`. */
-export type LogInFormSchema = z.infer<typeof logInFormSchema>
+export type LogInFormSchema = z.infer<typeof logInFormSchema>;
 
 /**
  * Schema for the forgot password form.
@@ -204,13 +204,13 @@ export type LogInFormSchema = z.infer<typeof logInFormSchema>
 export const forgotPasswordFormSchema = z.object({
   email: z
     .email({
-      error: 'Please enter your email address.',
+      error: "Please enter your email address.",
     })
     .trim(),
-})
+});
 
 /** Represents the inferred type of the `forgotPasswordFormSchema`. */
-export type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>
+export type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>;
 
 /**
  * Schema for the reset password form.
@@ -220,48 +220,48 @@ export type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>
 export const resetPasswordFormSchema = z
   .object({
     token: z.string().min(1, {
-      error: 'Reset token is required.',
+      error: "Reset token is required.",
     }),
     password: z
       .string()
       .min(8, {
-        error: 'Your password must be at least 8 characters.',
+        error: "Your password must be at least 8 characters.",
       })
       .regex(/[a-zA-Z]/, {
-        error: 'Contain at least one letter.',
+        error: "Contain at least one letter.",
       })
       .regex(/[0-9]/, {
-        error: 'Contain at least one number.',
+        error: "Contain at least one number.",
       })
       .regex(/[^a-zA-Z0-9]/, {
-        error: 'Contain at least one special character.',
+        error: "Contain at least one special character.",
       })
       .trim(),
     confirmPassword: z
       .string()
       .min(8, {
-        error: 'Your password must be at least 8 characters.',
+        error: "Your password must be at least 8 characters.",
       })
       .trim(),
   })
   .refine((values) => values.password === values.confirmPassword, {
-    path: ['confirmPassword'],
-    error: 'Passwords do not match.',
-  })
+    path: ["confirmPassword"],
+    error: "Passwords do not match.",
+  });
 
 /** Represents the inferred type of the `resetPasswordFormSchema`. */
-export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
+export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>;
 
 /** Represents the schema for adding a new patient result. */
 export const resultSchema = z.object({
   patient_name: z
     .string()
     .min(2, {
-      error: 'Patient name must be at least 2 characters.',
+      error: "Patient name must be at least 2 characters.",
     })
     .trim(),
   ultrasound_image: z.any(),
-})
+});
 
 /** Represents the inferred type of the `resultSchema`. */
-export type ResultSchema = z.infer<typeof resultSchema>
+export type ResultSchema = z.infer<typeof resultSchema>;

@@ -63,10 +63,10 @@ await put(
   `ultrasound-images/${String(parsedData.data.ultrasound_image.name)}`,
   parsedData.data.ultrasound_image,
   {
-    access: 'public',
+    access: "public",
     addRandomSuffix: false,
   },
-)
+);
 ```
 
 ## Commands you will need

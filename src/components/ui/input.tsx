@@ -1,20 +1,20 @@
-import { forwardRef } from 'react'
+import { forwardRef } from "react";
 
-import { cva } from 'class-variance-authority'
+import { cva } from "class-variance-authority";
 
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
-import type { InputHTMLAttributes } from 'react'
+import type { InputHTMLAttributes } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
 export const inputVariants = cva(
-  'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 data-disabled:opacity-50 data-focus-within:ring-2 data-focus-within:ring-ring data-focus-within:ring-offset-2 data-focus-within:outline-hidden',
-)
+  "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 data-disabled:opacity-50 data-focus-within:ring-2 data-focus-within:ring-ring data-focus-within:ring-offset-2 data-focus-within:outline-hidden",
+);
 
 const Input = forwardRef<HTMLInputElement, InputProps>(({ className, type, ...props }, ref) => (
   <input className={cn(inputVariants(), className)} type={type} ref={ref} {...props} />
-))
-Input.displayName = 'Input'
+));
+Input.displayName = "Input";
 
-export { Input }
+export { Input };

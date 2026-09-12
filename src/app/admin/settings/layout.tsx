@@ -1,33 +1,33 @@
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
-import { Separator } from '@/components/ui/separator'
+import { Separator } from "@/components/ui/separator";
 
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
-import { Nav } from './nav'
+import { Nav } from "./nav";
 
 export const metadata: Metadata = {
   title: {
-    default: 'Settings',
-    template: 'Settings | %s',
+    default: "Settings",
+    template: "Settings | %s",
   },
-}
+};
 
 const sidebarNavItems = [
   {
-    title: 'Account',
-    href: '/admin/settings',
+    title: "Account",
+    href: "/admin/settings",
   },
   {
-    title: 'Profile',
-    href: '/admin/settings/profile',
+    title: "Profile",
+    href: "/admin/settings/profile",
   },
   {
-    title: 'Password',
-    href: '/admin/settings/password',
+    title: "Password",
+    href: "/admin/settings/password",
   },
-]
+];
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
@@ -46,5 +46,5 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div className="flex-1 lg:max-w-2xl">{children}</div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { startTransition, useActionState, useEffect, useRef } from 'react'
-import Link from 'next/link'
+import { startTransition, useActionState, useEffect, useRef } from "react";
+import Link from "next/link";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { CircleAlert, CircleCheck, Loader2 } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleAlert, CircleCheck, Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 
-import { forgotPassword } from '@/lib/actions'
-import { forgotPasswordFormSchema } from '@/lib/form-schema'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { forgotPassword } from "@/lib/actions";
+import { forgotPasswordFormSchema } from "@/lib/form-schema";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -19,25 +19,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import type { FormEvent } from 'react'
-import type { ForgotPasswordFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from "react";
+import type { ForgotPasswordFormSchema } from "@/lib/form-schema";
 
 function ForgotPasswordForm() {
-  const formRef = useRef<HTMLFormElement>(null)
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const [formState, formAction, isSubmitting] = useActionState(forgotPassword, { message: '' })
+  const [formState, formAction, isSubmitting] = useActionState(forgotPassword, { message: "" });
   const form = useForm<ForgotPasswordFormSchema>({
     defaultValues: {
-      email: '',
+      email: "",
 
       // Override the default values with the previous form state fields
       ...formState.fields,
     },
     resolver: zodResolver(forgotPasswordFormSchema),
-  })
+  });
 
   /**
    * Handles the form submission event.
@@ -46,25 +46,25 @@ function ForgotPasswordForm() {
    */
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior
-    event.preventDefault()
+    event.preventDefault();
 
     form.handleSubmit(() => {
       startTransition(() => {
         // If the form reference is null, return early
-        if (formRef.current == null) return
+        if (formRef.current == null) return;
 
         // Perform the form action with the form data
-        formAction(new FormData(formRef.current))
-      })
-    })(event)
+        formAction(new FormData(formRef.current));
+      });
+    })(event);
   }
 
   useEffect(() => {
     // If the form state success is true, reset the form fields
     if (formState.success ?? false) {
-      form.reset()
+      form.reset();
     }
-  }, [formState, form])
+  }, [formState, form]);
 
   return (
     <Card className="mx-auto w-full max-w-sm">
@@ -114,7 +114,7 @@ function ForgotPasswordForm() {
 
             <Button type="submit">
               {isSubmitting ? <Loader2 className="animate-spin" /> : null}
-              {isSubmitting ? 'Sending instructions...' : 'Send reset instructions'}
+              {isSubmitting ? "Sending instructions..." : "Send reset instructions"}
             </Button>
           </form>
         </Form>
@@ -126,7 +126,7 @@ function ForgotPasswordForm() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default ForgotPasswordForm
+export default ForgotPasswordForm;

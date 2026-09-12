@@ -1,48 +1,48 @@
-import { sql } from 'drizzle-orm'
+import { sql } from "drizzle-orm";
 
-import { getUserById } from '@/lib/dal'
-import { db } from '@/lib/db'
-import { users } from '@/lib/db-schema'
+import { getUserById } from "@/lib/dal";
+import { db } from "@/lib/db";
+import { users } from "@/lib/db-schema";
 
-import type { Metadata } from 'next'
-import type { UserInformation } from '@/lib/db-schema'
+import type { Metadata } from "next";
+import type { UserInformation } from "@/lib/db-schema";
 
-import { DeleteButton } from './delete-button'
-import { Forms } from './forms'
+import { DeleteButton } from "./delete-button";
+import { Forms } from "./forms";
 
 export async function generateStaticParams() {
-  const id = await db.select().from(users)
+  const id = await db.select().from(users);
 
   return id.map((item) => ({
     id: String(item.user_id),
-  }))
+  }));
 }
 
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ id: number }>
+  params: Promise<{ id: number }>;
 }): Promise<Metadata> {
-  const { id } = await params
-  const user = await getUserById(id)
+  const { id } = await params;
+  const user = await getUserById(id);
 
   if (user == null) {
     return {
-      title: 'User not found',
-    }
+      title: "User not found",
+    };
   }
 
   return {
     title: `Edit ${user.first_name} ${user.last_name}'s account`,
-  }
+  };
 }
 
 export default async function Page({ params }: { params: Promise<{ id: number }> }) {
-  const { id } = await params
-  const user = await getUserById(id)
+  const { id } = await params;
+  const user = await getUserById(id);
 
   if (user == null) {
-    return <div>User not found</div>
+    return <div>User not found</div>;
   }
 
   const information = await db.execute(sql`
@@ -53,8 +53,8 @@ export default async function Page({ params }: { params: Promise<{ id: number }>
       RIGHT JOIN "user_information" ON "users"."user_id" = "user_information"."user_id"
     WHERE
       "users"."user_id" = ${user.user_id};
-  `)
-  const profile = information.rows[0] as UserInformation
+  `);
+  const profile = information.rows[0] as UserInformation;
 
   return (
     <div className="flex flex-col gap-8">
@@ -75,5 +75,5 @@ export default async function Page({ params }: { params: Promise<{ id: number }>
 
       <Forms profile={profile} user={user} />
     </div>
-  )
+  );
 }

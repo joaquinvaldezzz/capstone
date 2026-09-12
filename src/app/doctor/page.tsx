@@ -1,30 +1,30 @@
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
-import { Activity, ShieldAlert, Users } from 'lucide-react'
+import { Activity, ShieldAlert, Users } from "lucide-react";
 
 import {
   getPatientResults,
   getTotalNumberOfHealthyPatients,
   getTotalNumberOfInfectedPatients,
   getTotalNumberOfPatients,
-} from '@/lib/dal'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+} from "@/lib/dal";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import type { Metadata } from 'next'
-import type { Result } from '@/lib/dal'
+import type { Metadata } from "next";
+import type { Result } from "@/lib/dal";
 
-import { DataTable } from './_components/data-table'
-import { columns } from './columns'
+import { DataTable } from "./_components/data-table";
+import { columns } from "./columns";
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
-}
+  title: "Dashboard",
+};
 
 export default async function Page() {
-  const totalNumberOfPatients = await getTotalNumberOfPatients()
-  const totalNumberOfInfectedPatients = await getTotalNumberOfInfectedPatients()
-  const totalNumberOfHealthyPatients = await getTotalNumberOfHealthyPatients()
-  const recentResults = (await getPatientResults()) as Result[]
+  const totalNumberOfPatients = await getTotalNumberOfPatients();
+  const totalNumberOfInfectedPatients = await getTotalNumberOfInfectedPatients();
+  const totalNumberOfHealthyPatients = await getTotalNumberOfHealthyPatients();
+  const recentResults = (await getPatientResults()) as Result[];
 
   if (
     totalNumberOfPatients == null ||
@@ -32,7 +32,7 @@ export default async function Page() {
     totalNumberOfHealthyPatients == null ||
     recentResults == null
   ) {
-    return <div>Failed to fetch data</div>
+    return <div>Failed to fetch data</div>;
   }
 
   return (
@@ -80,5 +80,5 @@ export default async function Page() {
         <DataTable columns={columns} data={recentResults} withFacetedFilters withViewOptions />
       </section>
     </Fragment>
-  )
+  );
 }

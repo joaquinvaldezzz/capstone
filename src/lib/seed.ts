@@ -1,10 +1,10 @@
-import { faker } from '@faker-js/faker'
-import bcrypt from 'bcrypt'
+import { faker } from "@faker-js/faker";
+import bcrypt from "bcrypt";
 
-import { db } from './db'
-import { userInformation, users } from './db-schema'
+import { db } from "./db";
+import { userInformation, users } from "./db-schema";
 
-const roles = ['admin', 'doctor', 'patient']
+const roles = ["admin", "doctor", "patient"];
 
 /**
  * Generates an array of 100 user objects with random data. Each user object contains the following
@@ -20,7 +20,7 @@ export const fakeUsers = Array.from({ length: 100 }, () => ({
   lastName: faker.person.lastName(),
   email: faker.internet.email().toLowerCase(),
   role: faker.helpers.arrayElement(roles),
-}))
+}));
 
 /**
  * Generates an array of 100 fake user information objects. Each object contains the following
@@ -36,7 +36,7 @@ export const fakeUserInformation = Array.from({ length: 100 }, () => ({
   birthDate: faker.date.past(),
   gender: faker.person.sex(),
   address: faker.location.streetAddress(),
-}))
+}));
 
 /**
  * Seeds the database with default user data.
@@ -45,7 +45,7 @@ export const fakeUserInformation = Array.from({ length: 100 }, () => ({
  * will have the same default hashed password.
  */
 export async function seed() {
-  const defaultHashedPassword = await bcrypt.hash('5678ghjk@@!!##', 10)
+  const defaultHashedPassword = await bcrypt.hash("5678ghjk@@!!##", 10);
 
   /** Inserts a list of fake users into the database and returns their IDs. */
   const newUser = await db
@@ -60,7 +60,7 @@ export async function seed() {
       })),
     )
     .returning({ id: users.user_id })
-    .execute()
+    .execute();
 
   /**
    * Inserts user information into the database.
@@ -80,7 +80,7 @@ export async function seed() {
         address: information.address,
       })),
     )
-    .execute()
+    .execute();
 
-  console.log('Database seeded successfully')
+  console.log("Database seeded successfully");
 }

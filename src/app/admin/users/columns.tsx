@@ -1,21 +1,21 @@
-'use client'
+"use client";
 
-import { format } from 'date-fns'
+import { format } from "date-fns";
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { DataTableColumnHeader } from "@/components/ui/data-table/data-table-column-header";
 
-import type { ColumnDef } from '@tanstack/react-table'
-import type { CustomUser } from '@/lib/dal'
+import type { ColumnDef } from "@tanstack/react-table";
+import type { CustomUser } from "@/lib/dal";
 
 export const columns: ColumnDef<CustomUser>[] = [
   {
-    accessorKey: 'user_id',
+    accessorKey: "user_id",
     header: ({ column }) => <DataTableColumnHeader title="User ID" column={column} />,
     cell: (cell) => cell.row.original.user_id,
   },
   {
-    accessorKey: 'name',
+    accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader title="Name" column={column} />,
     cell: (cell) => (
       <div className="flex items-center gap-2">
@@ -34,7 +34,7 @@ export const columns: ColumnDef<CustomUser>[] = [
     ),
   },
   {
-    accessorKey: 'email',
+    accessorKey: "email",
     header: ({ column }) => <DataTableColumnHeader title="Email" column={column} />,
     cell: (cell) => (
       <div className="flex flex-1">
@@ -43,18 +43,18 @@ export const columns: ColumnDef<CustomUser>[] = [
     ),
   },
   {
-    accessorKey: 'role',
+    accessorKey: "role",
     header: ({ column }) => <DataTableColumnHeader title="Role" column={column} />,
     cell: (cell) => <span className="capitalize">{cell.row.original.role}</span>,
   },
   {
-    accessorKey: 'created_at',
+    accessorKey: "created_at",
     header: ({ column }) => <DataTableColumnHeader title="Date created" column={column} />,
-    cell: (cell) => format(cell.row.original.creation_date, 'MMMM dd, yyyy h:mm a'),
+    cell: (cell) => format(cell.row.original.creation_date, "MMMM dd, yyyy h:mm a"),
   },
   {
-    accessorKey: 'date_modified',
+    accessorKey: "date_modified",
     header: ({ column }) => <DataTableColumnHeader title="Date modified" column={column} />,
-    cell: (cell) => format(cell.row.original.date_modified, 'MMMM dd, yyyy h:mm a'),
+    cell: (cell) => format(cell.row.original.date_modified, "MMMM dd, yyyy h:mm a"),
   },
-]
+];

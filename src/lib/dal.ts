@@ -1,30 +1,30 @@
-'use server'
+"use server";
 
-import { cache } from 'react'
+import { cache } from "react";
 
-import { count, eq, sql } from 'drizzle-orm'
+import { count, eq, sql } from "drizzle-orm";
 
-import type { User } from './db-schema'
+import type { User } from "./db-schema";
 
-import { db } from './db'
-import { results, users } from './db-schema'
-import { verifySession } from './session'
+import { db } from "./db";
+import { results, users } from "./db-schema";
+import { verifySession } from "./session";
 
 export interface Result {
-  profile_picture: string
-  name: string
-  result_id: number
-  doctor_id: number
-  user_id: number
-  created_at: string
-  ultrasound_image: string
-  percentage: string
-  diagnosis: string
-  first_name: string
-  last_name: string
-  email: string
-  password: string
-  role: string
+  profile_picture: string;
+  name: string;
+  result_id: number;
+  doctor_id: number;
+  user_id: number;
+  created_at: string;
+  ultrasound_image: string;
+  percentage: string;
+  diagnosis: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  role: string;
 }
 
 /**
@@ -38,22 +38,22 @@ export interface Result {
  * @throws Logs an error message to the console if the fetch operation fails.
  */
 export const getCurrentUser = cache(async (): Promise<User | null> => {
-  const session = await verifySession()
+  const session = await verifySession();
 
-  if (session == null) return null
+  if (session == null) return null;
 
   try {
-    const data = await db.select().from(users).where(eq(users.user_id, session.userId))
-    return data[0]
+    const data = await db.select().from(users).where(eq(users.user_id, session.userId));
+    return data[0];
   } catch (error) {
-    console.error('Failed to fetch user')
-    return null
+    console.error("Failed to fetch user");
+    return null;
   }
-})
+});
 
 export interface CustomUser extends User {
-  profile_picture: string
-  name: string
+  profile_picture: string;
+  name: string;
 }
 
 /**
@@ -74,13 +74,13 @@ export const getUsers = cache(async (): Promise<CustomUser[] | null> => {
         INNER JOIN "user_information" ON "users"."user_id" = "user_information"."user_id"
       ORDER BY
         "users"."creation_date" DESC;
-    `)
-    return rows as unknown as CustomUser[]
+    `);
+    return rows as unknown as CustomUser[];
   } catch (error) {
-    console.error('Failed to fetch users')
-    return null
+    console.error("Failed to fetch users");
+    return null;
   }
-})
+});
 
 /**
  * Retrieves a user by their ID from the database.
@@ -91,13 +91,13 @@ export const getUsers = cache(async (): Promise<CustomUser[] | null> => {
  */
 export const getUserById = cache(async (id: number): Promise<User | null> => {
   try {
-    const data = await db.select().from(users).where(eq(users.user_id, id))
-    return data[0]
+    const data = await db.select().from(users).where(eq(users.user_id, id));
+    return data[0];
   } catch (error) {
-    console.error('Failed to fetch user')
-    return null
+    console.error("Failed to fetch user");
+    return null;
   }
-})
+});
 
 /**
  * Retrieves all patient results from the database.
@@ -120,13 +120,13 @@ export const getAllPatientResults = cache(async (): Promise<Result[] | null> => 
         JOIN "users" ON "results"."user_id" = "users"."user_id"
       ORDER BY
         "results"."created_at" DESC;
-    `)
-    return rows as unknown as Result[]
+    `);
+    return rows as unknown as Result[];
   } catch (error) {
-    console.error('Failed to fetch patient results')
-    return null
+    console.error("Failed to fetch patient results");
+    return null;
   }
-})
+});
 
 // TODO: Rename this function
 
@@ -152,27 +152,27 @@ export const getPatientResults = cache(async (): Promise<Result[] | null> => {
         LEFT JOIN "user_information" AS "profile" ON "users"."user_id" = "profile"."user_id"
       ORDER BY
         "results"."created_at" DESC;
-    `)
-    return rows as unknown as Result[]
+    `);
+    return rows as unknown as Result[];
   } catch (error) {
-    console.error('Failed to fetch patient results')
-    return null
+    console.error("Failed to fetch patient results");
+    return null;
   }
-})
+});
 
 export interface PatientResult {
-  result_id: number
-  doctor_id: number
-  user_id: number
-  created_at: string
-  ultrasound_image: string
-  percentage: string
-  diagnosis: string
-  user_first_name: string
-  user_last_name: string
-  doctor_profile_picture: string
-  doctor_first_name: string
-  doctor_last_name: string
+  result_id: number;
+  doctor_id: number;
+  user_id: number;
+  created_at: string;
+  ultrasound_image: string;
+  percentage: string;
+  diagnosis: string;
+  user_first_name: string;
+  user_last_name: string;
+  doctor_profile_picture: string;
+  doctor_first_name: string;
+  doctor_last_name: string;
 }
 
 /**
@@ -197,13 +197,13 @@ export const getPatientResult = cache(async (): Promise<PatientResult[] | null> 
         JOIN "users" ON "results"."user_id" = "users"."user_id"
         JOIN "users" AS "doctor" ON "results"."doctor_id" = "doctor"."user_id"
         LEFT JOIN "user_information" AS "profile" ON "doctor"."user_id" = "profile"."user_id";
-    `)
-    return rows as unknown as PatientResult[]
+    `);
+    return rows as unknown as PatientResult[];
   } catch (error) {
-    console.error('Failed to fetch patient result')
-    return null
+    console.error("Failed to fetch patient result");
+    return null;
   }
-})
+});
 
 /**
  * Retrieves the total number of patients from the database.
@@ -217,13 +217,13 @@ export const getPatientResult = cache(async (): Promise<PatientResult[] | null> 
  */
 export const getTotalNumberOfPatients = cache(async () => {
   try {
-    const rows = await db.select({ count: count() }).from(users).where(eq(users.role, 'patient'))
-    return rows
+    const rows = await db.select({ count: count() }).from(users).where(eq(users.role, "patient"));
+    return rows;
   } catch (error) {
-    console.error('Failed to fetch total patients')
-    return null
+    console.error("Failed to fetch total patients");
+    return null;
   }
-})
+});
 
 /**
  * Retrieves the total number of infected patients from the database.
@@ -239,13 +239,13 @@ export const getTotalNumberOfInfectedPatients = cache(async () => {
     const rows = await db
       .select({ count: count() })
       .from(results)
-      .where(eq(results.diagnosis, 'Infected'))
-    return rows
+      .where(eq(results.diagnosis, "Infected"));
+    return rows;
   } catch (error) {
-    console.error('Failed to fetch infected patients')
-    return null
+    console.error("Failed to fetch infected patients");
+    return null;
   }
-})
+});
 
 /**
  * Retrieves the total number of healthy patients from the database.
@@ -262,13 +262,13 @@ export const getTotalNumberOfHealthyPatients = cache(async () => {
     const rows = await db
       .select({ count: count() })
       .from(results)
-      .where(eq(results.diagnosis, 'Healthy'))
-    return rows
+      .where(eq(results.diagnosis, "Healthy"));
+    return rows;
   } catch (error) {
-    console.error('Failed to fetch healthy patients')
-    return null
+    console.error("Failed to fetch healthy patients");
+    return null;
   }
-})
+});
 
 /**
  * Fetches the most recently created users from the database.
@@ -291,10 +291,10 @@ export const getRecentlyCreatedUsers = cache(async (): Promise<CustomUser[] | nu
         "users"."creation_date" DESC
       LIMIT
         10;
-    `)
-    return rows as unknown as CustomUser[]
+    `);
+    return rows as unknown as CustomUser[];
   } catch (error) {
-    console.error('Failed to fetch users')
-    return null
+    console.error("Failed to fetch users");
+    return null;
   }
-})
+});

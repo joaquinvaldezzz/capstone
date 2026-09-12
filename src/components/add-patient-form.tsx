@@ -1,20 +1,20 @@
-'use client'
+"use client";
 
-import { useEffect, useRef, useState } from 'react'
-import { useFormState } from 'react-dom'
+import { useEffect, useRef, useState } from "react";
+import { useFormState } from "react-dom";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
-import { addPatient } from '@/lib/actions'
-import { getUsers } from '@/lib/dal'
-import { resultSchema } from '@/lib/form-schema'
+import { addPatient } from "@/lib/actions";
+import { getUsers } from "@/lib/dal";
+import { resultSchema } from "@/lib/form-schema";
 
-import type { FormEvent } from 'react'
-import type { User } from '@/lib/db-schema'
-import type { ResultSchema } from '@/lib/form-schema'
+import type { FormEvent } from "react";
+import type { User } from "@/lib/db-schema";
+import type { ResultSchema } from "@/lib/form-schema";
 
-import { Button } from './ui/button'
+import { Button } from "./ui/button";
 import {
   Dialog,
   DialogClose,
@@ -24,22 +24,22 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from './ui/dialog'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from './ui/form'
-import { Input } from './ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
+} from "./ui/dialog";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form";
+import { Input } from "./ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 
 export const AddPatientForm = () => {
-  const formRef = useRef<HTMLFormElement>(null)
-  const [patients, setPatients] = useState<User[]>([])
-  const [open, setOpen] = useState<boolean>(false)
-  const [formState, formAction] = useFormState(addPatient, { message: '' })
+  const formRef = useRef<HTMLFormElement>(null);
+  const [patients, setPatients] = useState<User[]>([]);
+  const [open, setOpen] = useState<boolean>(false);
+  const [formState, formAction] = useFormState(addPatient, { message: "" });
   const form = useForm<ResultSchema>({
     defaultValues: {
-      patient_name: '',
+      patient_name: "",
     },
     resolver: zodResolver(resultSchema),
-  })
+  });
 
   /**
    * Handles the form submission event.
@@ -48,18 +48,18 @@ export const AddPatientForm = () => {
    */
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
-    event.preventDefault()
+    event.preventDefault();
 
     void form.handleSubmit(async () => {
       // If the form reference is null, return early.
-      if (formRef.current == null) return
+      if (formRef.current == null) return;
 
       // Create a new form data object from the form reference.
-      const formData = new FormData(formRef.current)
+      const formData = new FormData(formRef.current);
 
       // Perform the form action with the form data.
-      formAction(formData)
-    })(event)
+      formAction(formData);
+    })(event);
   }
 
   useEffect(() => {
@@ -69,21 +69,21 @@ export const AddPatientForm = () => {
      * @returns A promise that resolves when the users are fetched and set in the state.
      */
     async function fetchPatients() {
-      const allUsers = await getUsers()
-      const patientUsers = allUsers?.filter((user) => user.role === 'patient')
-      if (patientUsers != null) setPatients(patientUsers)
+      const allUsers = await getUsers();
+      const patientUsers = allUsers?.filter((user) => user.role === "patient");
+      if (patientUsers != null) setPatients(patientUsers);
     }
 
-    void fetchPatients()
-  }, [])
+    void fetchPatients();
+  }, []);
 
   useEffect(() => {
     // If the form state is successful, close the dialog.
     if (formState.success ?? false) {
-      setOpen(false)
-      form.reset()
+      setOpen(false);
+      form.reset();
     }
-  }, [form, formState.success])
+  }, [form, formState.success]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -103,7 +103,7 @@ export const AddPatientForm = () => {
             action={formAction}
             ref={formRef}
             onSubmit={(event) => {
-              void handleSubmit(event)
+              void handleSubmit(event);
             }}
           >
             <div className="flex flex-col gap-y-5">
@@ -166,5 +166,5 @@ export const AddPatientForm = () => {
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

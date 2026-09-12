@@ -6,29 +6,29 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: '**.vercel-storage.com',
-        port: '',
-        pathname: '/ultrasound-images/**',
+        protocol: "https",
+        hostname: "**.vercel-storage.com",
+        port: "",
+        pathname: "/ultrasound-images/**",
       },
     ],
   },
-  pageExtensions: ['ts', 'tsx'],
+  pageExtensions: ["ts", "tsx"],
   rewrites: async () => [
     {
-      source: '/flask-api/:path*',
+      source: "/flask-api/:path*",
       destination:
-        process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:5000/api/:path*' : '/api/',
+        process.env.NODE_ENV === "development" ? "http://127.0.0.1:5000/api/:path*" : "/api/",
     },
   ],
   turbopack: {
     rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
+      "*.svg": {
+        loaders: ["@svgr/webpack"],
+        as: "*.js",
       },
     },
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

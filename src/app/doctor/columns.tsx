@@ -1,30 +1,30 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
+import Image from "next/image";
 
-import { format } from 'date-fns'
+import { format } from "date-fns";
 
-import { determineBadgeColor } from '@/lib/utils'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
-import { DataTableColumnHeader } from '@/components/ui/data-table/data-table-column-header'
+import { determineBadgeColor } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { DataTableColumnHeader } from "@/components/ui/data-table/data-table-column-header";
 
-import type { ColumnDef } from '@tanstack/react-table'
-import type { Result } from '@/lib/dal'
+import type { ColumnDef } from "@tanstack/react-table";
+import type { Result } from "@/lib/dal";
 
 export const columns: ColumnDef<Result>[] = [
   {
-    accessorKey: 'result_id',
+    accessorKey: "result_id",
     header: ({ column }) => <DataTableColumnHeader title="Result" column={column} />,
     cell: (cell) => cell.row.original.result_id,
   },
   {
-    accessorKey: 'created_at',
+    accessorKey: "created_at",
     header: ({ column }) => <DataTableColumnHeader title="Date" column={column} />,
-    cell: (cell) => format(cell.row.original.created_at, 'MMMM dd, yyyy h:mm a'),
+    cell: (cell) => format(cell.row.original.created_at, "MMMM dd, yyyy h:mm a"),
   },
   {
-    accessorKey: 'name',
+    accessorKey: "name",
     header: ({ column }) => <DataTableColumnHeader title="Name" column={column} />,
     cell: (cell) => (
       <div className="flex items-center gap-2">
@@ -43,7 +43,7 @@ export const columns: ColumnDef<Result>[] = [
     ),
   },
   {
-    accessorKey: 'ultrasound_image',
+    accessorKey: "ultrasound_image",
     header: ({ column }) => <DataTableColumnHeader title="Ultrasound" column={column} />,
     cell: (cell) => (
       <div className="flex items-center gap-2">
@@ -60,16 +60,16 @@ export const columns: ColumnDef<Result>[] = [
     ),
   },
   {
-    accessorKey: 'percentage',
+    accessorKey: "percentage",
     header: ({ column }) => <DataTableColumnHeader title="Percent" column={column} />,
     cell: (cell) => <span className="capitalize">{cell.row.original.percentage}</span>,
   },
   {
-    accessorKey: 'diagnosis',
+    accessorKey: "diagnosis",
     header: ({ column }) => <DataTableColumnHeader title="Diagnosis" column={column} />,
     cell: (cell) => {
-      const result = cell.row.original.diagnosis
-      return <Badge variant={determineBadgeColor(result)}>{result}</Badge>
+      const result = cell.row.original.diagnosis;
+      return <Badge variant={determineBadgeColor(result)}>{result}</Badge>;
     },
   },
-]
+];

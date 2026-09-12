@@ -40,19 +40,19 @@ Exemplar excerpts:
 
 ```typescript
 // Check if the email exists in the database
-const existingAccount = await db.select().from(users).where(eq(users.email, email))
+const existingAccount = await db.select().from(users).where(eq(users.email, email));
 
 // If the email does not exist in the database, return an error message
 if (existingAccount.length === 0) {
   return {
-    message: 'That email address does not exist.',
+    message: "That email address does not exist.",
     success: false,
     fields: parsedData.data,
-  }
+  };
 }
 
 // If the email exists in the database, hash the new password before storing it
-const hashedPassword = await bcrypt.hash(newPassword, 10)
+const hashedPassword = await bcrypt.hash(newPassword, 10);
 
 // Then update the user's password in the database
 await db
@@ -62,7 +62,7 @@ await db
     date_modified: new Date(),
   })
   .where(eq(users.email, email))
-  .execute()
+  .execute();
 ```
 
 ## Commands you will need
@@ -102,15 +102,15 @@ await db
 In `src/lib/db-schema.ts`, define and export a new table:
 
 ```typescript
-export const passwordResetTokens = pgTable('password_reset_tokens', {
-  id: serial('id').primaryKey(),
-  user_id: integer('user_id')
+export const passwordResetTokens = pgTable("password_reset_tokens", {
+  id: serial("id").primaryKey(),
+  user_id: integer("user_id")
     .references(() => users.user_id)
     .notNull(),
-  token_hash: text('token_hash').notNull(),
-  expires_at: timestamp('expires_at').notNull(),
-  used: timestamp('used'),
-})
+  token_hash: text("token_hash").notNull(),
+  expires_at: timestamp("expires_at").notNull(),
+  used: timestamp("used"),
+});
 ```
 
 **Verify**: `bun run drizzle:push` → completes successfully.

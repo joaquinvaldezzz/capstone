@@ -1,45 +1,45 @@
 /* eslint-disable @typescript-eslint/await-thenable */
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
-import { formatDistanceToNow } from 'date-fns'
+import { formatDistanceToNow } from "date-fns";
 
-import { getPatientResult } from '@/lib/dal'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getPatientResult } from "@/lib/dal";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
 interface Params {
-  id: string
+  id: string;
 }
 
 export async function generateStaticParams() {
-  const id = await getPatientResult()
+  const id = await getPatientResult();
 
   if (id == null) {
-    return []
+    return [];
   }
 
   return id.map((item) => ({
     id: String(item.result_id),
-  }))
+  }));
 }
 
 export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
-  const { id } = await params
+  const { id } = await params;
 
   return {
     title: `Your ultrasound result is here! - Result ${id}`,
-  }
+  };
 }
 
 export default async function Page({ params }: { params: Params }) {
-  const { id } = await params
+  const { id } = await params;
   const result = await getPatientResult().then((data) =>
     data?.find((item) => String(item.result_id) === id),
-  )
+  );
 
   if (result == null) {
-    return <div>Result not found</div>
+    return <div>Result not found</div>;
   }
 
   return (
@@ -74,19 +74,19 @@ export default async function Page({ params }: { params: Params }) {
         <p className="mt-4">Your test results are in.</p>
 
         <p className="mt-4">
-          {result?.diagnosis === 'Infected' ? (
+          {result?.diagnosis === "Infected" ? (
             <Fragment>
-              Your test results are available. We have determined a{' '}
+              Your test results are available. We have determined a{" "}
               <span className="font-semibold text-gray-900">{result.percentage}</span> chance of
-              infection based on the ultrasound image provided. You have been diagnosed with an{' '}
+              infection based on the ultrasound image provided. You have been diagnosed with an{" "}
               <span className="font-semibold text-gray-900">infection</span>. Please consult with
               your doctor for further information.
             </Fragment>
           ) : (
             <Fragment>
-              Based on the ultrasound image provided, we have determined that you have a{' '}
+              Based on the ultrasound image provided, we have determined that you have a{" "}
               <span className="font-semibold text-gray-900">{result.percentage}</span> chance of
-              being healthy. You have been diagnosed with{' '}
+              being healthy. You have been diagnosed with{" "}
               <span className="font-semibold text-gray-900">{result.diagnosis.toLowerCase()}</span>.
               Please consult with your doctor for further information.
             </Fragment>
@@ -96,5 +96,5 @@ export default async function Page({ params }: { params: Params }) {
         <p className="mt-4">Thank you.</p>
       </div>
     </Fragment>
-  )
+  );
 }

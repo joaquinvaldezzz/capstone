@@ -1,20 +1,20 @@
-import { cookies } from 'next/headers'
-import { redirect } from 'next/navigation'
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-import { jwtVerify, SignJWT } from 'jose'
+import { jwtVerify, SignJWT } from "jose";
 
-import type { JWTPayload } from 'jose'
+import type { JWTPayload } from "jose";
 
-import { db } from './db'
-import { sessions } from './db-schema'
+import { db } from "./db";
+import { sessions } from "./db-schema";
 
-const secretKey = process.env.JWT_SECRET
-const key = new TextEncoder().encode(secretKey)
+const secretKey = process.env.JWT_SECRET;
+const key = new TextEncoder().encode(secretKey);
 
 export interface SessionPayload extends JWTPayload {
-  userId: string | number
-  userRole: string
-  expiresAt: Date
+  userId: string | number;
+  userRole: string;
+  expiresAt: Date;
 }
 
 /**
@@ -25,10 +25,10 @@ export interface SessionPayload extends JWTPayload {
  */
 export async function encrypt(payload: SessionPayload) {
   return new SignJWT(payload)
-    .setExpirationTime('1hour')
+    .setExpirationTime("1hour")
     .setIssuedAt()
-    .setProtectedHeader({ alg: 'HS256' })
-    .sign(key)
+    .setProtectedHeader({ alg: "HS256" })
+    .sign(key);
 }
 
 /**
@@ -37,15 +37,15 @@ export async function encrypt(payload: SessionPayload) {
  * @param session - The session token to decrypt.
  * @returns The payload of the decrypted session token, or null if decryption fails.
  */
-export async function decrypt(session: string | undefined = '') {
+export async function decrypt(session: string | undefined = "") {
   try {
     const { payload } = await jwtVerify(session, key, {
-      algorithms: ['HS256'],
-    })
+      algorithms: ["HS256"],
+    });
 
-    return payload
+    return payload;
   } catch (error) {
-    return null
+    return null;
   }
 }
 
@@ -56,7 +56,7 @@ export async function decrypt(session: string | undefined = '') {
  * @returns A promise that resolves to void.
  */
 export async function createSession(userId: string, userRole: string) {
-  const expiresAt = new Date(Date.now() + 60 * 60 * 1000)
+  const expiresAt = new Date(Date.now() + 60 * 60 * 1000);
 
   await db
     .insert(sessions)
@@ -65,24 +65,24 @@ export async function createSession(userId: string, userRole: string) {
       user_role: userRole,
       expires_at: expiresAt,
     })
-    .execute()
+    .execute();
 
-  const session = await encrypt({ userId, userRole, expiresAt })
+  const session = await encrypt({ userId, userRole, expiresAt });
 
-  ;(await cookies()).set('session', session, {
+  (await cookies()).set("session", session, {
     httpOnly: true,
     secure: true,
     expires: expiresAt,
-    sameSite: 'lax',
-    path: '/',
-  })
+    sameSite: "lax",
+    path: "/",
+  });
 
-  if (userRole === 'admin') {
-    redirect('/admin')
-  } else if (userRole === 'doctor') {
-    redirect('/doctor')
-  } else if (userRole === 'patient') {
-    redirect('/patient')
+  if (userRole === "admin") {
+    redirect("/admin");
+  } else if (userRole === "doctor") {
+    redirect("/doctor");
+  } else if (userRole === "patient") {
+    redirect("/patient");
   }
 }
 
@@ -94,14 +94,14 @@ export async function createSession(userId: string, userRole: string) {
  * @returns An object with the session verification result, including isAuth and userId.
  */
 export async function verifySession() {
-  const cookie = (await cookies()).get('session')?.value
-  const session = await decrypt(cookie)
+  const cookie = (await cookies()).get("session")?.value;
+  const session = await decrypt(cookie);
 
   if (session?.userId == null) {
-    redirect('/')
+    redirect("/");
   }
 
-  return { userId: Number(session?.userId) }
+  return { userId: Number(session?.userId) };
 }
 
 /**
@@ -110,26 +110,26 @@ export async function verifySession() {
  * @returns A promise that resolves once the session cookie is updated.
  */
 export async function updateSession() {
-  const session = (await cookies()).get('session')?.value
-  const payload = await decrypt(session)
+  const session = (await cookies()).get("session")?.value;
+  const payload = await decrypt(session);
 
   if (session == null || payload == null) {
-    return null
+    return null;
   }
 
-  const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+  const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-  ;(await cookies()).set('session', session, {
+  (await cookies()).set("session", session, {
     httpOnly: true,
     secure: true,
     expires,
-    sameSite: 'lax',
-    path: '/',
-  })
+    sameSite: "lax",
+    path: "/",
+  });
 }
 
 /** Deletes the session by removing the 'session' cookie and redirecting to the home page. */
 export async function deleteSession() {
-  ;(await cookies()).delete('session')
-  redirect('/')
+  (await cookies()).delete("session");
+  redirect("/");
 }

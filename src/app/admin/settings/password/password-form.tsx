@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { startTransition, useActionState, useEffect, useRef } from 'react'
+import { startTransition, useActionState, useEffect, useRef } from "react";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 
-import { updatePassword } from '@/lib/actions'
-import { updatePasswordFormSchema } from '@/lib/form-schema'
-import { useToast } from '@/hooks/use-toast'
-import { Button } from '@/components/ui/button'
+import { updatePassword } from "@/lib/actions";
+import { updatePasswordFormSchema } from "@/lib/form-schema";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -17,39 +17,39 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import type { FormEvent } from 'react'
-import type { User } from '@/lib/db-schema'
-import type { UpdatePasswordFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from "react";
+import type { User } from "@/lib/db-schema";
+import type { UpdatePasswordFormSchema } from "@/lib/form-schema";
 
 export const PasswordForm = ({ data }: { data: User }) => {
-  const formRef = useRef<HTMLFormElement>(null)
-  const [formState, formAction, isSubmitting] = useActionState(updatePassword, { message: '' })
+  const formRef = useRef<HTMLFormElement>(null);
+  const [formState, formAction, isSubmitting] = useActionState(updatePassword, { message: "" });
   const form = useForm<UpdatePasswordFormSchema>({
     defaultValues: {
-      oldPassword: '',
-      newPassword: '',
-      confirmPassword: '',
+      oldPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
     resolver: zodResolver(updatePasswordFormSchema),
-  })
-  const { toast } = useToast()
+  });
+  const { toast } = useToast();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
-    event.preventDefault()
+    event.preventDefault();
 
     void form.handleSubmit(() => {
       startTransition(() => {
         // If the form reference is null, return early.
-        if (formRef.current == null) return
+        if (formRef.current == null) return;
 
         // Perform the form action with the form data.
-        formAction(new FormData(formRef.current))
-      })
-    })(event)
+        formAction(new FormData(formRef.current));
+      });
+    })(event);
   }
 
   useEffect(() => {
@@ -57,18 +57,18 @@ export const PasswordForm = ({ data }: { data: User }) => {
     if (formState.message.length > 0) {
       if (formState.success ?? false) {
         toast({
-          title: 'Yay!',
+          title: "Yay!",
           description: formState.message,
-        })
+        });
       } else {
         toast({
-          title: 'Oops!',
+          title: "Oops!",
           description: formState.message,
-          variant: 'destructive',
-        })
+          variant: "destructive",
+        });
       }
     }
-  }, [formState, toast])
+  }, [formState, toast]);
 
   return (
     <Form {...form}>
@@ -126,10 +126,10 @@ export const PasswordForm = ({ data }: { data: User }) => {
         <div>
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
-            {isSubmitting ? 'Updating password...' : 'Update password'}
+            {isSubmitting ? "Updating password..." : "Update password"}
           </Button>
         </div>
       </form>
     </Form>
-  )
-}
+  );
+};

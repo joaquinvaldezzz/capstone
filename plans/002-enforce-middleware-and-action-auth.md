@@ -107,10 +107,10 @@ export async function deleteUser(
 2. Update the default export function name to `middleware`.
 3. Update route matching logic so protected routes match the path or any subpath:
    ```typescript
-   const protectedRoutes = ['/admin', '/doctor', '/patient']
+   const protectedRoutes = ["/admin", "/doctor", "/patient"];
    const isProtectedRoute = protectedRoutes.some(
      (route) => currentPath === route || currentPath.startsWith(`${route}/`),
-   )
+   );
    ```
 4. Verify role isolation:
    If `session.userRole === 'admin'`, redirect when `!currentPath.startsWith('/admin')`.

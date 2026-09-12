@@ -1,17 +1,17 @@
-'use client'
+"use client";
 
-import { startTransition, useActionState, useRef, useState } from 'react'
-import Link from 'next/link'
+import { startTransition, useActionState, useRef, useState } from "react";
+import Link from "next/link";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { CircleAlert, Loader2 } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleAlert, Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 
-import { login } from '@/lib/actions'
-import { logInFormSchema } from '@/lib/form-schema'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { login } from "@/lib/actions";
+import { logInFormSchema } from "@/lib/form-schema";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -19,26 +19,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import type { FormEvent } from 'react'
-import type { LogInFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from "react";
+import type { LogInFormSchema } from "@/lib/form-schema";
 
 const LoginForm = () => {
-  const formRef = useRef<HTMLFormElement>(null)
-  const [showPassword, setShowPassword] = useState<boolean>(false)
-  const [formState, formAction, isSubmitting] = useActionState(login, { message: '' })
+  const formRef = useRef<HTMLFormElement>(null);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [formState, formAction, isSubmitting] = useActionState(login, { message: "" });
   const form = useForm<LogInFormSchema>({
     defaultValues: {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
 
       // Override the default values with the previous form state fields
       ...formState.fields,
     },
     resolver: zodResolver(logInFormSchema),
-  })
+  });
 
   /**
    * Handles the form submission event.
@@ -47,17 +47,17 @@ const LoginForm = () => {
    */
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior
-    event.preventDefault()
+    event.preventDefault();
 
     form.handleSubmit(() => {
       startTransition(() => {
         // If the form reference is null, return early
-        if (formRef.current == null) return
+        if (formRef.current == null) return;
 
         // Perform the form action with the form data
-        formAction(new FormData(formRef.current))
-      })
-    })(event)
+        formAction(new FormData(formRef.current));
+      });
+    })(event);
   }
 
   return (
@@ -109,15 +109,15 @@ const LoginForm = () => {
                       type="button"
                       variant="link"
                       onClick={() => {
-                        setShowPassword(!showPassword)
+                        setShowPassword(!showPassword);
                       }}
                     >
-                      {showPassword ? 'Hide password' : 'Show password'}
+                      {showPassword ? "Hide password" : "Show password"}
                     </Button>
                   </div>
                   <FormControl>
                     <Input
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
                       autoComplete="off"
                       {...field}
@@ -130,7 +130,7 @@ const LoginForm = () => {
 
             <Button type="submit">
               {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
-              {isSubmitting ? 'Logging in...' : 'Log in'}
+              {isSubmitting ? "Logging in..." : "Log in"}
             </Button>
           </form>
         </Form>
@@ -142,7 +142,7 @@ const LoginForm = () => {
         </div>
       </CardContent>
     </Card>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

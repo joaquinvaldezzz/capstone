@@ -1,19 +1,19 @@
-import { getCurrentUser } from '@/lib/dal'
+import { getCurrentUser } from "@/lib/dal";
 
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
-import { PasswordForm } from './password-form'
+import { PasswordForm } from "./password-form";
 
 export const metadata: Metadata = {
-  title: 'Password',
-  description: 'Manage your account settings here including your email, password, and role.',
-}
+  title: "Password",
+  description: "Manage your account settings here including your email, password, and role.",
+};
 
 export default async function Page() {
-  const user = await getCurrentUser()
+  const user = await getCurrentUser();
 
   if (user == null) {
-    return <div>User not found</div>
+    return <div>User not found</div>;
   }
 
   return (
@@ -24,5 +24,5 @@ export default async function Page() {
       </div>
       <PasswordForm data={user} />
     </div>
-  )
+  );
 }

@@ -1,34 +1,34 @@
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
-import { Activity, ShieldAlert, Users } from 'lucide-react'
+import { Activity, ShieldAlert, Users } from "lucide-react";
 
 import {
   getRecentlyCreatedUsers,
   getTotalNumberOfHealthyPatients,
   getTotalNumberOfInfectedPatients,
   getTotalNumberOfPatients,
-} from '@/lib/dal'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+} from "@/lib/dal";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
-import { DataTable } from './_components/data-table'
-import { columns } from './columns'
+import { DataTable } from "./_components/data-table";
+import { columns } from "./columns";
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Dashboard for the admin panel',
+  title: "Dashboard",
+  description: "Dashboard for the admin panel",
   openGraph: {
-    title: 'Dashboard',
-    description: 'Dashboard for the admin panel',
+    title: "Dashboard",
+    description: "Dashboard for the admin panel",
   },
-}
+};
 
 const Page = async () => {
-  const totalNumberOfPatients = await getTotalNumberOfPatients()
-  const totalNumberOfInfectedPatients = await getTotalNumberOfInfectedPatients()
-  const totalNumberOfHealthyPatients = await getTotalNumberOfHealthyPatients()
-  const recentlyCreatedUsers = await getRecentlyCreatedUsers()
+  const totalNumberOfPatients = await getTotalNumberOfPatients();
+  const totalNumberOfInfectedPatients = await getTotalNumberOfInfectedPatients();
+  const totalNumberOfHealthyPatients = await getTotalNumberOfHealthyPatients();
+  const recentlyCreatedUsers = await getRecentlyCreatedUsers();
 
   if (
     totalNumberOfPatients == null ||
@@ -36,7 +36,7 @@ const Page = async () => {
     totalNumberOfHealthyPatients == null ||
     recentlyCreatedUsers == null
   ) {
-    return <div>Failed to fetch data</div>
+    return <div>Failed to fetch data</div>;
   }
 
   return (
@@ -89,7 +89,7 @@ const Page = async () => {
         />
       </section>
     </Fragment>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

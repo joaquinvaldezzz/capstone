@@ -6,21 +6,21 @@
  * IF YOU'RE COPYING THIS INTO AN ESLINT CONFIG, REMOVE THIS COMMENT BLOCK.
  */
 
-import path from 'node:path'
+import path from "node:path";
 
-import { includeIgnoreFile } from '@eslint/compat'
-import js from '@eslint/js'
-import { configs, plugins, rules } from 'eslint-config-airbnb-extended'
-import { rules as prettierConfigRules } from 'eslint-config-prettier'
-import prettierPlugin from 'eslint-plugin-prettier'
+import { includeIgnoreFile } from "@eslint/compat";
+import js from "@eslint/js";
+import { configs, plugins, rules } from "eslint-config-airbnb-extended";
+import { rules as prettierConfigRules } from "eslint-config-prettier";
+import prettierPlugin from "eslint-plugin-prettier";
 
-const gitignorePath = path.resolve('.', '.gitignore')
+const gitignorePath = path.resolve(".", ".gitignore");
 
 /** @type {import('eslint').Linter.Config[]} */
 const jsConfig = [
   // ESLint Recommended Rules
   {
-    name: 'js/config',
+    name: "js/config",
     ...js.configs.recommended,
   },
   // Stylistic Plugin
@@ -34,11 +34,11 @@ const jsConfig = [
   {
     rules: {
       // Disable Import X order rules to avoid conflicts with `@ianvs/prettier-plugin-sort-imports`
-      'import-x/order': 'off',
-      'import-x/prefer-default-export': ['warn', { target: 'single' }],
+      "import-x/order": "off",
+      "import-x/prefer-default-export": ["warn", { target: "single" }],
     },
   },
-]
+];
 
 const nextConfig = [
   // React Plugin
@@ -55,14 +55,14 @@ const nextConfig = [
   rules.react.strict,
   {
     rules: {
-      'react/function-component-definition': ['error', { namedComponents: 'function-declaration' }],
+      "react/function-component-definition": ["error", { namedComponents: "function-declaration" }],
       // Disable jsx-sort-props to avoid conflicts with `eslint-plugin-perfectionist`
-      'react/jsx-sort-props': 'off',
-      'react/require-default-props': ['error', { functions: 'defaultArguments' }],
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      "react/jsx-sort-props": "off",
+      "react/require-default-props": ["error", { functions: "defaultArguments" }],
+      "@typescript-eslint/explicit-module-boundary-types": "off",
     },
   },
-]
+];
 
 /** @type {import('eslint').Linter.Config[]} */
 const typescriptConfig = [
@@ -76,29 +76,29 @@ const typescriptConfig = [
   ...configs.next.typescript,
   {
     rules: {
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      "@typescript-eslint/explicit-module-boundary-types": "off",
     },
   },
-]
+];
 
 /** @type {import('eslint').Linter.Config[]} */
 const prettierConfig = [
   // Prettier Plugin
   {
-    name: 'prettier/plugin/config',
+    name: "prettier/plugin/config",
     plugins: {
       prettier: prettierPlugin,
     },
   },
   // Prettier Config
   {
-    name: 'prettier/config',
+    name: "prettier/config",
     rules: {
       ...prettierConfigRules,
-      'prettier/prettier': 'error',
+      "prettier/prettier": "error",
     },
   },
-]
+];
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
@@ -114,10 +114,10 @@ export default [
   ...prettierConfig,
   // Custom rule overrides
   {
-    name: 'custom/overrides',
+    name: "custom/overrides",
     rules: {
       // Disable problematic rule that causes crashes
-      '@typescript-eslint/unified-signatures': 'off',
+      "@typescript-eslint/unified-signatures": "off",
     },
   },
-]
+];

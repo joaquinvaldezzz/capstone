@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { Fragment, startTransition, useActionState, useEffect, useRef } from 'react'
+import { Fragment, startTransition, useActionState, useEffect, useRef } from "react";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2 } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 
-import { updateAccount } from '@/lib/actions'
-import { updateAccountFormSchema } from '@/lib/form-schema'
-import { useToast } from '@/hooks/use-toast'
-import { Button } from '@/components/ui/button'
+import { updateAccount } from "@/lib/actions";
+import { updateAccountFormSchema } from "@/lib/form-schema";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -18,23 +18,23 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
 
-import type { FormEvent } from 'react'
-import type { User } from '@/lib/db-schema'
-import type { UpdateAccountFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from "react";
+import type { User } from "@/lib/db-schema";
+import type { UpdateAccountFormSchema } from "@/lib/form-schema";
 
 export const AccountForm = ({ data }: { data: User }) => {
-  const formRef = useRef<HTMLFormElement>(null)
-  const [formState, formAction, isSubmitting] = useActionState(updateAccount, { message: '' })
+  const formRef = useRef<HTMLFormElement>(null);
+  const [formState, formAction, isSubmitting] = useActionState(updateAccount, { message: "" });
 
   const form = useForm<UpdateAccountFormSchema>({
     defaultValues: {
@@ -44,33 +44,33 @@ export const AccountForm = ({ data }: { data: User }) => {
       role: data.role,
     },
     resolver: zodResolver(updateAccountFormSchema),
-  })
-  const { toast } = useToast()
+  });
+  const { toast } = useToast();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
-    event.preventDefault()
+    event.preventDefault();
 
     void form.handleSubmit(() => {
       startTransition(() => {
         // If the form reference is null, return early.
-        if (formRef.current == null) return
+        if (formRef.current == null) return;
 
         // Perform the form action with the form data.
-        formAction(new FormData(formRef.current))
-      })
-    })(event)
+        formAction(new FormData(formRef.current));
+      });
+    })(event);
   }
 
   useEffect(() => {
     // If the form state success is true, display a toast notification.
     if (formState.success ?? false) {
       toast({
-        title: 'Nice!',
-        description: 'Your account has been successfully updated.',
-      })
+        title: "Nice!",
+        description: "Your account has been successfully updated.",
+      });
     }
-  }, [formState, toast])
+  }, [formState, toast]);
 
   return (
     <Form {...form}>
@@ -162,10 +162,10 @@ export const AccountForm = ({ data }: { data: User }) => {
         <div className="flex gap-3">
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
-            {isSubmitting ? 'Updating account...' : 'Update account'}
+            {isSubmitting ? "Updating account..." : "Update account"}
           </Button>
         </div>
       </form>
     </Form>
-  )
-}
+  );
+};

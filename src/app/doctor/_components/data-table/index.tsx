@@ -1,7 +1,7 @@
-'use client'
+"use client";
 
-import { Fragment, useState } from 'react'
-import Link from 'next/link'
+import { Fragment, useState } from "react";
+import Link from "next/link";
 
 import {
   flexRender,
@@ -10,18 +10,18 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from '@tanstack/react-table'
-import { Search } from 'lucide-react'
+} from "@tanstack/react-table";
+import { Search } from "lucide-react";
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
 import {
   Table,
   TableBody,
@@ -29,22 +29,22 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from "@/components/ui/table";
 
-import type { ColumnDef, ColumnFiltersState, SortingState } from '@tanstack/react-table'
-import type { JSX } from 'react'
-import type { Result } from '@/lib/dal'
+import type { ColumnDef, ColumnFiltersState, SortingState } from "@tanstack/react-table";
+import type { JSX } from "react";
+import type { Result } from "@/lib/dal";
 
-import { DataTableFacetedFilter } from './data-table-faceted-filter'
-import { DataTableViewOptions } from './data-table-view-options'
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableViewOptions } from "./data-table-view-options";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  formAction?: JSX.Element
-  withFacetedFilters?: boolean
-  withViewOptions?: boolean
-  withPagination?: boolean
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  formAction?: JSX.Element;
+  withFacetedFilters?: boolean;
+  withViewOptions?: boolean;
+  withPagination?: boolean;
 }
 // Dependencies: pnpm install lucide-react
 
@@ -56,8 +56,8 @@ export const DataTable = <TData extends Result, TValue>({
   withViewOptions = false,
   withPagination = false,
 }: DataTableProps<TData, TValue>) => {
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
-  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [sorting, setSorting] = useState<SortingState>([]);
   const table = useReactTable({
     columns,
     data,
@@ -71,7 +71,7 @@ export const DataTable = <TData extends Result, TValue>({
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     onSortingChange: setSorting,
-  })
+  });
 
   return (
     <Fragment>
@@ -86,18 +86,18 @@ export const DataTable = <TData extends Result, TValue>({
                 className="peer ps-9"
                 type="search"
                 placeholder="Search by name..."
-                value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-                onChange={(event) => table.getColumn('name')?.setFilterValue(event.target.value)}
+                value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                onChange={(event) => table.getColumn("name")?.setFilterValue(event.target.value)}
               />
             </div>
 
-            {table.getColumn('diagnosis') != null && (
+            {table.getColumn("diagnosis") != null && (
               <DataTableFacetedFilter
                 title="Diagnosis"
-                column={table.getColumn('diagnosis')}
+                column={table.getColumn("diagnosis")}
                 options={[
-                  { value: 'infected', label: 'Infected' },
-                  { value: 'healthy', label: 'Healthy' },
+                  { value: "infected", label: "Infected" },
+                  { value: "healthy", label: "Healthy" },
                 ]}
               />
             )}
@@ -129,7 +129,7 @@ export const DataTable = <TData extends Result, TValue>({
           <TableBody>
             {table.getRowModel().rows?.length !== 0 ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow data-state={row.getIsSelected() && 'selected'} key={row.id}>
+                <TableRow data-state={row.getIsSelected() && "selected"} key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       <Link
@@ -159,7 +159,7 @@ export const DataTable = <TData extends Result, TValue>({
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
-                table.setPageSize(Number(value))
+                table.setPageSize(Number(value));
               }}
             >
               <SelectTrigger className="h-9 w-20">
@@ -185,7 +185,7 @@ export const DataTable = <TData extends Result, TValue>({
               size="sm"
               variant="outline"
               onClick={() => {
-                table.previousPage()
+                table.previousPage();
               }}
             >
               Previous
@@ -195,7 +195,7 @@ export const DataTable = <TData extends Result, TValue>({
               size="sm"
               variant="outline"
               onClick={() => {
-                table.nextPage()
+                table.nextPage();
               }}
             >
               Next
@@ -204,5 +204,5 @@ export const DataTable = <TData extends Result, TValue>({
         </div>
       ) : null}
     </Fragment>
-  )
-}
+  );
+};

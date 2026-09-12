@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { formatDistanceToNow } from 'date-fns'
-import { Inbox } from 'lucide-react'
+import { formatDistanceToNow } from "date-fns";
+import { Inbox } from "lucide-react";
 
 import {
   Sidebar,
@@ -19,39 +19,39 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
 
-import type { ComponentProps } from 'react'
-import type { NavUserProps } from '@/components/nav-user'
-import type { PatientResult } from '@/lib/dal'
+import type { ComponentProps } from "react";
+import type { NavUserProps } from "@/components/nav-user";
+import type { PatientResult } from "@/lib/dal";
 
-import { NavUser } from './nav-user'
+import { NavUser } from "./nav-user";
 
-import HospitalLogo from '@/public/images/hospital-logo.jpg'
+import HospitalLogo from "@/public/images/hospital-logo.jpg";
 
 // This is sample data
 const data = {
   navMain: [
     {
-      title: 'Inbox',
-      url: '#',
+      title: "Inbox",
+      url: "#",
       icon: Inbox,
       isActive: true,
     },
   ],
-}
+};
 
 interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavUserProps {
-  messages: PatientResult[]
+  messages: PatientResult[];
 }
 
 export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
-  const [activeItem, setActiveItem] = useState(data.navMain[0])
+  const [activeItem, setActiveItem] = useState(data.navMain[0]);
 
-  const pathname = usePathname()
-  const { setOpen } = useSidebar()
+  const pathname = usePathname();
+  const { setOpen } = useSidebar();
 
   return (
     <Sidebar
@@ -97,8 +97,8 @@ export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
                         hidden: false,
                       }}
                       onClick={() => {
-                        setActiveItem(item)
-                        setOpen(true)
+                        setActiveItem(item);
+                        setOpen(true);
                       }}
                     >
                       <item.icon />
@@ -147,7 +147,7 @@ export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
                   </div>
                   <div className="font-medium">Your ultrasound result is here!</div>
                   <div className="line-clamp-2 text-xs whitespace-break-spaces">
-                    Based on the ultrasound image, the diagnosis is{' '}
+                    Based on the ultrasound image, the diagnosis is{" "}
                     {message.diagnosis.toLowerCase()}.
                   </div>
                 </Link>
@@ -157,5 +157,5 @@ export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
         </SidebarContent>
       </Sidebar>
     </Sidebar>
-  )
-}
+  );
+};

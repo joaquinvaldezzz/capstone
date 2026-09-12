@@ -1,10 +1,10 @@
-import { cookies } from 'next/headers'
-import { NextResponse } from 'next/server'
+import { cookies } from "next/headers";
+import { NextResponse } from "next/server";
 
-import { decrypt } from '@/lib/session'
+import { decrypt } from "@/lib/session";
 
-import type { MiddlewareConfig, NextRequest } from 'next/server'
-import type { SessionPayload } from '@/lib/session'
+import type { MiddlewareConfig, NextRequest } from "next/server";
+import type { SessionPayload } from "@/lib/session";
 
 /**
  * Middleware function that handles route protection and session management.
@@ -14,25 +14,25 @@ import type { SessionPayload } from '@/lib/session'
  */
 export default async function middleware(request: NextRequest) {
   // Specify protected and public routes
-  const protectedRoutes = ['/admin', '/doctor', '/patient']
-  const publicRoutes = ['/']
+  const protectedRoutes = ["/admin", "/doctor", "/patient"];
+  const publicRoutes = ["/"];
 
   // Get the current path from the request
-  const currentPath = request.nextUrl.pathname
+  const currentPath = request.nextUrl.pathname;
 
   // Check if the current route is protected or public
   const isProtectedRoute = protectedRoutes.some(
     (route) => currentPath === route || currentPath.startsWith(`${route}/`),
-  )
-  const isPublicRoute = publicRoutes.includes(currentPath)
+  );
+  const isPublicRoute = publicRoutes.includes(currentPath);
 
   // Decrypt the session from the cookie
-  const cookie = (await cookies()).get('session')?.value
-  const session = (await decrypt(cookie)) as SessionPayload
+  const cookie = (await cookies()).get("session")?.value;
+  const session = (await decrypt(cookie)) as SessionPayload;
 
   /** Redirect to the login page if the route is protected and the user is not authenticated. */
   if (isProtectedRoute && session?.userId == null) {
-    return NextResponse.redirect(new URL('/', request.nextUrl))
+    return NextResponse.redirect(new URL("/", request.nextUrl));
   }
 
   /**
@@ -40,14 +40,14 @@ export default async function middleware(request: NextRequest) {
    * already authenticated as a different user role.
    */
   if (isProtectedRoute && session?.userId != null) {
-    if (session?.userRole === 'admin' && !currentPath.startsWith('/admin')) {
-      return NextResponse.redirect(new URL('/admin', request.nextUrl))
+    if (session?.userRole === "admin" && !currentPath.startsWith("/admin")) {
+      return NextResponse.redirect(new URL("/admin", request.nextUrl));
     }
-    if (session?.userRole === 'doctor' && !currentPath.startsWith('/doctor')) {
-      return NextResponse.redirect(new URL('/doctor', request.nextUrl))
+    if (session?.userRole === "doctor" && !currentPath.startsWith("/doctor")) {
+      return NextResponse.redirect(new URL("/doctor", request.nextUrl));
     }
-    if (session?.userRole === 'patient' && !currentPath.startsWith('/patient')) {
-      return NextResponse.redirect(new URL('/patient', request.nextUrl))
+    if (session?.userRole === "patient" && !currentPath.startsWith("/patient")) {
+      return NextResponse.redirect(new URL("/patient", request.nextUrl));
     }
   }
 
@@ -56,19 +56,19 @@ export default async function middleware(request: NextRequest) {
    * already authenticated.
    */
   if (isPublicRoute && session?.userId != null) {
-    if (session?.userRole === 'admin') {
-      return NextResponse.redirect(new URL('/admin', request.nextUrl))
+    if (session?.userRole === "admin") {
+      return NextResponse.redirect(new URL("/admin", request.nextUrl));
     }
-    if (session?.userRole === 'doctor') {
-      return NextResponse.redirect(new URL('/doctor', request.nextUrl))
+    if (session?.userRole === "doctor") {
+      return NextResponse.redirect(new URL("/doctor", request.nextUrl));
     }
-    if (session?.userRole === 'patient') {
-      return NextResponse.redirect(new URL('/patient', request.nextUrl))
+    if (session?.userRole === "patient") {
+      return NextResponse.redirect(new URL("/patient", request.nextUrl));
     }
   }
 
   // Otherwise, continue to the next middleware
-  return NextResponse.next()
+  return NextResponse.next();
 }
 
 export const config: MiddlewareConfig = {
@@ -81,6 +81,6 @@ export const config: MiddlewareConfig = {
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
   ],
-}
+};

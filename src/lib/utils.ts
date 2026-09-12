@@ -1,21 +1,21 @@
-import { clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 
-import type { VariantProps } from 'class-variance-authority'
-import type { ClassValue } from 'clsx'
-import type { badgeVariants } from '@/components/ui/badge'
+import type { VariantProps } from "class-variance-authority";
+import type { ClassValue } from "clsx";
+import type { badgeVariants } from "@/components/ui/badge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
-export function determineBadgeColor(tag: string): VariantProps<typeof badgeVariants>['variant'] {
+export function determineBadgeColor(tag: string): VariantProps<typeof badgeVariants>["variant"] {
   switch (tag) {
-    case 'Infected':
-      return 'destructive'
-    case 'Healthy':
-      return 'default'
+    case "Infected":
+      return "destructive";
+    case "Healthy":
+      return "default";
     default:
-      return 'outline'
+      return "outline";
   }
 }

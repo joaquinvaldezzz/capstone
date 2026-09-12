@@ -1,19 +1,19 @@
-'use client'
+"use client";
 
-import { startTransition, useActionState, useEffect, useRef, useState } from 'react'
+import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { parseDate } from '@internationalized/date'
-import { format } from 'date-fns'
-import { Loader2, User } from 'lucide-react'
-import { DateField, DateInput, DateSegment, Label } from 'react-aria-components'
-import { useForm, type Resolver } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { parseDate } from "@internationalized/date";
+import { format } from "date-fns";
+import { Loader2, User } from "lucide-react";
+import { DateField, DateInput, DateSegment, Label } from "react-aria-components";
+import { useForm } from "react-hook-form";
 
-import { updateProfile } from '@/lib/actions'
-import { updateProfileFormSchema } from '@/lib/form-schema'
-import { useToast } from '@/hooks/use-toast'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import { updateProfile } from "@/lib/actions";
+import { updateProfileFormSchema } from "@/lib/form-schema";
+import { useToast } from "@/hooks/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -21,26 +21,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input, inputVariants } from '@/components/ui/input'
-import { labelVariants } from '@/components/ui/label'
+} from "@/components/ui/form";
+import { Input, inputVariants } from "@/components/ui/input";
+import { labelVariants } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
 
-import type { FormEvent } from 'react'
-import type { UserInformation } from '@/lib/db-schema'
-import type { UpdateProfileFormSchema } from '@/lib/form-schema'
+import type { FormEvent } from "react";
+import type { Resolver } from "react-hook-form";
+import type { UserInformation } from "@/lib/db-schema";
+import type { UpdateProfileFormSchema } from "@/lib/form-schema";
 
 export const ProfileForm = ({ data }: { data: UserInformation }) => {
-  const formRef = useRef<HTMLFormElement>(null)
-  const fileInputRef = useRef<HTMLInputElement>(null)
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
-  const [formState, formAction, isSubmitting] = useActionState(updateProfile, { message: '' })
+  const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const [formState, formAction, isSubmitting] = useActionState(updateProfile, { message: "" });
   const form = useForm<UpdateProfileFormSchema>({
     defaultValues: {
       // profile_picture: data.profile_picture ?? '',
@@ -50,44 +51,44 @@ export const ProfileForm = ({ data }: { data: UserInformation }) => {
       gender: data.gender,
     },
     resolver: zodResolver(updateProfileFormSchema) as unknown as Resolver<UpdateProfileFormSchema>,
-  })
-  const { toast } = useToast()
+  });
+  const { toast } = useToast();
 
   const handleAvatarClick = () => {
-    fileInputRef.current?.click()
-  }
+    fileInputRef.current?.click();
+  };
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
-    event.preventDefault()
+    event.preventDefault();
 
     void form.handleSubmit(() => {
       startTransition(() => {
         // If the form reference is null, return early.
-        if (formRef.current == null) return
+        if (formRef.current == null) return;
 
         // Perform the form action with the form data.
-        formAction(new FormData(formRef.current))
-      })
-    })(event)
+        formAction(new FormData(formRef.current));
+      });
+    })(event);
   }
 
   useEffect(() => {
     if (formState.message.length > 0) {
       if (formState.success ?? false) {
         toast({
-          title: 'Yay!',
+          title: "Yay!",
           description: formState.message,
-        })
+        });
       } else {
         toast({
-          title: 'Oops!',
+          title: "Oops!",
           description: formState.message,
-          variant: 'destructive',
-        })
+          variant: "destructive",
+        });
       }
     }
-  }, [formState, toast])
+  }, [formState, toast]);
 
   return (
     <Form {...form}>
@@ -125,10 +126,10 @@ export const ProfileForm = ({ data }: { data: UserInformation }) => {
                     accept="image/*"
                     ref={fileInputRef}
                     onChange={(event) => {
-                      const file = event.target.files?.[0]
+                      const file = event.target.files?.[0];
                       if (file != null) {
-                        onChange(file)
-                        setAvatarPreview(URL.createObjectURL(file))
+                        onChange(file);
+                        setAvatarPreview(URL.createObjectURL(file));
                       }
                     }}
                   />
@@ -156,8 +157,8 @@ export const ProfileForm = ({ data }: { data: UserInformation }) => {
               name="birth_date"
               control={form.control}
               render={({ field }) => {
-                const fieldDate = new Date(field.value)
-                const formattedFieldDate = format(fieldDate, 'yyyy-MM-dd')
+                const fieldDate = new Date(field.value);
+                const formattedFieldDate = format(fieldDate, "yyyy-MM-dd");
 
                 return (
                   <FormItem>
@@ -184,7 +185,7 @@ export const ProfileForm = ({ data }: { data: UserInformation }) => {
                     </FormControl>
                     <FormMessage />
                   </FormItem>
-                )
+                );
               }}
             />
           </div>
@@ -229,10 +230,10 @@ export const ProfileForm = ({ data }: { data: UserInformation }) => {
         <div>
           <Button type="submit" disabled={isSubmitting}>
             {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
-            {isSubmitting ? 'Updating profile...' : 'Update profile'}
+            {isSubmitting ? "Updating profile..." : "Update profile"}
           </Button>
         </div>
       </form>
     </Form>
-  )
-}
+  );
+};

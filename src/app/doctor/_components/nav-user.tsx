@@ -1,11 +1,11 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
+import Link from "next/link";
 
-import { ChevronsUpDown, LogOut, Settings } from 'lucide-react'
+import { ChevronsUpDown, LogOut, Settings } from "lucide-react";
 
-import { logout } from '@/lib/actions'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { logout } from "@/lib/actions";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,26 +14,26 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+} from "@/components/ui/dropdown-menu";
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
 
 export interface NavUserProps {
   user: {
-    avatar: string
-    initials: string
-    name: string
-    role: string
-    email: string
-  }
+    avatar: string;
+    initials: string;
+    name: string;
+    role: string;
+    email: string;
+  };
 }
 
 export const NavUser = ({ user }: NavUserProps) => {
-  const { isMobile } = useSidebar()
+  const { isMobile } = useSidebar();
 
   return (
     <SidebarMenu>
@@ -62,7 +62,7 @@ export const NavUser = ({ user }: NavUserProps) => {
           <DropdownMenuContent
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
             align="end"
-            side={isMobile ? 'bottom' : 'right'}
+            side={isMobile ? "bottom" : "right"}
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
@@ -94,7 +94,7 @@ export const NavUser = ({ user }: NavUserProps) => {
             <DropdownMenuSeparator />
             <DropdownMenuItem
               onClick={() => {
-                void logout()
+                void logout();
               }}
             >
               <LogOut />
@@ -104,5 +104,5 @@ export const NavUser = ({ user }: NavUserProps) => {
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
-}
+  );
+};

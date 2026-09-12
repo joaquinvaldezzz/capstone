@@ -1,23 +1,23 @@
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
-import { sql } from 'drizzle-orm'
+import { sql } from "drizzle-orm";
 
-import { getPatientResults } from '@/lib/dal'
-import { db } from '@/lib/db'
+import { getPatientResults } from "@/lib/dal";
+import { db } from "@/lib/db";
 
-import type { Metadata } from 'next'
-import type { CustomUser } from '@/lib/dal'
+import type { Metadata } from "next";
+import type { CustomUser } from "@/lib/dal";
 
-import { DataTable } from '../_components/data-table'
-import { columns } from '../columns'
-import { PatientForm } from './patient-form'
+import { DataTable } from "../_components/data-table";
+import { columns } from "../columns";
+import { PatientForm } from "./patient-form";
 
 export const metadata: Metadata = {
-  title: 'Results',
-}
+  title: "Results",
+};
 
 export default async function Page() {
-  const results = await getPatientResults()
+  const results = await getPatientResults();
   const patients = (await db.execute(sql`
     SELECT
       CONCAT ("first_name", ' ', "last_name") AS "name",
@@ -26,14 +26,14 @@ export default async function Page() {
       "users"
     WHERE
       "role" = 'patient';
-  `)) as unknown as { rows: CustomUser[] }
+  `)) as unknown as { rows: CustomUser[] };
 
   if (results == null) {
-    return <div>Failed to fetch data</div>
+    return <div>Failed to fetch data</div>;
   }
 
   if (patients == null) {
-    return <div>Failed to fetch patients</div>
+    return <div>Failed to fetch patients</div>;
   }
 
   return (
@@ -48,5 +48,5 @@ export default async function Page() {
         withViewOptions
       />
     </Fragment>
-  )
+  );
 }

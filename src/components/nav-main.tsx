@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import { Fragment } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { Fragment } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight } from "lucide-react";
 
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -17,25 +17,25 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
 
-import type { LucideIcon } from 'lucide-react'
+import type { LucideIcon } from "lucide-react";
 
 export interface NavMainProps {
   items: {
-    icon: LucideIcon
-    url: string
-    title: string
-    isActive?: boolean
+    icon: LucideIcon;
+    url: string;
+    title: string;
+    isActive?: boolean;
     items?: {
-      url: string
-      title: string
-    }[]
-  }[]
+      url: string;
+      title: string;
+    }[];
+  }[];
 }
 
 export const NavMain = ({ items }: NavMainProps) => {
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   return (
     <SidebarGroup>
@@ -45,7 +45,7 @@ export const NavMain = ({ items }: NavMainProps) => {
           <Collapsible defaultOpen={item.isActive} key={item.title} asChild>
             <SidebarMenuItem>
               <SidebarMenuButton
-                data-active={pathname === item.url ? 'true' : 'false'}
+                data-active={pathname === item.url ? "true" : "false"}
                 tooltip={item.title}
                 asChild
               >
@@ -84,5 +84,5 @@ export const NavMain = ({ items }: NavMainProps) => {
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  )
-}
+  );
+};

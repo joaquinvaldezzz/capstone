@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { startTransition, useActionState, useEffect, useRef, useState } from 'react'
+import { startTransition, useActionState, useEffect, useRef, useState } from "react";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Plus } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2, Plus } from "lucide-react";
+import { useForm } from "react-hook-form";
 
-import { addPatient } from '@/lib/actions'
-import { resultSchema } from '@/lib/form-schema'
-import { useToast } from '@/hooks/use-toast'
-import { Button } from '@/components/ui/button'
+import { addPatient } from "@/lib/actions";
+import { resultSchema } from "@/lib/form-schema";
+import { useToast } from "@/hooks/use-toast";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -19,7 +19,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -27,74 +27,74 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from "@/components/ui/select";
 
-import type { FormEvent } from 'react'
-import type { CustomUser } from '@/lib/dal'
-import type { ResultSchema } from '@/lib/form-schema'
+import type { FormEvent } from "react";
+import type { CustomUser } from "@/lib/dal";
+import type { ResultSchema } from "@/lib/form-schema";
 
 export const PatientForm = ({ patients }: { patients: CustomUser[] }) => {
-  const [open, setOpen] = useState<boolean>(false)
-  const formRef = useRef<HTMLFormElement>(null)
-  const [formState, formAction, isSubmitting] = useActionState(addPatient, { message: '' })
+  const [open, setOpen] = useState<boolean>(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [formState, formAction, isSubmitting] = useActionState(addPatient, { message: "" });
   const form = useForm<ResultSchema>({
     defaultValues: {
-      patient_name: '',
+      patient_name: "",
     },
     resolver: zodResolver(resultSchema),
-  })
-  const { toast } = useToast()
+  });
+  const { toast } = useToast();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     // Prevent the default form submission behavior.
-    event.preventDefault()
+    event.preventDefault();
 
     void form.handleSubmit(() => {
       startTransition(() => {
         // If the form reference is null, return early
-        if (formRef.current == null) return
+        if (formRef.current == null) return;
 
         // Perform the form action with the form data
-        formAction(new FormData(formRef.current))
-      })
-    })(event)
+        formAction(new FormData(formRef.current));
+      });
+    })(event);
   }
 
   function handleCancel() {
-    form.reset()
+    form.reset();
   }
 
   useEffect(() => {
     if (formState.success ?? false) {
-      setOpen(false)
-      form.reset()
+      setOpen(false);
+      form.reset();
     }
-  }, [form, formState])
+  }, [form, formState]);
 
   useEffect(() => {
     if (formState.message.length > 0) {
       if (formState.success ?? false) {
         toast({
-          title: 'Yay!',
+          title: "Yay!",
           description: formState.message,
-        })
+        });
       } else {
         toast({
-          title: 'Oops!',
+          title: "Oops!",
           description: formState.message,
-          variant: 'destructive',
-        })
+          variant: "destructive",
+        });
       }
     }
-  }, [formState, toast])
+  }, [formState, toast]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -170,12 +170,12 @@ export const PatientForm = ({ patients }: { patients: CustomUser[] }) => {
 
               <Button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? <Loader2 className="size-4 animate-spin" /> : null}
-                {isSubmitting ? 'Analyzing image...' : 'Analyze'}
+                {isSubmitting ? "Analyzing image..." : "Analyze"}
               </Button>
             </DialogFooter>
           </form>
         </Form>
       </DialogContent>
     </Dialog>
-  )
-}
+  );
+};

@@ -1,11 +1,11 @@
-import { Fragment } from 'react'
+import { Fragment } from "react";
 
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Inbox',
-}
+  title: "Inbox",
+};
 
 export default async function Page() {
-  return <h2 />
+  return <h2 />;
 }

@@ -1,57 +1,57 @@
 /* eslint-disable @typescript-eslint/await-thenable */
-import { Fragment } from 'react'
-import Image from 'next/image'
+import { Fragment } from "react";
+import Image from "next/image";
 
-import { format } from 'date-fns'
+import { format } from "date-fns";
 
-import { getPatientResults } from '@/lib/dal'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { getPatientResults } from "@/lib/dal";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
-import { DeleteButton } from './delete-button'
-import { PrintButton } from './print-button'
+import { DeleteButton } from "./delete-button";
+import { PrintButton } from "./print-button";
 
 export async function generateStaticParams() {
-  const id = await getPatientResults()
+  const id = await getPatientResults();
 
   if (id == null) {
-    return []
+    return [];
   }
 
   return id.map((item) => ({
     id: String(item.result_id),
-  }))
+  }));
 }
 
 export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const { id } = await params
+  const { id } = await params;
   const user = await getPatientResults().then((data) =>
     data?.find((item) => item.result_id === Number(id)),
-  )
+  );
 
   if (user == null) {
     return {
-      title: 'User not found',
-    }
+      title: "User not found",
+    };
   }
 
   return {
     title: `${user.first_name} ${user.last_name}'s Result`,
-  }
+  };
 }
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = await params
+  const { id } = await params;
   const result = await getPatientResults().then((data) =>
     data?.find((item) => item.result_id === Number(id)),
-  )
+  );
 
   if (result == null) {
-    return <div>Failed to fetch data</div>
+    return <div>Failed to fetch data</div>;
   }
 
-  console.log(result)
+  console.log(result);
 
   return (
     <Fragment>
@@ -61,7 +61,7 @@ export default async function Page({ params }: { params: { id: string } }) {
             <h2 className="font-semibold">Result #{result.result_id}</h2>
             <div className="mt-1 flex gap-4">
               <span className="text-gray-600">
-                {format(result.created_at, 'MMMM dd, yyyy hh:mm a')}
+                {format(result.created_at, "MMMM dd, yyyy hh:mm a")}
               </span>
             </div>
           </div>
@@ -133,5 +133,5 @@ export default async function Page({ params }: { params: { id: string } }) {
         </div>
       </div>
     </Fragment>
-  )
+  );
 }

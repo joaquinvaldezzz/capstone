@@ -1,29 +1,29 @@
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
 
-import { sql } from 'drizzle-orm'
+import { sql } from "drizzle-orm";
 
-import { getCurrentUser, getPatientResult } from '@/lib/dal'
-import { db } from '@/lib/db'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { getCurrentUser, getPatientResult } from "@/lib/dal";
+import { db } from "@/lib/db";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 
-import type { ReactNode } from 'react'
-import type { NavUserProps } from '@/components/nav-user'
+import type { ReactNode } from "react";
+import type { NavUserProps } from "@/components/nav-user";
 
-import { AppSidebar } from './_components/app-sidebar'
+import { AppSidebar } from "./_components/app-sidebar";
 
 export default async function Layout({ children }: { children: ReactNode }) {
-  const currentUser = await getCurrentUser()
+  const currentUser = await getCurrentUser();
 
-  if (currentUser?.role !== 'patient') {
-    redirect('/')
+  if (currentUser?.role !== "patient") {
+    redirect("/");
   }
 
   const results = await getPatientResult().then((data) =>
     data?.filter((item) => item.user_id === currentUser.user_id),
-  )
+  );
 
   if (results == null) {
-    return null
+    return null;
   }
 
   const avatar = await db.execute(sql`
@@ -33,23 +33,23 @@ export default async function Layout({ children }: { children: ReactNode }) {
       "user_information"
     WHERE
       "user_id" = ${currentUser.user_id};
-  `)
+  `);
 
   const user: NavUserProps = {
     user: {
       avatar: avatar.rows[0].profile_picture as string,
       initials: currentUser.first_name.charAt(0).concat(currentUser.last_name.charAt(0)),
-      name: currentUser.first_name.concat(' ', currentUser.last_name),
+      name: currentUser.first_name.concat(" ", currentUser.last_name),
       role: currentUser.role,
       email: currentUser.email,
     },
-  }
+  };
 
   return (
     <SidebarProvider
       style={{
         // @ts-expect-error Object literal may only specify known properties, and ''--sidebar-width'' does not exist in type 'Properties<string | number, string & {}>'.
-        '--sidebar-width': '350px',
+        "--sidebar-width": "350px",
       }}
     >
       <AppSidebar messages={results} user={user.user} />
@@ -61,5 +61,5 @@ export default async function Layout({ children }: { children: ReactNode }) {
         <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

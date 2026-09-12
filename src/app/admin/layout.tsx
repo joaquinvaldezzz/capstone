@@ -1,25 +1,25 @@
-import { redirect } from 'next/navigation'
+import { redirect } from "next/navigation";
 
-import { sql } from 'drizzle-orm'
+import { sql } from "drizzle-orm";
 
-import { getCurrentUser } from '@/lib/dal'
-import { db } from '@/lib/db'
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import { AppSidebar } from '@/components/app-sidebar'
+import { getCurrentUser } from "@/lib/dal";
+import { db } from "@/lib/db";
+import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
-import type { NavUserProps } from '@/components/nav-user'
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
+import type { NavUserProps } from "@/components/nav-user";
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
-}
+  title: "Dashboard",
+};
 
 export default async function Layout({ children }: { children: ReactNode }) {
-  const currentUser = await getCurrentUser()
+  const currentUser = await getCurrentUser();
 
-  if (currentUser?.role !== 'admin') {
-    redirect('/')
+  if (currentUser?.role !== "admin") {
+    redirect("/");
   }
 
   const avatar = await db.execute(sql`
@@ -29,17 +29,17 @@ export default async function Layout({ children }: { children: ReactNode }) {
       "user_information"
     WHERE
       "user_id" = ${currentUser.user_id};
-  `)
+  `);
 
   const user: NavUserProps = {
     user: {
-      avatar: (avatar.rows[0].profile_picture as string) ?? '',
+      avatar: (avatar.rows[0].profile_picture as string) ?? "",
       initials: currentUser.first_name.charAt(0).concat(currentUser.last_name.charAt(0)),
-      name: currentUser.first_name.concat(' ', currentUser.last_name),
+      name: currentUser.first_name.concat(" ", currentUser.last_name),
       role: currentUser.role,
       email: currentUser.email,
     },
-  }
+  };
 
   return (
     <SidebarProvider>
@@ -53,5 +53,5 @@ export default async function Layout({ children }: { children: ReactNode }) {
         <main className="px-4 pb-4">{children}</main>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

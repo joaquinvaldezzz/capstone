@@ -43,7 +43,7 @@ Exemplar excerpts:
 ```typescript
 const results = await getPatientResult().then((data) =>
   data?.filter((item) => item.user_id === currentUser.user_id),
-)
+);
 ```
 
 `src/app/doctor/results/[id]/page.tsx:46-54`:
@@ -51,13 +51,13 @@ const results = await getPatientResult().then((data) =>
 ```typescript
 const result = await getPatientResults().then((data) =>
   data?.find((item) => item.result_id === Number(id)),
-)
+);
 
 if (result == null) {
-  return null
+  return null;
 }
 
-console.log(result)
+console.log(result);
 ```
 
 ## Commands you will need
@@ -118,14 +118,14 @@ In `src/lib/dal.ts`:
              "results"."user_id" = ${userId}
            ORDER BY
              "results"."created_at" DESC;
-         `)
-         return rows as unknown as PatientResult[]
+         `);
+         return rows as unknown as PatientResult[];
        } catch (error) {
-         console.error('Failed to fetch patient results')
-         return null
+         console.error("Failed to fetch patient results");
+         return null;
        }
      },
-   )
+   );
    ```
 3. Add a parameterized function `getResultById(resultId: number)`:
    Queries only the single row matching `results.result_id = ${resultId}` with a `LIMIT 1`.
@@ -138,11 +138,13 @@ In `src/app/patient/layout.tsx`:
 
 1. Replace `const results = await getPatientResult().then(...)` with:
    ```typescript
-   const results = await getResultsByPatientId(currentUser.user_id)
+   const results = await getResultsByPatientId(currentUser.user_id);
    ```
 2. Safeguard avatar extraction:
    ```typescript
-   const avatarUrl = avatar.rows?.[0]?.profile_picture ? String(avatar.rows[0].profile_picture) : ''
+   const avatarUrl = avatar.rows?.[0]?.profile_picture
+     ? String(avatar.rows[0].profile_picture)
+     : "";
    ```
 
 **Verify**: `bun run lint` exits 0.

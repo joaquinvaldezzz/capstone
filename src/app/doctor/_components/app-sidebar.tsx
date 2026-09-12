@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import Image from 'next/image'
-import Link from 'next/link'
+import Image from "next/image";
+import Link from "next/link";
 
-import { FileText, LayoutDashboard } from 'lucide-react'
+import { FileText, LayoutDashboard } from "lucide-react";
 
 import {
   Sidebar,
@@ -13,17 +13,17 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from '@/components/ui/sidebar'
+} from "@/components/ui/sidebar";
 
-import type { ComponentProps } from 'react'
+import type { ComponentProps } from "react";
 
-import type { NavMainProps } from './nav-main'
-import type { NavUserProps } from './nav-user'
+import type { NavMainProps } from "./nav-main";
+import type { NavUserProps } from "./nav-user";
 
-import { NavMain } from './nav-main'
-import { NavUser } from './nav-user'
+import { NavMain } from "./nav-main";
+import { NavUser } from "./nav-user";
 
-import HospitalLogo from '@/public/images/hospital-logo.jpg'
+import HospitalLogo from "@/public/images/hospital-logo.jpg";
 
 interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavUserProps {}
 
@@ -31,16 +31,16 @@ const links: NavMainProps = {
   items: [
     {
       icon: LayoutDashboard,
-      url: '/doctor',
-      title: 'Dashboard',
+      url: "/doctor",
+      title: "Dashboard",
     },
     {
       icon: FileText,
-      url: '/doctor/results',
-      title: 'Results',
+      url: "/doctor/results",
+      title: "Results",
     },
   ],
-}
+};
 
 export const AppSidebar = ({ user, ...props }: AppSidebarProps) => (
   <Sidebar variant="inset" {...props}>
@@ -70,4 +70,4 @@ export const AppSidebar = ({ user, ...props }: AppSidebarProps) => (
       <NavUser user={user} />
     </SidebarFooter>
   </Sidebar>
-)
+);

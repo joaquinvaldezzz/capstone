@@ -62,9 +62,9 @@ Exemplar excerpts:
 // If the form data is invalid, return an error message
 if (!parsedData.success) {
   return {
-    message: 'Invalid form data.',
+    message: "Invalid form data.",
     fields: parsedData.data,
-  }
+  };
 }
 ```
 

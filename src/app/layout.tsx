@@ -1,18 +1,18 @@
-import localFont from 'next/font/local'
+import localFont from "next/font/local";
 
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from "@/components/ui/toaster";
 
-import type { Metadata } from 'next'
-import type { ReactNode } from 'react'
+import type { Metadata } from "next";
+import type { ReactNode } from "react";
 
-import ProgressBarProvider from './progress-bar-provider'
+import ProgressBarProvider from "./progress-bar-provider";
 
-import '../styles/main.css'
+import "../styles/main.css";
 
 export const metadata: Metadata = {
   openGraph: {
-    locale: 'en_US',
-    type: 'website',
+    locale: "en_US",
+    type: "website",
   },
   robots: {
     index: false,
@@ -22,28 +22,28 @@ export const metadata: Metadata = {
       index: true,
       follow: false,
       noimageindex: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
-}
+};
 
 const inter = localFont({
   src: [
     {
-      path: '../../public/fonts/InterVariable.woff2',
-      weight: '100 900',
-      style: 'normal',
+      path: "../../public/fonts/InterVariable.woff2",
+      weight: "100 900",
+      style: "normal",
     },
     {
-      path: '../../public/fonts/InterVariable-Italic.woff2',
-      weight: '100 900',
-      style: 'italic',
+      path: "../../public/fonts/InterVariable-Italic.woff2",
+      weight: "100 900",
+      style: "italic",
     },
   ],
-  variable: '--font-sans',
-})
+  variable: "--font-sans",
+});
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
   <html className={inter.variable} lang="en">
@@ -52,6 +52,6 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
       <Toaster />
     </body>
   </html>
-)
+);
 
-export default RootLayout
+export default RootLayout;
