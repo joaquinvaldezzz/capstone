@@ -7,7 +7,7 @@ import { parseDate } from '@internationalized/date'
 import { format } from 'date-fns'
 import { Loader2, User as UserIcon } from 'lucide-react'
 import { DateField, DateInput, DateSegment, Label } from 'react-aria-components'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 
 import { updateAccount, updateProfile } from '@/lib/actions'
 import { updateAccountFormSchema, updateProfileFormSchema } from '@/lib/form-schema'
@@ -66,7 +66,7 @@ export const Forms = ({ user, profile }: { user: User; profile: UserInformation 
       address: profile.address,
       gender: profile.gender,
     },
-    resolver: zodResolver(updateProfileFormSchema),
+    resolver: zodResolver(updateProfileFormSchema) as unknown as Resolver<UpdateProfileFormSchema>,
   })
   const { toast } = useToast()
 

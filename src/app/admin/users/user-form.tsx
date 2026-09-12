@@ -7,7 +7,7 @@ import { parseDate } from '@internationalized/date'
 import { format } from 'date-fns'
 import { Loader2, Plus } from 'lucide-react'
 import { DateField, DateInput, DateSegment, Label } from 'react-aria-components'
-import { useForm } from 'react-hook-form'
+import { useForm, type Resolver } from 'react-hook-form'
 
 import { signUp } from '@/lib/actions'
 import { signUpFormSchema } from '@/lib/form-schema'
@@ -59,7 +59,7 @@ export const UserForm = () => {
       email: '',
       role: '',
     },
-    resolver: zodResolver(signUpFormSchema),
+    resolver: zodResolver(signUpFormSchema) as unknown as Resolver<SignUpFormSchema>,
   })
   const { toast } = useToast()
 

@@ -16,11 +16,11 @@ export async function generateStaticParams() {
   const id = await getPatientResults()
 
   if (id == null) {
-    return
+    return []
   }
 
   return id.map((item) => ({
-    param: item.user_id,
+    id: String(item.result_id),
   }))
 }
 
@@ -94,27 +94,6 @@ export default async function Page({ params }: { params: { id: string } }) {
                     {result.first_name} {result.last_name}
                   </span>
                 </div>
-              </dd>
-            </div>
-
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm leading-6 font-medium">Birth date</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {format(result.birth_date, 'MMMM dd, yyyy')}
-              </dd>
-            </div>
-
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm leading-6 font-medium">Age</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {result.age} years old
-              </dd>
-            </div>
-
-            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt className="text-sm leading-6 font-medium">Address</dt>
-              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                {result.address}
               </dd>
             </div>
 

@@ -16,11 +16,11 @@ export async function generateStaticParams() {
   const id = await getPatientResult()
 
   if (id == null) {
-    return
+    return []
   }
 
   return id.map((item) => ({
-    param: item.result_id,
+    id: String(item.result_id),
   }))
 }
 

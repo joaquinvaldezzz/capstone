@@ -147,11 +147,13 @@ const SidebarProvider = forwardRef<
               'group/sidebar-wrapper flex min-h-svh w-full text-sidebar-foreground has-data-[variant=inset]:bg-sidebar',
               className,
             )}
-            style={{
-              '--sidebar-width': SIDEBAR_WIDTH,
-              '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
-              ...style,
-            }}
+            style={
+              {
+                '--sidebar-width': SIDEBAR_WIDTH,
+                '--sidebar-width-icon': SIDEBAR_WIDTH_ICON,
+                ...style,
+              } as React.CSSProperties
+            }
             ref={ref}
             {...props}
           >
@@ -207,9 +209,11 @@ const Sidebar = forwardRef<
             className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
             data-mobile="true"
             data-sidebar="sidebar"
-            style={{
-              '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
-            }}
+            style={
+              {
+                '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
+              } as React.CSSProperties
+            }
             side={side}
           >
             <SheetTitle className="sr-only">Mobile navigation</SheetTitle>
@@ -646,9 +650,11 @@ const SidebarMenuSkeleton = forwardRef<
       <Skeleton
         className="h-4 max-w-(--skeleton-width) flex-1"
         data-sidebar="menu-skeleton-text"
-        style={{
-          '--skeleton-width': width,
-        }}
+        style={
+          {
+            '--skeleton-width': width,
+          } as React.CSSProperties
+        }
       />
     </div>
   )
