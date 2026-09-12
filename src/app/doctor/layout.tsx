@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+
 import { sql } from 'drizzle-orm'
 
 import { getCurrentUser } from '@/lib/dal'
@@ -17,8 +19,8 @@ export const metadata: Metadata = {
 export default async function Layout({ children }: { children: ReactNode }) {
   const currentUser = await getCurrentUser()
 
-  if (currentUser == null) {
-    return null
+  if (currentUser?.role !== 'doctor') {
+    redirect('/')
   }
 
   const avatar = await db.execute(sql`

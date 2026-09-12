@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+
 import { sql } from 'drizzle-orm'
 
 import { getCurrentUser, getPatientResult } from '@/lib/dal'
@@ -12,8 +14,8 @@ import { AppSidebar } from './_components/app-sidebar'
 export default async function Layout({ children }: { children: ReactNode }) {
   const currentUser = await getCurrentUser()
 
-  if (currentUser == null) {
-    return null
+  if (currentUser?.role !== 'patient') {
+    redirect('/')
   }
 
   const results = await getPatientResult().then((data) =>

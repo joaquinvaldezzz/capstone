@@ -255,6 +255,14 @@ export async function updateUser(
   _previousState: PreviousState,
   formData: FormData,
 ): Promise<Message> {
+  const currentUser = await getCurrentUser()
+  if (currentUser?.role !== 'admin') {
+    return {
+      message: 'Unauthorized: admin access required.',
+      success: false,
+    }
+  }
+
   const formValues = Object.fromEntries(formData)
   const parsedData = signUpFormSchema.safeParse(formValues)
 
@@ -294,6 +302,14 @@ export async function updateAccount(
   _previousState: PreviousState,
   formData: FormData,
 ): Promise<Message> {
+  const currentUser = await getCurrentUser()
+  if (!currentUser) {
+    return {
+      message: 'Unauthorized.',
+      success: false,
+    }
+  }
+
   const formValues = Object.fromEntries(formData)
   const parsedData = updateAccountFormSchema.safeParse(formValues)
 
@@ -312,7 +328,7 @@ export async function updateAccount(
       ...parsedData.data,
       date_modified: new Date(),
     })
-    .where(eq(users.user_id, Number(formData.get('id'))))
+    .where(eq(users.user_id, currentUser.user_id))
     .execute()
 
   // Revalidate the account page
@@ -335,6 +351,14 @@ export async function updateProfile(
   _previousState: PreviousState,
   formData: FormData,
 ): Promise<Message> {
+  const currentUser = await getCurrentUser()
+  if (!currentUser) {
+    return {
+      message: 'Unauthorized.',
+      success: false,
+    }
+  }
+
   const formValues = Object.fromEntries(formData)
   const parsedData = updateProfileFormSchema.safeParse(formValues)
 
@@ -354,7 +378,7 @@ export async function updateProfile(
       profile_picture: parsedData.data.profile_picture?.name,
       age: Number(parsedData.data.age),
     })
-    .where(eq(userInformation.user_id, Number(formData.get('id'))))
+    .where(eq(userInformation.user_id, currentUser.user_id))
     .execute()
 
   // Update the modified date in the users table
@@ -363,7 +387,7 @@ export async function updateProfile(
     .set({
       date_modified: new Date(),
     })
-    .where(eq(users.user_id, Number(formData.get('id'))))
+    .where(eq(users.user_id, currentUser.user_id))
     .execute()
 
   if (parsedData.data.profile_picture.name !== 'undefined') {
@@ -521,15 +545,18 @@ export async function forgotPassword(
 
 export async function deleteAccount(
   _previousState: PreviousState,
-  formData: FormData,
+  _formData: FormData,
 ): Promise<Message> {
-  const id = formData.get('id')
+  const currentUser = await getCurrentUser()
+  if (!currentUser) {
+    return {
+      message: 'Unauthorized.',
+      success: false,
+    }
+  }
 
   // Delete the user from the database
-  await db
-    .delete(users)
-    .where(eq(users.user_id, parseInt(String(id), 10)))
-    .execute()
+  await db.delete(users).where(eq(users.user_id, currentUser.user_id)).execute()
 
   // Revalidate the dashboard page
   revalidatePath('/admin/settings/account')
@@ -552,6 +579,14 @@ export async function deleteUser(
   _previousState: PreviousState,
   formData: FormData,
 ): Promise<Message> {
+  const currentUser = await getCurrentUser()
+  if (currentUser?.role !== 'admin') {
+    return {
+      message: 'Unauthorized: admin access required.',
+      success: false,
+    }
+  }
+
   const userId = formData.get('user-id')
 
   // Delete the user from the database
@@ -581,6 +616,14 @@ export async function deleteResult(
   _previousState: PreviousState,
   formData: FormData,
 ): Promise<Message> {
+  const currentUser = await getCurrentUser()
+  if (currentUser?.role !== 'doctor' && currentUser?.role !== 'admin') {
+    return {
+      message: 'Unauthorized: doctor access required.',
+      success: false,
+    }
+  }
+
   const userId = formData.get('result-id')
 
   // Delete the user from the database

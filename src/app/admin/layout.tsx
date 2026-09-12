@@ -1,3 +1,5 @@
+import { redirect } from 'next/navigation'
+
 import { sql } from 'drizzle-orm'
 
 import { getCurrentUser } from '@/lib/dal'
@@ -13,11 +15,11 @@ export const metadata: Metadata = {
   title: 'Dashboard',
 }
 
-const Layout = async ({ children }: { children: ReactNode }) => {
+export default async function Layout({ children }: { children: ReactNode }) {
   const currentUser = await getCurrentUser()
 
-  if (currentUser == null) {
-    return null
+  if (currentUser?.role !== 'admin') {
+    redirect('/')
   }
 
   const avatar = await db.execute(sql`
@@ -53,5 +55,3 @@ const Layout = async ({ children }: { children: ReactNode }) => {
     </SidebarProvider>
   )
 }
-
-export default Layout

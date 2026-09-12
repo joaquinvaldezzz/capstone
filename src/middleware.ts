@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 
 import { decrypt } from '@/lib/session'
 
-import type { NextRequest, ProxyConfig } from 'next/server'
+import type { MiddlewareConfig, NextRequest } from 'next/server'
 import type { SessionPayload } from '@/lib/session'
 
 /**
@@ -12,7 +12,7 @@ import type { SessionPayload } from '@/lib/session'
  * @param request - The NextRequest object representing the incoming request.
  * @returns A NextResponse object representing the response to be sent.
  */
-export default async function proxy(request: NextRequest) {
+export default async function middleware(request: NextRequest) {
   // Specify protected and public routes
   const protectedRoutes = ['/admin', '/doctor', '/patient']
   const publicRoutes = ['/']
@@ -21,7 +21,9 @@ export default async function proxy(request: NextRequest) {
   const currentPath = request.nextUrl.pathname
 
   // Check if the current route is protected or public
-  const isProtectedRoute = protectedRoutes.includes(currentPath)
+  const isProtectedRoute = protectedRoutes.some(
+    (route) => currentPath === route || currentPath.startsWith(`${route}/`),
+  )
   const isPublicRoute = publicRoutes.includes(currentPath)
 
   // Decrypt the session from the cookie
@@ -37,14 +39,16 @@ export default async function proxy(request: NextRequest) {
    * Redirect to their dashboard if they are trying to access a different dashboard while they are
    * already authenticated as a different user role.
    */
-  if (session?.userRole === 'admin' && !currentPath.includes('/admin')) {
-    return NextResponse.redirect(new URL('/admin', request.nextUrl))
-  }
-  if (session?.userRole === 'doctor' && !currentPath.includes('/doctor')) {
-    return NextResponse.redirect(new URL('/doctor', request.nextUrl))
-  }
-  if (session?.userRole === 'patient' && !currentPath.includes('/patient')) {
-    return NextResponse.redirect(new URL('/patient', request.nextUrl))
+  if (isProtectedRoute && session?.userId != null) {
+    if (session?.userRole === 'admin' && !currentPath.startsWith('/admin')) {
+      return NextResponse.redirect(new URL('/admin', request.nextUrl))
+    }
+    if (session?.userRole === 'doctor' && !currentPath.startsWith('/doctor')) {
+      return NextResponse.redirect(new URL('/doctor', request.nextUrl))
+    }
+    if (session?.userRole === 'patient' && !currentPath.startsWith('/patient')) {
+      return NextResponse.redirect(new URL('/patient', request.nextUrl))
+    }
   }
 
   /**
@@ -67,7 +71,7 @@ export default async function proxy(request: NextRequest) {
   return NextResponse.next()
 }
 
-export const config: ProxyConfig = {
+export const config: MiddlewareConfig = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
