@@ -20,6 +20,7 @@
 - **Category**: dx
 - **Planned at**: commit `1968e3d`, 2026-09-12
 - **Issue**: https://github.com/joaquinvaldezzz/capstone/issues/15
+- **Status**: DONE (verified commit `5f33768` on branch `advisor/001-fix-verification-baseline`)
 
 ## Why this matters
 
