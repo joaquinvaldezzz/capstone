@@ -178,11 +178,11 @@ In `src/app/doctor/results/[id]/page.tsx`:
 
 ## Done criteria
 
-- [ ] Unbounded `getPatientResult()` without `WHERE` is replaced by `getResultsByPatientId`
-- [ ] `generateStaticParams` removed from `patient/result/[id]/page.tsx`
-- [ ] No `users.password` selected in DAL queries
-- [ ] `console.log(result)` removed
-- [ ] `plans/README.md` status updated to DONE
+- [x] Unbounded `getPatientResult()` without `WHERE` is replaced by `getResultsByPatientId`
+- [x] `generateStaticParams` removed from `patient/result/[id]/page.tsx`
+- [x] No `users.password` selected in DAL queries
+- [x] `console.log(result)` removed
+- [x] `plans/README.md` status updated to DONE
 
 ## STOP conditions
 
