@@ -1,18 +1,20 @@
 'use server'
 
+import crypto from 'crypto'
 import { revalidatePath } from 'next/cache'
 
 import { put } from '@vercel/blob'
 import bcrypt from 'bcrypt'
 import { format } from 'date-fns'
-import { eq, sql } from 'drizzle-orm'
+import { and, eq, gt, isNull, sql } from 'drizzle-orm'
 
 import { getCurrentUser } from './dal'
 import { db } from './db'
-import { results, userInformation, users } from './db-schema'
+import { passwordResetTokens, results, userInformation, users } from './db-schema'
 import {
   forgotPasswordFormSchema,
   logInFormSchema,
+  resetPasswordFormSchema,
   resultSchema,
   signUpFormSchema,
   updateAccountFormSchema,
@@ -505,40 +507,96 @@ export async function forgotPassword(
     }
   }
 
-  // If the form data is valid, extract data
-  const { email, newPassword } = parsedData.data
+  const { email } = parsedData.data
 
   // Check if the email exists in the database
-  const existingAccount = await db.select().from(users).where(eq(users.email, email))
+  const [existingUser] = await db.select().from(users).where(eq(users.email, email))
 
-  // If the email does not exist in the database, return an error message
-  if (existingAccount.length === 0) {
+  // If user exists, generate reset token and store hash
+  if (existingUser) {
+    const rawToken = crypto.randomBytes(32).toString('hex')
+    const tokenHash = crypto.createHash('sha256').update(rawToken).digest('hex')
+
+    await db.insert(passwordResetTokens).values({
+      user_id: existingUser.user_id,
+      token_hash: tokenHash,
+      expires_at: new Date(Date.now() + 15 * 60 * 1000),
+    })
+
+    // eslint-disable-next-line no-console
+    console.info('Password reset link:', `/reset-password?token=${rawToken}`)
+  }
+
+  // To avoid email enumeration, always return generic message
+  return {
+    message: 'If an account exists with this email, instructions have been sent.',
+    success: true,
+  }
+}
+
+/**
+ * Handles resetting a user's password using a valid token.
+ *
+ * @param _previousState - The previous state (not used in this function).
+ * @param formData - The form data containing token, password, and confirmPassword.
+ * @returns A promise that resolves to a message indicating the result of the operation.
+ */
+export async function resetPassword(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const formValues = Object.fromEntries(formData)
+  const parsedData = resetPasswordFormSchema.safeParse(formValues)
+
+  if (!parsedData.success) {
     return {
-      message: 'That email address does not exist.',
-      success: false,
-      fields: parsedData.data,
+      message: 'Invalid form data.',
+      fields: formValues as Record<string, string | number | Date>,
     }
   }
 
-  // If the email exists in the database, hash the new password before storing it
-  const hashedPassword = await bcrypt.hash(newPassword, 10)
+  const { token, password } = parsedData.data
+  const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
 
-  // Then update the user's password in the database
+  const [resetToken] = await db
+    .select()
+    .from(passwordResetTokens)
+    .where(
+      and(
+        eq(passwordResetTokens.token_hash, tokenHash),
+        isNull(passwordResetTokens.used),
+        gt(passwordResetTokens.expires_at, new Date()),
+      ),
+    )
+
+  if (!resetToken) {
+    return {
+      message: 'Invalid or expired password reset link.',
+      success: false,
+    }
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10)
+
   await db
     .update(users)
     .set({
       password: hashedPassword,
       date_modified: new Date(),
     })
-    .where(eq(users.email, email))
+    .where(eq(users.user_id, resetToken.user_id))
     .execute()
 
-  // Revalidate the page
-  revalidatePath('/')
+  await db
+    .update(passwordResetTokens)
+    .set({
+      used: new Date(),
+    })
+    .where(eq(passwordResetTokens.id, resetToken.id))
+    .execute()
 
-  // Return a success message
   return {
-    message: 'Your password has been updated successfully.',
+    message: 'Your password has been reset successfully.',
     success: true,
   }
 }

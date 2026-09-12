@@ -1,6 +1,6 @@
 'use client'
 
-import { startTransition, useActionState, useEffect, useRef, useState } from 'react'
+import { startTransition, useActionState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -25,16 +25,13 @@ import { Input } from '@/components/ui/input'
 import type { FormEvent } from 'react'
 import type { ForgotPasswordFormSchema } from '@/lib/form-schema'
 
-const ForgotPasswordForm = () => {
+function ForgotPasswordForm() {
   const formRef = useRef<HTMLFormElement>(null)
-  const [showPassword, setShowPassword] = useState<boolean>(false)
 
   const [formState, formAction, isSubmitting] = useActionState(forgotPassword, { message: '' })
   const form = useForm<ForgotPasswordFormSchema>({
     defaultValues: {
       email: '',
-      newPassword: '',
-      confirmPassword: '',
 
       // Override the default values with the previous form state fields
       ...formState.fields,
@@ -74,7 +71,7 @@ const ForgotPasswordForm = () => {
       <CardHeader>
         <CardTitle className="text-2xl">Forgot password</CardTitle>
         <CardDescription>
-          Be sure to use a strong password that you don&apos;t use for any other site.
+          Enter your email address and we&apos;ll send you instructions to reset your password.
         </CardDescription>
       </CardHeader>
 
@@ -115,71 +112,9 @@ const ForgotPasswordForm = () => {
               )}
             />
 
-            <FormField
-              name="newPassword"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center justify-between">
-                    <FormLabel>New password</FormLabel>
-                    <Button
-                      className="h-auto p-0"
-                      type="button"
-                      variant="link"
-                      onClick={() => {
-                        setShowPassword(!showPassword)
-                      }}
-                    >
-                      {showPassword ? 'Hide password' : 'Show password'}
-                    </Button>
-                  </div>
-                  <FormControl>
-                    <Input
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                      autoComplete="off"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              name="confirmPassword"
-              control={form.control}
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex items-center justify-between">
-                    <FormLabel>Confirm password</FormLabel>
-                    <Button
-                      className="h-auto p-0"
-                      type="button"
-                      variant="link"
-                      onClick={() => {
-                        setShowPassword(!showPassword)
-                      }}
-                    >
-                      {showPassword ? 'Hide password' : 'Show password'}
-                    </Button>
-                  </div>
-                  <FormControl>
-                    <Input
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;"
-                      autoComplete="off"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
             <Button type="submit">
               {isSubmitting ? <Loader2 className="animate-spin" /> : null}
-              {isSubmitting ? 'Resetting password...' : 'Reset password'}
+              {isSubmitting ? 'Sending instructions...' : 'Send reset instructions'}
             </Button>
           </form>
         </Form>

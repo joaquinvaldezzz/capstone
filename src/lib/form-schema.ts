@@ -199,16 +199,30 @@ export type LogInFormSchema = z.infer<typeof logInFormSchema>
 /**
  * Schema for the forgot password form.
  *
- * This schema validates the email address and password fields for the forgot password form.
+ * This schema validates the email address for requesting a password reset.
  */
-export const forgotPasswordFormSchema = z
+export const forgotPasswordFormSchema = z.object({
+  email: z
+    .email({
+      error: 'Please enter your email address.',
+    })
+    .trim(),
+})
+
+/** Represents the inferred type of the `forgotPasswordFormSchema`. */
+export type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>
+
+/**
+ * Schema for the reset password form.
+ *
+ * This schema validates the token, password, and confirm password for resetting a password.
+ */
+export const resetPasswordFormSchema = z
   .object({
-    email: z
-      .email({
-        error: 'Please enter your email address.',
-      })
-      .trim(),
-    newPassword: z
+    token: z.string().min(1, {
+      error: 'Reset token is required.',
+    }),
+    password: z
       .string()
       .min(8, {
         error: 'Your password must be at least 8 characters.',
@@ -230,13 +244,13 @@ export const forgotPasswordFormSchema = z
       })
       .trim(),
   })
-  .refine((values) => values.newPassword === values.confirmPassword, {
+  .refine((values) => values.password === values.confirmPassword, {
     path: ['confirmPassword'],
     error: 'Passwords do not match.',
   })
 
-/** Represents the inferred type of the `forgotPasswordFormSchema`. */
-export type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>
+/** Represents the inferred type of the `resetPasswordFormSchema`. */
+export type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>
 
 /** Represents the schema for adding a new patient result. */
 export const resultSchema = z.object({
