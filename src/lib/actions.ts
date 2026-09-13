@@ -11,6 +11,7 @@ import { and, eq, gt, isNull, sql } from "drizzle-orm";
 import { getCurrentUser } from "./dal";
 import { db } from "./db";
 import { passwordResetTokens, results, userInformation, users } from "./db-schema";
+import { sendPasswordResetEmail, sendResultReadyEmail } from "./email";
 import {
   forgotPasswordFormSchema,
   logInFormSchema,
@@ -172,7 +173,7 @@ export async function addPatient(
   const ultrasoundImage = blob.pathname.replace(/^ultrasound-images\//, "");
 
   // If the current user is found, insert the patient into the database
-  await db
+  const [newResult] = await db
     .insert(results)
     .values({
       doctor_id: currentDoctor.user_id,
@@ -181,7 +182,30 @@ export async function addPatient(
       ultrasound_image: ultrasoundImage,
       diagnosis,
     })
+    .returning({ result_id: results.result_id })
     .execute();
+
+  try {
+    const patientId = Number(parsedData.data.patient_name);
+    const [patient] = await db
+      .select({
+        first_name: users.first_name,
+        email: users.email,
+      })
+      .from(users)
+      .where(eq(users.user_id, patientId));
+
+    if (patient && newResult) {
+      await sendResultReadyEmail({
+        to: patient.email,
+        patientName: patient.first_name,
+        resultId: newResult.result_id,
+      });
+    }
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error("Failed to send result notification email:", error);
+  }
 
   // Revalidate the results page
   revalidatePath("/doctor/results");
@@ -526,8 +550,15 @@ export async function forgotPassword(
       expires_at: new Date(Date.now() + 15 * 60 * 1000),
     });
 
-    // eslint-disable-next-line no-console
-    console.info("Password reset link:", `/reset-password?token=${rawToken}`);
+    try {
+      await sendPasswordResetEmail({
+        to: existingUser.email,
+        resetToken: rawToken,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error("Failed to send password reset email:", error);
+    }
   }
 
   // To avoid email enumeration, always return generic message
