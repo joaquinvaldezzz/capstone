@@ -236,39 +236,38 @@ export const getResultsByPatientId = cache(
   },
 );
 
-export const getResultById = cache(
-  async (resultId: number): Promise<PatientResult | null> => {
-    try {
-      const { rows } = await db.execute(sql`
-        SELECT
-          "results".*,
-          "users"."first_name" AS "user_first_name",
-          "users"."last_name" AS "user_last_name",
-          "users"."first_name" AS "first_name",
-          "users"."last_name" AS "last_name",
-          CONCAT ("users"."first_name", ' ', "users"."last_name") AS "name",
-          "users"."email" AS "email",
-          "patient_profile"."profile_picture" AS "profile_picture",
-          "doctor"."first_name" AS "doctor_first_name",
-          "doctor"."last_name" AS "doctor_last_name",
-          "doctor_profile"."profile_picture" AS "doctor_profile_picture"
-        FROM
-          "results"
-          JOIN "users" ON "results"."user_id" = "users"."user_id"
-          LEFT JOIN "user_information" AS "patient_profile" ON "users"."user_id" = "patient_profile"."user_id"
-          JOIN "users" AS "doctor" ON "results"."doctor_id" = "doctor"."user_id"
-          LEFT JOIN "user_information" AS "doctor_profile" ON "doctor"."user_id" = "doctor_profile"."user_id"
-        WHERE
-          "results"."result_id" = ${resultId}
-        LIMIT 1;
-      `);
-      return (rows[0] as unknown as PatientResult) ?? null;
-    } catch (error) {
-      console.error("Failed to fetch result by id");
-      return null;
-    }
-  },
-);
+export const getResultById = cache(async (resultId: number): Promise<PatientResult | null> => {
+  try {
+    const { rows } = await db.execute(sql`
+      SELECT
+        "results".*,
+        "users"."first_name" AS "user_first_name",
+        "users"."last_name" AS "user_last_name",
+        "users"."first_name" AS "first_name",
+        "users"."last_name" AS "last_name",
+        CONCAT ("users"."first_name", ' ', "users"."last_name") AS "name",
+        "users"."email" AS "email",
+        "patient_profile"."profile_picture" AS "profile_picture",
+        "doctor"."first_name" AS "doctor_first_name",
+        "doctor"."last_name" AS "doctor_last_name",
+        "doctor_profile"."profile_picture" AS "doctor_profile_picture"
+      FROM
+        "results"
+        JOIN "users" ON "results"."user_id" = "users"."user_id"
+        LEFT JOIN "user_information" AS "patient_profile" ON "users"."user_id" = "patient_profile"."user_id"
+        JOIN "users" AS "doctor" ON "results"."doctor_id" = "doctor"."user_id"
+        LEFT JOIN "user_information" AS "doctor_profile" ON "doctor"."user_id" = "doctor_profile"."user_id"
+      WHERE
+        "results"."result_id" = ${resultId}
+      LIMIT
+        1;
+    `);
+    return (rows[0] as unknown as PatientResult) ?? null;
+  } catch (error) {
+    console.error("Failed to fetch result by id");
+    return null;
+  }
+});
 
 /**
  * Fetches patient results from the database, joining the results with user information.
