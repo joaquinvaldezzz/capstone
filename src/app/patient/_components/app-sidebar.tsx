@@ -34,7 +34,7 @@ const data = {
   navMain: [
     {
       title: "Inbox",
-      url: "#",
+      url: "/patient",
       icon: Inbox,
       isActive: true,
     },
@@ -45,7 +45,7 @@ interface AppSidebarProps extends ComponentProps<typeof Sidebar>, NavUserProps {
   messages: PatientResult[];
 }
 
-export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
+export function AppSidebar({ messages, user, ...props }: AppSidebarProps) {
   // Note: I'm using state to show active item.
   // IRL you should use the url/router.
   const [activeItem, setActiveItem] = useState(data.navMain[0]);
@@ -67,7 +67,7 @@ export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton className="md:h-8 md:p-0" size="lg" asChild>
-                <Link href="">
+                <Link href="/patient">
                   <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                     <Image src={HospitalLogo} alt="National Children's Hospital" />
                   </div>
@@ -90,8 +90,12 @@ export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
                 {data.navMain.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
+                      asChild
                       className="px-2.5 md:px-2"
-                      isActive={activeItem.title === item.title}
+                      isActive={
+                        pathname === item.url ||
+                        (item.url !== "/patient" && pathname.startsWith(item.url))
+                      }
                       tooltip={{
                         children: item.title,
                         hidden: false,
@@ -101,8 +105,10 @@ export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
                         setOpen(true);
                       }}
                     >
-                      <item.icon />
-                      <span>{item.title}</span>
+                      <Link href={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -147,8 +153,9 @@ export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
                   </div>
                   <div className="font-medium">Your ultrasound result is here!</div>
                   <div className="line-clamp-2 text-xs whitespace-break-spaces">
-                    Based on the ultrasound image, the diagnosis is{" "}
-                    {message.diagnosis.toLowerCase()}.
+                    {message.diagnosis === "Infected"
+                      ? "PCOS indicators detected."
+                      : "Consistent with normal ovarian morphology."}
                   </div>
                 </Link>
               ))}
@@ -158,4 +165,4 @@ export const AppSidebar = ({ messages, user, ...props }: AppSidebarProps) => {
       </Sidebar>
     </Sidebar>
   );
-};
+}

@@ -1,10 +1,13 @@
 import { Fragment } from "react";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 
 import { formatDistanceToNow } from "date-fns";
+import { Info } from "lucide-react";
 
-import { getCurrentUser, getResultById } from "@/lib/dal";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getCurrentUser, getResultById } from "@/lib/dal";
 
 import type { Metadata } from "next";
 
@@ -63,24 +66,51 @@ export default async function Page({ params }: { params: Promise<Params> }) {
         <p className="mt-4">
           {result?.diagnosis === "Infected" ? (
             <Fragment>
-              Your test results are available. We have determined a{" "}
-              <span className="font-semibold text-gray-900">{result.percentage}</span> chance of
-              infection based on the ultrasound image provided. You have been diagnosed with an{" "}
-              <span className="font-semibold text-gray-900">infection</span>. Please consult with
-              your doctor for further information.
+              Your ultrasound scan indicates features consistent with Polycystic Ovary Syndrome
+              (PCOS), with an AI confidence score of{" "}
+              <span className="font-semibold text-gray-900">{result.percentage}</span>. Polycystic
+              ovaries typically show multiple small follicles arranged peripherally. Please discuss
+              these findings with Dr. {result.doctor_first_name} {result.doctor_last_name} to review
+              comprehensive symptoms, hormonal evaluations, and personalized management plans.
             </Fragment>
           ) : (
             <Fragment>
-              Based on the ultrasound image provided, we have determined that you have a{" "}
-              <span className="font-semibold text-gray-900">{result.percentage}</span> chance of
-              being healthy. You have been diagnosed with{" "}
-              <span className="font-semibold text-gray-900">{result.diagnosis.toLowerCase()}</span>.
-              Please consult with your doctor for further information.
+              Your ultrasound scan indicates normal ovarian morphology, with an AI confidence score
+              of <span className="font-semibold text-gray-900">{result.percentage}</span>. No
+              significant polycystic features were identified. Continue following your routine
+              health guidance with Dr. {result.doctor_first_name} {result.doctor_last_name}.
             </Fragment>
           )}
         </p>
 
-        <p className="mt-4">Thank you.</p>
+        <div className="mt-6">
+          <h3 className="mb-2 text-sm font-medium text-muted-foreground">Ultrasound Scan</h3>
+          <div className="max-w-sm overflow-hidden rounded-lg border">
+            <Image
+              src={
+                result.ultrasound_image.startsWith("http")
+                  ? result.ultrasound_image
+                  : `https://x5l8gkuguvp5hvw9.public.blob.vercel-storage.com/ultrasound-images/${result.ultrasound_image}`
+              }
+              alt="Ultrasound scan"
+              width={320}
+              height={320}
+              className="w-full object-cover"
+              priority
+            />
+          </div>
+        </div>
+
+        <Alert className="mt-6">
+          <Info className="size-4" />
+          <AlertDescription className="text-xs text-muted-foreground">
+            Note: This ultrasound analysis is generated with algorithmic assistance. Formal medical
+            diagnosis requires correlation with clinical symptoms and laboratory tests by your
+            healthcare provider.
+          </AlertDescription>
+        </Alert>
+
+        <p className="mt-6">Thank you.</p>
       </div>
     </Fragment>
   );
