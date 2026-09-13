@@ -20,6 +20,7 @@ import {
   updateAccountFormSchema,
   updatePasswordFormSchema,
   updateProfileFormSchema,
+  updateResultReviewSchema,
 } from "./form-schema";
 import { createSession, deleteSession } from "./session";
 
@@ -709,4 +710,36 @@ export async function deleteResult(
  */
 export async function logout() {
   await deleteSession();
+}
+
+export async function updateResultReview(
+  _previousState: PreviousState,
+  formData: FormData,
+): Promise<Message> {
+  const currentUser = await getCurrentUser();
+  if (currentUser?.role !== "doctor" && currentUser?.role !== "admin") {
+    return { message: "Unauthorized: only physicians may review results.", success: false };
+  }
+
+  const formValues = Object.fromEntries(formData);
+  const parsed = updateResultReviewSchema.safeParse(formValues);
+  if (!parsed.success) {
+    return { message: "Invalid review data.", success: false };
+  }
+
+  await db
+    .update(results)
+    .set({
+      diagnosis: parsed.data.diagnosis,
+      status: parsed.data.status,
+      doctor_notes: parsed.data.doctor_notes ?? null,
+    })
+    .where(eq(results.result_id, parsed.data.result_id))
+    .execute();
+
+  revalidatePath(`/doctor/results/${parsed.data.result_id}`);
+  revalidatePath("/doctor/results");
+  revalidatePath(`/patient/result/${parsed.data.result_id}`);
+
+  return { message: "Clinical review updated successfully.", success: true };
 }

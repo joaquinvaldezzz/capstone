@@ -20,6 +20,8 @@ export interface Result {
   ultrasound_image: string;
   percentage: string;
   diagnosis: string;
+  status: string;
+  doctor_notes: string | null;
   first_name: string;
   last_name: string;
   email: string;
@@ -195,6 +197,8 @@ export interface PatientResult {
   ultrasound_image: string;
   percentage: string;
   diagnosis: string;
+  status: string;
+  doctor_notes: string | null;
   user_first_name: string;
   user_last_name: string;
   doctor_profile_picture: string;

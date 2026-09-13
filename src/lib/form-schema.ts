@@ -265,3 +265,12 @@ export const resultSchema = z.object({
 
 /** Represents the inferred type of the `resultSchema`. */
 export type ResultSchema = z.infer<typeof resultSchema>;
+
+export const updateResultReviewSchema = z.object({
+  result_id: z.coerce.number().int().positive(),
+  diagnosis: z.string().min(1, { error: "Diagnosis cannot be empty." }),
+  status: z.enum(["PENDING_REVIEW", "VERIFIED", "REVISED"]),
+  doctor_notes: z.string().max(2000, { error: "Notes cannot exceed 2000 characters." }).optional(),
+});
+
+export type UpdateResultReviewSchema = z.infer<typeof updateResultReviewSchema>;

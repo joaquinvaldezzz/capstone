@@ -73,6 +73,8 @@ export const results = pgTable("results", {
   ultrasound_image: text("ultrasound_image").notNull(),
   percentage: text("percentage").notNull(),
   diagnosis: text("diagnosis").notNull(),
+  status: text("status").default("PENDING_REVIEW").notNull(),
+  doctor_notes: text("doctor_notes"),
 });
 
 /** Represents the inferred type of the `results` table. */

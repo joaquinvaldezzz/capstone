@@ -5,11 +5,37 @@ import { format } from "date-fns";
 
 import { getPatientResults, getResultById } from "@/lib/dal";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 import type { Metadata } from "next";
 
 import { DeleteButton } from "./delete-button";
 import { PrintButton } from "./print-button";
+import { ReviewForm } from "./review-form";
+
+function StatusBadge({ status = "PENDING_REVIEW" }: { status?: string }) {
+  switch (status) {
+    case "VERIFIED":
+      return (
+        <Badge className="border-emerald-200 bg-emerald-100 text-emerald-800 hover:bg-emerald-100">
+          Verified
+        </Badge>
+      );
+    case "REVISED":
+      return (
+        <Badge className="border-blue-200 bg-blue-100 text-blue-800 hover:bg-blue-100">
+          Revised
+        </Badge>
+      );
+    case "PENDING_REVIEW":
+    default:
+      return (
+        <Badge className="border-amber-200 bg-amber-100 text-amber-800 hover:bg-amber-100">
+          Pending Review
+        </Badge>
+      );
+  }
+}
 
 export async function generateStaticParams() {
   const id = await getPatientResults();
@@ -55,7 +81,10 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
       <div className="mx-auto flex max-w-(--breakpoint-md) flex-col gap-5">
         <div className="flex justify-between gap-4">
           <div>
-            <h2 className="font-semibold">Result #{result.result_id}</h2>
+            <div className="flex items-center gap-3">
+              <h2 className="font-semibold">Result #{result.result_id}</h2>
+              <StatusBadge status={result.status} />
+            </div>
             <div className="mt-1 flex gap-4">
               <span className="text-gray-600">
                 {format(result.created_at, "MMMM dd, yyyy hh:mm a")}
@@ -64,6 +93,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
           </div>
 
           <div className="flex items-center gap-4 print:hidden">
+            <ReviewForm result={result} />
             <DeleteButton resultId={result.result_id} />
             <PrintButton />
           </div>
@@ -101,9 +131,23 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm leading-6 font-medium">Status</dt>
+              <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <StatusBadge status={result.status} />
+              </dd>
+            </div>
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
               <dt className="text-sm leading-6 font-medium">Diagnosis</dt>
               <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                 {result.diagnosis}
+              </dd>
+            </div>
+            <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt className="text-sm leading-6 font-medium">Doctor Clinical Notes</dt>
+              <dd className="mt-1 text-sm leading-6 whitespace-pre-wrap text-gray-700 sm:col-span-2 sm:mt-0">
+                {result.doctor_notes ?? (
+                  <span className="text-gray-400 italic">No clinical notes recorded.</span>
+                )}
               </dd>
             </div>
             <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
