@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import { decrypt } from "@/lib/session";
 
-import type { MiddlewareConfig, NextRequest } from "next/server";
+import type { ProxyConfig, NextRequest } from "next/server";
 import type { SessionPayload } from "@/lib/session";
 
 /**
@@ -12,7 +12,7 @@ import type { SessionPayload } from "@/lib/session";
  * @param request - The NextRequest object representing the incoming request.
  * @returns A NextResponse object representing the response to be sent.
  */
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   // Specify protected and public routes
   const protectedRoutes = ["/admin", "/doctor", "/patient"];
   const publicRoutes = ["/"];
@@ -71,7 +71,7 @@ export default async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config: MiddlewareConfig = {
+export const config: ProxyConfig = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
