@@ -7,7 +7,7 @@
  */
 
 import path from "node:path";
-
+import { defineConfig } from "eslint/config";
 import { includeIgnoreFile } from "@eslint/compat";
 import js from "@eslint/js";
 import { configs, plugins, rules } from "eslint-config-airbnb-extended";
@@ -16,8 +16,7 @@ import prettierPlugin from "eslint-plugin-prettier";
 
 const gitignorePath = path.resolve(".", ".gitignore");
 
-/** @type {import("eslint").Linter.Config[]} */
-const jsConfig = [
+const jsConfig = defineConfig([
   // ESLint Recommended Rules
   {
     name: "js/config",
@@ -35,12 +34,12 @@ const jsConfig = [
     rules: {
       // Disable Import X order rules to avoid conflicts with `@ianvs/prettier-plugin-sort-imports`
       "import-x/order": "off",
-      "import-x/prefer-default-export": ["warn", { target: "single" }],
+      "import-x/prefer-default-export": "off",
     },
   },
-];
+]);
 
-const nextConfig = [
+const nextConfig = defineConfig([
   // React Plugin
   plugins.react,
   // React Hooks Plugin
@@ -62,10 +61,9 @@ const nextConfig = [
       "@typescript-eslint/explicit-module-boundary-types": "off",
     },
   },
-];
+]);
 
-/** @type {import("eslint").Linter.Config[]} */
-const typescriptConfig = [
+const typescriptConfig = defineConfig([
   // TypeScript ESLint Plugin
   plugins.typescriptEslint,
   // Airbnb Base TypeScript Config
@@ -79,10 +77,9 @@ const typescriptConfig = [
       "@typescript-eslint/explicit-module-boundary-types": "off",
     },
   },
-];
+]);
 
-/** @type {import("eslint").Linter.Config[]} */
-const prettierConfig = [
+const prettierConfig = defineConfig([
   // Prettier Plugin
   {
     name: "prettier/plugin/config",
@@ -98,10 +95,9 @@ const prettierConfig = [
       "prettier/prettier": "error",
     },
   },
-];
+]);
 
-/** @type {import("eslint").Linter.Config[]} */
-export default [
+export default defineConfig([
   // Ignore .gitignore files/folder in eslint
   includeIgnoreFile(gitignorePath),
   // Javascript Config
@@ -120,4 +116,4 @@ export default [
       "@typescript-eslint/unified-signatures": "off",
     },
   },
-];
+]);
