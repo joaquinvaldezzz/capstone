@@ -88,18 +88,16 @@ Analyze the diff to determine:
 
 - **Type**: What kind of change is this?
 - **Scope**: What area/module is affected?
-- **Description**: One-line summary of what changed (present tense, imperative mood).
-- **Strict Length Limit**: The entire commit header `<type>[scope]: <description>` MUST be strictly less than 50 characters (maximum 49 characters).
+- **Description**: One-line summary of what changed (present tense, imperative mood, <72 chars)
 
 ### 4. Execute Commit
 
 ```bash
-# Single line (must be < 50 chars)
+# Single line
 git commit -m "<type>[scope]: <description>"
 
-# Multi-line with body/footer (subject line must be < 50 chars)
-git commit -m "$(
-  cat << 'EOF'
+# Multi-line with body/footer
+git commit -m "$(cat <<'EOF'
 <type>[scope]: <description>
 
 <optional body>
@@ -115,7 +113,7 @@ EOF
 - Present tense: "add" not "added"
 - Imperative mood: "fix bug" not "fixes bug"
 - Reference issues: `Closes #123`, `Refs #456`
-- **Header Length**: Strictly limit the first line / commit subject to less than 50 characters (`< 50 chars`, max 49 characters).
+- Keep description under 72 characters
 
 ## Git Safety Protocol
 
