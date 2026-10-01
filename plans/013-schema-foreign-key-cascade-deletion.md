@@ -39,18 +39,20 @@ Currently, invoking `deleteAccount` (`src/lib/actions.ts:651`) or `deleteUser` (
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Typecheck | `bun x tsc --noEmit` | exit 0, no errors |
-| Lint Check | `bun run lint` | exit 0, 0 errors |
+| Purpose    | Command              | Expected on success |
+| ---------- | -------------------- | ------------------- |
+| Typecheck  | `bun x tsc --noEmit` | exit 0, no errors   |
+| Lint Check | `bun run lint`       | exit 0, 0 errors    |
 
 ## Scope
 
 **In scope** (the only files you should modify):
+
 - `src/lib/db-schema.ts`
 - `src/lib/actions.ts`
 
 **Out of scope** (do NOT touch):
+
 - Database connection configuration (`src/lib/db.ts`).
 - UI forms calling `deleteAccount` or `deleteUser`.
 
@@ -64,6 +66,7 @@ Currently, invoking `deleteAccount` (`src/lib/actions.ts:651`) or `deleteUser` (
 ### Step 1: Add `onDelete: "cascade"` to all foreign key references in `db-schema.ts`
 
 Update `src/lib/db-schema.ts` so that each foreign key explicitly declares `{ onDelete: "cascade" }`:
+
 ```typescript
 export const userInformation = pgTable("user_information", {
   id: serial("id").primaryKey(),
@@ -106,6 +109,7 @@ export const passwordResetTokens = pgTable("password_reset_tokens", {
 ### Step 2: Refactor `deleteUser` and `deleteAccount` in `src/lib/actions.ts`
 
 In `src/lib/actions.ts`:
+
 1. In `deleteAccount`:
    - Delete related session cookie (`await deleteSession()`) if account deletion is successful, or clean up properly.
    - Execute deletion: `await db.delete(users).where(eq(users.user_id, currentUser.user_id)).execute();`
@@ -126,4 +130,5 @@ In `src/lib/actions.ts`:
 ## STOP conditions
 
 Stop and report back if:
+
 - Drizzle Kit migration / push script is required in production environment before runtime schema changes.

@@ -29,6 +29,7 @@ In `updatePassword` (`src/lib/actions.ts:450-509`), the target account is identi
 ## Current state
 
 - `src/lib/actions.ts:449-509`:
+
 ```typescript
 export async function updatePassword(
   _previousState: PreviousState,
@@ -51,21 +52,24 @@ export async function updatePassword(
     .where(eq(users.user_id, Number(formData.get("id"))))
     .execute();
 ```
+
 - Exemplar: `updateAccount` in `src/lib/actions.ts:330-362` checks `const currentUser = await getCurrentUser(); if (!currentUser) return { message: "Unauthorized.", success: false };` and scopes queries to `currentUser.user_id`.
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Typecheck | `bun x tsc --noEmit` | exit 0, no errors |
-| Lint Check | `bun run lint` | exit 0, 0 errors |
+| Purpose    | Command              | Expected on success |
+| ---------- | -------------------- | ------------------- |
+| Typecheck  | `bun x tsc --noEmit` | exit 0, no errors   |
+| Lint Check | `bun run lint`       | exit 0, 0 errors    |
 
 ## Scope
 
 **In scope** (the only files you should modify):
+
 - `src/lib/actions.ts`
 
 **Out of scope** (do NOT touch):
+
 - `src/lib/actions.ts:signUp` or public `resetPassword` flows.
 - Password form UI components unless hidden `id` removal is required.
 
@@ -79,6 +83,7 @@ export async function updatePassword(
 ### Step 1: Add session verification to `updatePassword`
 
 In `src/lib/actions.ts:updatePassword`:
+
 1. Call `const currentUser = await getCurrentUser();` at the beginning of the function.
 2. If `currentUser == null`, immediately return:
    ```typescript
@@ -111,6 +116,7 @@ In `src/lib/actions.ts:updatePassword`:
 ### Step 2: Ensure correct path revalidation
 
 Update `revalidatePath` to revalidate the appropriate settings routes:
+
 ```typescript
 revalidatePath("/admin/settings/password");
 revalidatePath("/doctor/settings/password");
@@ -130,4 +136,5 @@ revalidatePath("/patient/settings/password");
 ## STOP conditions
 
 Stop and report back if:
+
 - An admin requires changing other users' passwords through `updatePassword` (if so, a separate `adminUpdateUserPassword` action should be created with role verification).

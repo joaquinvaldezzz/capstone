@@ -33,6 +33,7 @@ Currently, `bun run lint` fails with over 200 errors across shadcn UI component 
 - `src/hooks/use-toast.ts` — Toast dispatcher hook flagging `use-before-define` and `consistent-return`.
 
 Current `eslint.config.mjs:100-119`:
+
 ```javascript
 export default defineConfig([
   // Ignore .gitignore files/folder in eslint
@@ -58,21 +59,23 @@ export default defineConfig([
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Typecheck | `bun x tsc --noEmit` | exit 0, no errors |
-| Lint Check | `bun run lint` | exit 0, 0 errors |
-| Lint Fix | `bun run lint:fix` | exit 0 |
+| Purpose    | Command              | Expected on success |
+| ---------- | -------------------- | ------------------- |
+| Typecheck  | `bun x tsc --noEmit` | exit 0, no errors   |
+| Lint Check | `bun run lint`       | exit 0, 0 errors    |
+| Lint Fix   | `bun run lint:fix`   | exit 0              |
 
 ## Scope
 
 **In scope** (the only files you should modify):
+
 - `eslint.config.mjs`
 - `src/hooks/use-toast.ts`
 - `src/lib/session.ts`
 - `svgr.d.ts`
 
 **Out of scope** (do NOT touch):
+
 - Do NOT rewrite or remove application logic or pages under `src/app/`.
 - Do NOT disable security rules or core syntax checking.
 
@@ -86,6 +89,7 @@ export default defineConfig([
 ### Step 1: Configure tailored rule overrides in `eslint.config.mjs`
 
 In `eslint.config.mjs`, update the `custom/overrides` configuration or add a targeted override block for `src/components/ui/**` and general TypeScript/React rules that conflict with modern React 19 and Radix UI:
+
 1. Set `"react/require-default-props": "off"` (in React 19 with TypeScript, default parameters in destructuring replace `defaultProps`).
 2. Set `"import-x/no-namespace": "off"` or configure it to allow Radix UI namespace imports (e.g., `* as ToastPrimitives`, `* as TooltipPrimitives`).
 3. Set `"@typescript-eslint/no-unused-expressions": ["error", { allowShortCircuit: true, allowTernary: true }]`.
@@ -106,6 +110,7 @@ In `eslint.config.mjs`, update the `custom/overrides` configuration or add a tar
 Confirm that lint adjustments maintain TypeScript validity.
 
 **Verify**:
+
 - `bun x tsc --noEmit` → exit code 0
 - `bun run lint` → exit code 0
 
@@ -119,5 +124,6 @@ Confirm that lint adjustments maintain TypeScript validity.
 ## STOP conditions
 
 Stop and report back if:
+
 - Fixing a lint issue requires removing Radix UI components or altering public component interfaces.
 - `bun run build` fails as a result of lint config changes.

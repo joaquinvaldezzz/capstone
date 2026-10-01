@@ -40,21 +40,23 @@ The Vercel Blob storage host URL (`https://x5l8gkuguvp5hvw9.public.blob.vercel-s
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Typecheck | `bun x tsc --noEmit` | exit 0, no errors |
-| Lint Check | `bun run lint` | exit 0, 0 errors |
-| Code Search | `grep -rn "x5l8gkuguvp5hvw9" src/` | 0 matches |
+| Purpose     | Command                            | Expected on success |
+| ----------- | ---------------------------------- | ------------------- |
+| Typecheck   | `bun x tsc --noEmit`               | exit 0, no errors   |
+| Lint Check  | `bun run lint`                     | exit 0, 0 errors    |
+| Code Search | `grep -rn "x5l8gkuguvp5hvw9" src/` | 0 matches           |
 
 ## Scope
 
 **In scope** (the only files you should modify):
+
 - `src/lib/utils.ts`
 - `src/lib/actions.ts`
 - All files referencing the hardcoded blob domain under `src/app/` and `src/components/`
 - `.env.example`
 
 **Out of scope** (do NOT touch):
+
 - `next.config.js` remotePatterns (keep wildcard `**.vercel-storage.com`).
 
 ## Git workflow
@@ -67,6 +69,7 @@ The Vercel Blob storage host URL (`https://x5l8gkuguvp5hvw9.public.blob.vercel-s
 ### Step 1: Add `getBlobUrl` helper in `src/lib/utils.ts`
 
 In `src/lib/utils.ts`, export a centralized helper:
+
 ```typescript
 const BLOB_BASE_URL =
   process.env.NEXT_PUBLIC_BLOB_BASE_URL ??
@@ -84,6 +87,7 @@ export function getBlobUrl(
   return `${BLOB_BASE_URL}/${folder}/${cleanPath}`;
 }
 ```
+
 Also document `NEXT_PUBLIC_BLOB_BASE_URL` in `.env.example`.
 
 **Verify**: `bun x tsc --noEmit` → exit 0
@@ -91,6 +95,7 @@ Also document `NEXT_PUBLIC_BLOB_BASE_URL` in `.env.example`.
 ### Step 2: Replace hardcoded strings across all 20 files
 
 Replace raw template literals with `getBlobUrl("profile-pictures", ...)` and `getBlobUrl("ultrasound-images", ...)` in:
+
 1. `src/components/medical-report-template.tsx`
 2. `src/app/doctor/columns.tsx`
 3. `src/app/doctor/results/[id]/page.tsx`
@@ -111,6 +116,7 @@ Replace raw template literals with `getBlobUrl("profile-pictures", ...)` and `ge
 In `src/lib/actions.ts:updateProfile`, change `addRandomSuffix: false` to `addRandomSuffix: true` and save the resulting pathname to avoid collisions.
 
 **Verify**:
+
 - `grep -rn "x5l8gkuguvp5hvw9" src/` → only exists as fallback in `src/lib/utils.ts`
 - `bun run lint` → exit 0
 
@@ -124,4 +130,5 @@ In `src/lib/actions.ts:updateProfile`, change `addRandomSuffix: false` to `addRa
 ## STOP conditions
 
 Stop and report back if:
+
 - Next.js image optimization throws domain errors with the dynamic URL.

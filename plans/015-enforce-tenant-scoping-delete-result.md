@@ -29,6 +29,7 @@ In `deleteResult` (`src/lib/actions.ts:707-735`) and `updateResultReview` (`src/
 ## Current state
 
 - `src/lib/actions.ts:707-735`:
+
 ```typescript
 export async function deleteResult(
   _previousState: PreviousState,
@@ -53,17 +54,19 @@ export async function deleteResult(
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Typecheck | `bun x tsc --noEmit` | exit 0, no errors |
-| Lint Check | `bun run lint` | exit 0, 0 errors |
+| Purpose    | Command              | Expected on success |
+| ---------- | -------------------- | ------------------- |
+| Typecheck  | `bun x tsc --noEmit` | exit 0, no errors   |
+| Lint Check | `bun run lint`       | exit 0, 0 errors    |
 
 ## Scope
 
 **In scope** (the only files you should modify):
+
 - `src/lib/actions.ts`
 
 **Out of scope** (do NOT touch):
+
 - Database schema (`src/lib/db-schema.ts`).
 - UI delete button component (`src/app/doctor/results/[id]/delete-button.tsx`).
 
@@ -77,6 +80,7 @@ export async function deleteResult(
 ### Step 1: Add ownership verification to `deleteResult`
 
 In `src/lib/actions.ts:deleteResult`:
+
 1. Parse `resultId` safely:
    ```typescript
    const rawResultId = formData.get("result-id");
@@ -87,10 +91,7 @@ In `src/lib/actions.ts:deleteResult`:
    ```
 2. Fetch the existing result:
    ```typescript
-   const [existingResult] = await db
-     .select()
-     .from(results)
-     .where(eq(results.result_id, resultId));
+   const [existingResult] = await db.select().from(results).where(eq(results.result_id, resultId));
 
    if (!existingResult) {
      return { message: "Result not found.", success: false };
@@ -112,6 +113,7 @@ In `src/lib/actions.ts:deleteResult`:
 ### Step 2: Add ownership verification to `updateResultReview`
 
 In `src/lib/actions.ts:updateResultReview`:
+
 1. After parsing `updateResultReviewSchema`, look up `existingResult` from `results` where `eq(results.result_id, parsed.data.result_id)`.
 2. Verify `if (currentUser.role !== "admin" && existingResult.doctor_id !== currentUser.user_id)`:
    ```typescript
@@ -134,4 +136,5 @@ In `src/lib/actions.ts:updateResultReview`:
 ## STOP conditions
 
 Stop and report back if:
+
 - Shared practice collaboration requires multi-doctor review permissions without admin role (this would require a practice group or delegation schema).

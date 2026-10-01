@@ -29,6 +29,7 @@ In `addPatient` (`src/lib/actions.ts:115-217`), if the Python Flask ML service i
 ## Current state
 
 - `src/lib/actions.ts:145-186`:
+
 ```typescript
   let percentage = "";
   let diagnosis = "";
@@ -53,17 +54,19 @@ In `addPatient` (`src/lib/actions.ts:115-217`), if the Python Flask ML service i
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Typecheck | `bun x tsc --noEmit` | exit 0, no errors |
-| Lint Check | `bun run lint` | exit 0, 0 errors |
+| Purpose    | Command              | Expected on success |
+| ---------- | -------------------- | ------------------- |
+| Typecheck  | `bun x tsc --noEmit` | exit 0, no errors   |
+| Lint Check | `bun run lint`       | exit 0, 0 errors    |
 
 ## Scope
 
 **In scope** (the only files you should modify):
+
 - `src/lib/actions.ts`
 
 **Out of scope** (do NOT touch):
+
 - Python Flask backend (`index.py`).
 - Frontend UI components (`patient-form.tsx`).
 
@@ -77,6 +80,7 @@ In `addPatient` (`src/lib/actions.ts:115-217`), if the Python Flask ML service i
 ### Step 1: Implement robust error checking in `addPatient`
 
 In `src/lib/actions.ts:addPatient`:
+
 1. Verify doctor authorization:
    ```typescript
    const currentDoctor = await getCurrentUser();
@@ -147,4 +151,5 @@ Verify that any downstream database or email failures are handled without crashi
 ## STOP conditions
 
 Stop and report back if:
+
 - Next.js rewrite configuration in `next.config.js` conflicts with `process.env.FLASK_API_URL`.

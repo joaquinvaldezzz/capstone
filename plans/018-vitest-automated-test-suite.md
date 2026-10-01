@@ -29,6 +29,7 @@ The project currently has zero automated tests. Critical domain logic — includ
 ## Current state
 
 - `package.json` scripts:
+
 ```json
 "scripts": {
   "build": "next build",
@@ -43,6 +44,7 @@ The project currently has zero automated tests. Critical domain logic — includ
   "start": "next start"
 }
 ```
+
 - Core pure libraries needing test suites:
   - `src/lib/form-schema.ts` (validation rules for registration, password strength, results)
   - `src/lib/session.ts` (JWT token signing, expiration, and payload decryption)
@@ -51,15 +53,16 @@ The project currently has zero automated tests. Critical domain logic — includ
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Run Tests | `bun test` | all tests pass, exit 0 |
-| Typecheck | `bun x tsc --noEmit` | exit 0, no errors |
-| Lint Check | `bun run lint` | exit 0, 0 errors |
+| Purpose    | Command              | Expected on success    |
+| ---------- | -------------------- | ---------------------- |
+| Run Tests  | `bun test`           | all tests pass, exit 0 |
+| Typecheck  | `bun x tsc --noEmit` | exit 0, no errors      |
+| Lint Check | `bun run lint`       | exit 0, 0 errors       |
 
 ## Scope
 
 **In scope** (the only files you should modify):
+
 - `package.json`
 - `src/lib/__tests__/form-schema.test.ts` (create)
 - `src/lib/__tests__/session.test.ts` (create)
@@ -67,6 +70,7 @@ The project currently has zero automated tests. Critical domain logic — includ
 - `src/lib/__tests__/email.test.ts` (create)
 
 **Out of scope** (do NOT touch):
+
 - Application routes or UI components.
 
 ## Git workflow
@@ -79,6 +83,7 @@ The project currently has zero automated tests. Critical domain logic — includ
 ### Step 1: Add `"test": "bun test"` script to `package.json`
 
 Add the test command to `package.json`:
+
 ```json
 "scripts": {
   "test": "bun test",
@@ -91,6 +96,7 @@ Add the test command to `package.json`:
 ### Step 2: Create unit tests for form schemas (`src/lib/__tests__/form-schema.test.ts`)
 
 Write comprehensive tests using `describe` and `it` / `test`:
+
 - Validates password complexity regex (min 8 chars, letter, number, special char).
 - Validates password confirmation equality refinement.
 - Validates patient result and review schemas (`PENDING_REVIEW`, `VERIFIED`, `REVISED`).
@@ -117,4 +123,5 @@ Write comprehensive tests using `describe` and `it` / `test`:
 ## STOP conditions
 
 Stop and report back if:
+
 - Bun test runner has environment incompatibilities with Node.js crypto / jose modules in this runtime.

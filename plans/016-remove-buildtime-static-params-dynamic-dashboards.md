@@ -29,6 +29,7 @@
 ## Current state
 
 - `src/app/doctor/results/[id]/page.tsx:41-51`:
+
 ```typescript
 export async function generateStaticParams() {
   const id = await getPatientResults();
@@ -36,30 +37,35 @@ export async function generateStaticParams() {
   return id.map((item) => ({ id: String(item.result_id) }));
 }
 ```
+
 - `src/app/admin/users/[id]/page.tsx:13-19`:
+
 ```typescript
 export async function generateStaticParams() {
   const id = await db.select().from(users);
   return id.map((item) => ({ id: String(item.user_id) }));
 }
 ```
+
 - In `src/app/admin/users/[id]/page.tsx`, `params` is incorrectly typed as `{ params: Promise<{ id: number }> }` even though Next.js dynamic segment parameters are strings (`{ id: string }`).
 
 ## Commands you will need
 
-| Purpose | Command | Expected on success |
-|---|---|---|
-| Typecheck | `bun x tsc --noEmit` | exit 0, no errors |
-| Build Check | `bun run build` | exit 0 |
-| Lint Check | `bun run lint` | exit 0 |
+| Purpose     | Command              | Expected on success |
+| ----------- | -------------------- | ------------------- |
+| Typecheck   | `bun x tsc --noEmit` | exit 0, no errors   |
+| Build Check | `bun run build`      | exit 0              |
+| Lint Check  | `bun run lint`       | exit 0              |
 
 ## Scope
 
 **In scope** (the only files you should modify):
+
 - `src/app/doctor/results/[id]/page.tsx`
 - `src/app/admin/users/[id]/page.tsx`
 
 **Out of scope** (do NOT touch):
+
 - Other dashboard pages or components.
 
 ## Git workflow
@@ -116,4 +122,5 @@ export async function generateStaticParams() {
 ## STOP conditions
 
 Stop and report back if:
+
 - Next.js build produces static generation errors for other dynamic routes.
