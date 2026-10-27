@@ -97,7 +97,8 @@ Analyze the diff to determine:
 git commit -m "<type>[scope]: <description>"
 
 # Multi-line with body/footer
-git commit -m "$(cat <<'EOF'
+git commit -m "$(
+  cat << 'EOF'
 <type>[scope]: <description>
 
 <optional body>
